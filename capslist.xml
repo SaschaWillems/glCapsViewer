@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<!-- OpenGL Hardware Capability Viewer - (c) 2011-2015 by Sascha Willems -->
+<!-- This file is distributed under the GNU Lesser General Public License version 3 -->
+<categories version="0.1" date="2014-12-11">
+	<category name = "OpenGL Version">
+		<requirements extension="" version="3.0"/>
+		<cap name="GL_MINOR_VERSION" enum="0x821C" type="glint" components="1" />
+		<cap name="GL_MAJOR_VERSION" enum="0x821B" type="glint" components="1" />
+	</category>
+	<category name="OpenGL 1.2">
+		<requirements extension="" version="1.2"/>		
+		<cap name="GL_MAX_ELEMENTS_VERTICES" enum="0x80E8" type="glint" components="1" />
+		<cap name="GL_MAX_ELEMENTS_INDICES" enum="0x80E9" type="glint" components="1" />
+		<cap name="GL_MAX_3D_TEXTURE_SIZE" enum="0x8073" type="glint" components="1" />
+	</category>
+	<category name="OpenGL 1.3">
+		<requirements extension="" version="1.3"/>		
+		<cap name="GL_MAX_TEXTURE_UNITS" enum="0x84E2" type="glint" components="1" />
+		<cap name="GL_MAX_CUBE_MAP_TEXTURE_SIZE" enum="0x851C" type="glint" components="1" />
+	</category>
+	<category name="OpenGL 1.4">
+		<requirements extension="" version="1.4"/>		
+		<cap name="GL_MAX_TEXTURE_LOD_BIAS" enum="0x84FD" type="glint" components="1" />
+	</category>
+	<category name="OpenGL 2.0">
+		<requirements extension="" version="2.0"/>		
+		<cap name="GL_MAX_DRAW_BUFFERS" enum="0x8824" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_ATTRIBS" enum="0x8869" type="glint" components="1" />
+		<cap name="GL_MAX_TEXTURE_COORDS" enum="0x8871" type="glint" components="1" />
+		<cap name="GL_MAX_TEXTURE_IMAGE_UNITS" enum="0x8872" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_UNIFORM_COMPONENTS" enum="0x8B49" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_UNIFORM_COMPONENTS" enum="0x8B4A" type="glint" components="1" />
+		<cap name="GL_MAX_VARYING_FLOATS" enum="0x8B4B" type="glint" components="1" />	
+		<cap name="GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS" enum="0x8B4C" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS" enum="0x8B4D" type="glint" components="1" />	
+	</category>
+	<category name="OpenGL 3.0">
+		<requirements extension="" version="3.0"/>		
+		<cap name="GL_MAX_ARRAY_TEXTURE_LAYERS" enum="0x88FF" type="glint" components="1" />
+		<cap name="GL_MIN_PROGRAM_TEXEL_OFFSET" enum="0x8904" type="glint" components="1" />
+		<cap name="GL_MAX_PROGRAM_TEXEL_OFFSET" enum="0x8905" type="glint" components="1" />
+		<cap name="GL_MAX_VARYING_COMPONENTS" enum="0x8B4B" type="glint" components="1" />
+		<cap name="GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS" enum="0x8C80" type="glint" components="1" />
+		<cap name="GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS" enum="0x8C8B" type="glint" components="1" />
+		<cap name="GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS" enum="0x8C8A" type="glint" components="1" />
+	</category>	
+	<category name="OpenGL 3.1">
+		<requirements extension="" version="3.1"/>		
+		<cap name="GL_MAX_TEXTURE_BUFFER_SIZE" enum="0x8C2B" type="glint" components="1" />
+		<cap name="GL_MAX_RECTANGLE_TEXTURE_SIZE" enum="0x84F8" type="glint" components="1" />
+	</category>	
+	<category name="OpenGL 3.2">
+		<requirements extension="" version="3.2"/>		
+		<cap name="GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS" enum="0x8C29" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_UNIFORM_COMPONENTS" enum="0x8DDF" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_OUTPUT_VERTICES" enum="0x8DE0" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS" enum="0x8DE1" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_OUTPUT_COMPONENTS" enum="0x9122" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_INPUT_COMPONENTS" enum="0x9123" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_OUTPUT_COMPONENTS" enum="0x9124" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_INPUT_COMPONENTS" enum="0x9125" type="glint" components="1" />
+	</category>
+	<category name="OpenGL 4.0">
+		<requirements extension="" version="4.0"/>
+		<cap name="GL_MIN_SAMPLE_SHADING_VALUE" enum="0x8C37" type="glint" components="1" />
+		<cap name="GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS" enum="0x8F9F" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_SHADER_INVOCATIONS" enum="0x8E5A" type="glint" components="1" />
+		<cap name="GL_MIN_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5B" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5C" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5C" type="glint" components="1" />
+		<cap name="GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET" enum="0x8E5E" type="glint" components="1" />
+		<cap name="GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET" enum="0x8E5F" type="glint" components="1" />		
+	</category>
+	<category name="OpenGL 4.3">
+		<requirements extension="" version="4.3"/>
+		<cap name="GL_NUM_SHADING_LANGUAGE_VERSIONS " enum="0x82E9" type="glint" components="1" />
+	</category>
+	<category name = "Framebuffer">
+		<requirements extension="" version=""/>
+		<cap name="GL_MAX_COLOR_ATTACHMENTS" enum="0x8CDF" type="glint" components="1" />
+		<cap name="GL_MAX_SAMPLES" enum="0x8D57" type="glint" components="1" />	
+	</category>
+	<category name = "Textures">
+		<requirements extension="" version=""/>
+		<cap name="GL_MAX_TEXTURE_SIZE" enum="0x0D33" type="glint" components="1" />
+		<cap name="GL_MAX_RENDERBUFFER_SIZE" enum="0x84E8" type="glint" components="1" />  
+		<cap name="GL_MAX_TEXTURE_COORDS" enum="0x8871" type="glint" components="1" />
+	</category>
+	<category name = "GL_ARB_texture_multisample">
+		<requirements extension="" version=""/>
+		<cap name="GL_MAX_COLOR_TEXTURE_SAMPLES" enum="0x910E" type="glint" components="1" />
+		<cap name="GL_MAX_DEPTH_TEXTURE_SAMPLES" enum="0x910F" type="glint" components="1" />
+		<cap name="GL_MAX_INTEGER_SAMPLES" enum="0x9110" type="glint" components="1" />
+		<cap name="GL_MAX_SAMPLE_MASK_WORDS" enum="0x8E59" type="glint" components="1" />
+	</category>
+	<category name = "Basic information">
+		<requirements extension="" version=""/>
+		<cap name="GL_MAX_VIEWPORT_DIMS" enum="0x0D3A" type="glint" components="2" />
+		<cap name="GL_MAX_LIGHTS" enum="0x0D31" type="glint" components="1" />
+		<cap name="GL_MAX_CLIP_PLANES" enum="0x0D32" type="glint" components="1" />
+		<cap name="GL_MAX_MODELVIEW_STACK_DEPTH" enum="0x0D36" type="glint" components="1" />
+		<cap name="GL_MAX_PROJECTION_STACK_DEPTH" enum="0x0D38" type="glint" components="1" />
+		<cap name="GL_MAX_TEXTURE_STACK_DEPTH" enum="0x0D39" type="glint" components="1" />
+		<cap name="GL_MAX_ATTRIB_STACK_DEPTH" enum="0x0D35" type="glint" components="1" />
+		<cap name="GL_MAX_COLOR_MATRIX_STACK_DEPTH" enum="0x80B3" type="glint" components="1" />
+		<cap name="GL_MAX_LIST_NESTING" enum="0x0B31" type="glint" components="1"/>
+		<cap name="GL_SUBPIXEL_BITS" enum="0x0D50" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_shader_subroutine">
+		<requirements extension="GL_ARB_shader_subroutine" version=""/>
+		<cap name="GL_MAX_SUBROUTINES" enum="0x8DE7" type="glint" components="1" />
+		<cap name="GL_MAX_SUBROUTINE_UNIFORM_LOCATIONS" enum="0x8DE8" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_geometry_shader4">
+		<requirements extension="GL_ARB_geometry_shader4" version=""/>
+		<cap name="GL_MAX_VERTEX_STREAMS" enum="0x8E71" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_tessellation_shader">
+		<requirements extension="GL_ARB_tessellation_shader" version=""/>
+		<cap name="GL_MAX_TESS_GEN_LEVEL" enum="0x8E7E" type="glint" components="1" />
+		<cap name="GL_MAX_PATCH_VERTICES" enum="0x8E7D" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_UNIFORM_COMPONENTS" enum="0x8E7F" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_VALUATION_UNIFORM_COMPONENTS" enum="0x8E80" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_TEXTURE_IMAGE_UNITS" enum="0x8E81" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_TEXTURE_IMAGE_UNITS" enum="0x8E82" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_OUTPUT_COMPONENTS" enum="0x8E83" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_PATCH_COMPONENTS" enum="0x8E84" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_TOTAL_OUTPUT_COMPONENTS" enum="0x8E85" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_OUTPUT_COMPONENTS" enum="0x8E86" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_INPUT_COMPONENTS" enum="0x886C" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_INPUT_COMPONENTS" enum="0x886D" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_UNIFORM_BLOCKS" enum="0x8E89" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_UNIFORM_BLOCKS" enum="0x8E8A" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_TESS_CONTROL_UNIFORM_COMPONENTS" enum="0x8E1E" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_TESS_EVALUATION_UNIFORM_COMPONENTS" enum="0x8E1F" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_transform_feedback3">
+		<requirements extension="GL_ARB_transform_feedback3" version=""/>
+		<cap name="GL_MAX_TRANSFORM_FEEDBACK_BUFFERS" enum="0x8E70" type="glint" components="1" />				
+	</category>
+	<category name="GL_ARB_uniform_buffer_object">
+		<requirements extension="GL_ARB_uniform_buffer_object" version=""/>
+		<cap name="GL_MAX_VERTEX_UNIFORM_BLOCKS" enum="0x8A2B" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_UNIFORM_BLOCKS" enum="0x8A2C" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_UNIFORM_BLOCKS" enum="0x8A2D" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_UNIFORM_BLOCKS" enum="0x8A2E" type="glint" components="1" />	
+		<cap name="GL_MAX_UNIFORM_BUFFER_BINDINGS" enum="0x8A2F" type="glint" components="1" />	
+		<cap name="GL_MAX_UNIFORM_BLOCK_SIZE" enum="0x8A30" type="glint" components="1" />	
+		<cap name="GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS" enum="0x8A32" type="glint" components="1" />	
+		<cap name="GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS" enum="0x8A32" type="glint" components="1" />	
+		<cap name="GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS" enum="0x8A33" type="glint" components="1" />	
+		<cap name="GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT" enum="0x8A34" type="glint" components="1" />	
+	</category>
+	<category name="GL_ARB_ES2_compatibility">
+		<requirements extension="GL_ARB_ES2_compatibility" version=""/>
+		<cap name="GL_MAX_VARYING_VECTORS" enum="0x8DFC" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_UNIFORM_VECTORS" enum="0x8DFB" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_UNIFORM_VECTORS" enum="0x8DFD" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_shader_atomic_counters">
+		<requirements extension="GL_ARB_shader_atomic_counters" version=""/>
+		<cap name="GL_MAX_VERTEX_ATOMIC_COUNTER_BUFFERS" enum="0x92CC" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_ATOMIC_COUNTER_BUFFERS" enum="0x92CD" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_ATOMIC_COUNTER_BUFFERS" enum="0x92CE" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_ATOMIC_COUNTER_BUFFERS" enum="0x92CF" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_ATOMIC_COUNTER_BUFFERS" enum="0x92D0" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_ATOMIC_COUNTER_BUFFERS" enum="0x92D1" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_ATOMIC_COUNTERS" enum="0x92D2" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_ATOMIC_COUNTERS" enum="0x92D3" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_ATOMIC_COUNTERS" enum="0x92D4" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_ATOMIC_COUNTERS" enum="0x92D5" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_ATOMIC_COUNTERS" enum="0x92D6" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_ATOMIC_COUNTERS" enum="0x92D7" type="glint" components="1" />
+		<cap name="GL_MAX_ATOMIC_COUNTER_BUFFER_SIZE" enum="0x92D8" type="glint" components="1" />
+		<cap name="GL_MAX_ATOMIC_COUNTER_BUFFER_BINDINGS" enum="0x92DC" type="glint" components="1" />
+	</category>
+	<category name="GL_ARB_map_buffer_alignment">
+		<requirements extension="GL_ARB_map_buffer_alignment" version=""/>
+		<cap name="GL_MIN_MAP_BUFFER_ALIGNMENT" enum="0x90BC" type="glint" components="1" />
+	</category>	
+	<category name="GL_ARB_vertex_attrib_binding">
+		<requirements extension="GL_ARB_vertex_attrib_binding" version=""/>
+		<cap name="GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET" enum="0x82D9" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_ATTRIB_BINDINGS" enum="0x82DA" type="glint" components="1" />
+	</category>	
+	<category name="GL_ARB_shader_storage_buffer_object">
+		<requirements extension="GL_ARB_shader_storage_buffer_object" version=""/>
+		<cap name="GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES" enum="0x8F39" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS" enum="0x90D6" type="glint" components="1" />
+		<cap name="GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS" enum="0x90D7" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS" enum="0x90D8" type="glint" components="1" />
+		<cap name="GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS" enum="0x90D9" type="glint" components="1" />
+		<cap name="GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS" enum="0x90DA" type="glint" components="1" />
+		<cap name="GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS" enum="0x90DB" type="glint" components="1" />
+		<cap name="GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS" enum="0x90DC" type="glint" components="1" />
+		<cap name="GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS" enum="0x90DD" type="glint" components="1" />
+		<cap name="GL_MAX_SHADER_STORAGE_BLOCK_SIZE" enum="0x90DE" type="glint" components="1" />
+	</category>		
+</categories>
