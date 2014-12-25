@@ -45,7 +45,7 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "0";
+			capabilities[idstr] = "n/a";
 		}
 		delete[] intVal;
 	}
@@ -64,7 +64,45 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "0";
+			capabilities[idstr] = "n/a";
+		}
+		delete[] intVal;
+	}
+
+	if (type == "glintfragmentprogram") {
+		GLint* intVal;
+		intVal = new GLint[dim];
+		glGetProgramivARB(GL_FRAGMENT_PROGRAM_ARB, id, intVal);
+		string valString = "";
+		for (int i = 0; i < dim; i++) {
+			if (i > 0) {
+				valString += " ,";
+			}
+			valString += to_string(intVal[i]);
+		}
+		GLint glerr = glGetError();
+		capabilities[idstr] = valString;
+		if (glerr != GL_NO_ERROR) {
+			capabilities[idstr] = "n/a";
+		}
+		delete[] intVal;
+	}
+
+	if (type == "glintvertexprogram") {
+		GLint* intVal;
+		intVal = new GLint[dim];
+		glGetProgramivARB(GL_VERTEX_PROGRAM_ARB, id, intVal);
+		string valString = "";
+		for (int i = 0; i < dim; i++) {
+			if (i > 0) {
+				valString += " ,";
+			}
+			valString += to_string(intVal[i]);
+		}
+		GLint glerr = glGetError();
+		capabilities[idstr] = valString;
+		if (glerr != GL_NO_ERROR) {
+			capabilities[idstr] = "n/a";
 		}
 		delete[] intVal;
 	}
