@@ -50,6 +50,25 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		delete[] intVal;
 	}
 
+	if (type == "glint64") {
+		GLint64* intVal;
+		intVal = new GLint64[dim];
+		glGetInteger64v(id, intVal);
+		string valString = "";
+		for (int i = 0; i < dim; i++) {
+			if (i > 0) {
+				valString += " ,";
+			}
+			valString += to_string(intVal[i]);
+		}
+		GLint glerr = glGetError();
+		capabilities[idstr] = valString;
+		if (glerr != GL_NO_ERROR) {
+			capabilities[idstr] = "0";
+		}
+		delete[] intVal;
+	}
+
 	if (type == "glstring") {
 		string valString = reinterpret_cast<const char*>(glGetString(id));
 		GLint glerr = glGetError();
