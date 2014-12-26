@@ -318,7 +318,8 @@ void glCapsViewer::slotUpload(){
 
 		bool ok;
 		QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, "", &ok);
-		if (ok && !text.isEmpty()) {
+		core.submitter = text.toStdString();
+		if (ok) {
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			string xml = core.reportToXml();
 			string reply = glchttp.postReport(xml);

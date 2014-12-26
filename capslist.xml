@@ -73,11 +73,11 @@
 	</category>
 	<category name="OpenGL 4.3">
 		<requirements extension="" version="4.3"/>
-		<cap name="GL_NUM_SHADING_LANGUAGE_VERSIONS " enum="0x82E9" type="glint" components="1" />
+		<cap name="GL_NUM_SHADING_LANGUAGE_VERSIONS" enum="0x82E9" type="glint" components="1" />
 	</category>
 	<category name="OpenGL 4.4">
 		<requirements extension="" version="4.4"/>
-		<cap name="GL_MAX_VERTEX_ATTRIB_STRIDE " enum="0x82E5" type="glint" components="1" />
+		<cap name="GL_MAX_VERTEX_ATTRIB_STRIDE" enum="0x82E5" type="glint" components="1" />
 	</category>
 	<category name = "Textures">
 		<requirements extension="" version=""/>
