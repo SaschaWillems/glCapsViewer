@@ -128,6 +128,25 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		delete[] intVal;
 	}
 
+	if (type == "glfloat") {
+		GLfloat* floatVal;
+		floatVal = new GLfloat[dim];
+		glGetFloatv(id, floatVal);
+		string valString = "";
+		for (int i = 0; i < dim; i++) {
+			if (i > 0) {
+				valString += " ,";
+			}
+			valString += to_string(floatVal[i]);
+		}
+		GLint glerr = glGetError();
+		capabilities[idstr] = valString;
+		if (glerr != GL_NO_ERROR) {
+			capabilities[idstr] = errorValue;
+		}
+		delete[] floatVal;
+	}
+
 	if (type == "glstring") {
 		string valString = reinterpret_cast<const char*>(glGetString(id));
 		GLint glerr = glGetError();
