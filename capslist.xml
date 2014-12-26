@@ -65,9 +65,8 @@
 		<cap name="GL_MIN_SAMPLE_SHADING_VALUE" enum="0x8C37" type="glint" components="1" />
 		<cap name="GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS" enum="0x8F9F" type="glint" components="1" />
 		<cap name="GL_MAX_GEOMETRY_SHADER_INVOCATIONS" enum="0x8E5A" type="glint" components="1" />
-		<cap name="GL_MIN_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5B" type="glint" components="1" />
-		<cap name="GL_MAX_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5C" type="glint" components="1" />
-		<cap name="GL_MAX_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5C" type="glint" components="1" />
+		<cap name="GL_MIN_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5B" type="glfloat" components="1" />
+		<cap name="GL_MAX_FRAGMENT_INTERPOLATION_OFFSET" enum="0x8E5C" type="glfloat" components="1" />
 		<cap name="GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET" enum="0x8E5E" type="glint" components="1" />
 		<cap name="GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET" enum="0x8E5F" type="glint" components="1" />		
 	</category>
@@ -79,12 +78,9 @@
 		<requirements extension="" version="4.4"/>
 		<cap name="GL_MAX_VERTEX_ATTRIB_STRIDE" enum="0x82E5" type="glint" components="1" />
 	</category>
-	<category name = "Textures">
-		<requirements extension="" version=""/>
-		<cap name="GL_MAX_TEXTURE_SIZE" enum="0x0D33" type="glint" components="1" />
-	</category>
 	<category name = "Basic information">
 		<requirements extension="" version=""/>
+		<cap name="GL_MAX_TEXTURE_SIZE" enum="0x0D33" type="glint" components="1" />
 		<cap name="GL_MAX_VIEWPORT_DIMS" enum="0x0D3A" type="glint" components="2" />
 		<cap name="GL_MAX_LIGHTS" enum="0x0D31" type="glint" components="1" />
 		<cap name="GL_MAX_CLIP_PLANES" enum="0x0D32" type="glint" components="1" />
@@ -315,5 +311,9 @@
 	<category name="GL_ARB_viewport_array">
 		<requirements extension="GL_ARB_viewport_array" version=""/>
 		<cap name="GL_MAX_VIEWPORTS" enum="0x825B" type="glint" components="1" />
+	</category>			
+	<category name="GL_ARB_blend_func_extended">
+		<requirements extension="GL_ARB_blend_func_extended" version=""/>
+		<cap name="GL_MAX_DUAL_SOURCE_DRAW_BUFFERS" enum="0x88FC" type="glint" components="1" />
 	</category>			
 </categories>
