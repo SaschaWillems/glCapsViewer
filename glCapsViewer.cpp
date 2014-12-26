@@ -147,6 +147,10 @@ void glCapsViewer::generateReport()
 				QTreeWidgetItem *capItem = new QTreeWidgetItem(groupItem);
 				capItem->setText(0, QString::fromStdString(cap.first));
 				capItem->setText(1, QString::fromStdString(cap.second));
+				if (cap.second == "n/a") {
+					capItem->setTextColor(0, QColor::fromRgb(100, 100, 100));
+					capItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
+				}
 				groupItem->addChild(capItem);
 			}
 		}
