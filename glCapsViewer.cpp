@@ -365,10 +365,16 @@ void glCapsViewer::slotUpload(){
 			QMessageBox::StandardButton reply;
 			reply = QMessageBox::question(this, "Report outdated", "There is a report for your device present in the database, but it is missing some capabilities.\n\nDo you want to update the report?", QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::Yes) {
+				// Submitter name to be stored in report update log
+				bool ok;
+				QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, "", &ok);
+				core.submitter = text.toStdString();
 				// TODO : WIP
-				string xml = core.reportToXml();
-				string httpReply = glchttp.postReportForUpdate(xml);
-				QMessageBox::information(this, tr("httpReply"), QString::fromStdString(httpReply));
+				if (ok) {
+					string xml = core.reportToXml();
+					string httpReply = glchttp.postReportForUpdate(xml);
+					QMessageBox::information(this, tr("httpReply"), QString::fromStdString(httpReply));
+				}
 			}
 		}
 
