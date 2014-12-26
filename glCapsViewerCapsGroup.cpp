@@ -32,6 +32,8 @@
 void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, int dim)
 {
 	string errorValue = "n/a";
+	// Clear last OpenGL error
+	GLint dummyError = glGetError();
 
 	if (type == "glint") {
 		GLint* intVal;
