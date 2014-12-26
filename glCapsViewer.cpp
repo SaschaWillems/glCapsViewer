@@ -86,7 +86,21 @@ void glCapsViewer::generateReport()
 
 	glCapsViewerHttp glhttp;
 	if (glhttp.checkReportPresent(core.description)) {
+		// TODO : Check update state
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database</font>");
+		// TODO : Test
+		int reportId = glhttp.getReportId(core.description);
+		stringstream capsParam;
+		for (auto& capGroup : core.capgroups) {
+			for (auto& cap : capGroup.capabilities) {
+				if (cap.second != "n/a") {
+					capsParam << cap.first << ",";
+				}
+			}
+		}
+		if (glhttp.checkReportCanUpdate(reportId, capsParam.str())) {
+			ui.labelReportPresent->setText("<font color='#0000FF'>Device already present in database, but can be updated with missing values!</font>");
+		}
 	}
 	else {
 		ui.labelReportPresent->setText("<font color='#bc0003'>Device not yet present in database</font>");
@@ -313,6 +327,7 @@ void glCapsViewer::slotClose(){
 
 void glCapsViewer::slotUpload(){
 	glCapsViewerHttp glchttp;
+
 	if (!glchttp.checkReportPresent(core.description)) {
 		// TODO : Depending on context type? (ES / GL)
 
@@ -333,13 +348,40 @@ void glCapsViewer::slotUpload(){
 		}
 	}
 	else {
-		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(this, "Device already present", "A report for your device and OpenGL version is aleady present in the database.\n\nDo you want to open the report in your browser?", QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::Yes) {
-			int reportID = glchttp.getReportId(core.description);
-			stringstream ss;
-			ss << "http://delphigl.de/glcapsviewer/gl_generatereport.php?reportID=" << to_string(reportID);
-			QDesktopServices::openUrl(QUrl(QString::fromStdString(ss.str())));
+		// Check if report can be updated
+		bool canUpdate = false;
+		// TODO : Test
+		int reportId = glchttp.getReportId(core.description);
+		stringstream capsParam;
+		for (auto& capGroup : core.capgroups) {
+			for (auto& cap : capGroup.capabilities) {
+				if (cap.second != "n/a") {
+					capsParam << cap.first << ",";
+				}
+			}
+		}
+		canUpdate = glchttp.checkReportCanUpdate(reportId, capsParam.str());
+		if (canUpdate) {
+			QMessageBox::StandardButton reply;
+			reply = QMessageBox::question(this, "Report outdated", "There is a report for your device present in the database, but it is missing some capabilities.\n\nDo you want to update the report?", QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::Yes) {
+				// TODO : WIP
+				string xml = core.reportToXml();
+				string httpReply = glchttp.postReportForUpdate(xml);
+				QMessageBox::information(this, tr("httpReply"), QString::fromStdString(httpReply));
+			}
+		}
+
+		// 
+		if (!canUpdate) {
+			QMessageBox::StandardButton reply;
+			reply = QMessageBox::question(this, "Device already present", "A report for your device and OpenGL version is aleady present in the database.\n\nDo you want to open the report in your browser?", QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::Yes) {
+				reportId = glchttp.getReportId(core.description);
+				stringstream ss;
+				ss << "http://delphigl.de/glcapsviewer/gl_generatereport.php?reportID=" << to_string(reportId);
+				QDesktopServices::openUrl(QUrl(QString::fromStdString(ss.str())));
+			}
 		}
 	}
 }

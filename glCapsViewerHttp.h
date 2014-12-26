@@ -54,10 +54,12 @@ private:
 public:
 	int getReportId(string description);
 	bool checkReportPresent(string description);
+	bool checkReportCanUpdate(int reportId, string caps);
 	vector<string> fetchDevices();
 	vector<reportInfo> fetchDeviceReports(string device);
 	string fetchReport(int reportId);
 	string postReport(string xml);
+	string postReportForUpdate(string xml);
 	glCapsViewerHttp();
 	~glCapsViewerHttp();
 };

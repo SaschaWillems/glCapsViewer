@@ -138,6 +138,22 @@ bool glCapsViewerHttp::checkReportPresent(string description)
 }
 
 /// <summary>
+/// Checks if the online report has missing caps that can be updated from the
+/// local report. A php script will check all passed caps for null values.
+/// </summary>
+/// <param name="reportId">Id of the report to check for update possibility</param>
+/// <param name="caps">List of coma separated caps to check against</param>
+/// <returns></returns>
+bool glCapsViewerHttp::checkReportCanUpdate(int reportId, string caps)
+{
+	string httpReply;
+	stringstream urlss;
+	urlss << baseUrl << "services/gl_checkreportupdate.php?reportId=" << reportId << "&caps=" << caps;
+	httpReply = httpGet(urlss.str());
+	return (httpReply == "true") ? true : false;
+}
+
+/// <summary>
 /// Fechtes an xml with all report data from the online database
 /// </summary>
 /// <param name="reportId">Description of the report to get the report xml for</param>
@@ -160,6 +176,19 @@ string glCapsViewerHttp::postReport(string xml)
 	string httpReply;
 	stringstream urlss;
 	urlss << baseUrl << "/convertreport.php";
+	httpReply = httpPost(urlss.str(), xml);
+	return httpReply;
+}
+
+/// <summary>
+/// Posts the given url to the db report update script 
+/// </summary>
+/// <returns>Coma separated list of updated caps</returns>
+string glCapsViewerHttp::postReportForUpdate(string xml)
+{
+	string httpReply;
+	stringstream urlss;
+	urlss << baseUrl << "services/gl_updatereport.php";
 	httpReply = httpPost(urlss.str(), xml);
 	return httpReply;
 }
