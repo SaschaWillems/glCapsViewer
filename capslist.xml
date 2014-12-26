@@ -210,8 +210,8 @@
 		<cap name="GL_MAX_COMPUTE_UNIFORM_BLOCKS" enum="0x91BB" type="glint" components="1" />
 		<cap name="GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS" enum="0x91BC" type="glint" components="1" />
 		<cap name="GL_MAX_COMPUTE_IMAGE_UNIFORMS" enum="0x91BD" type="glint" components="1" />
-		<cap name="GL_MAX_COMPUTE_WORK_GROUP_COUNT" enum="0x91BE" type="glint" components="1" />
-		<cap name="GL_MAX_COMPUTE_WORK_GROUP_SIZE" enum="0x91BF" type="glint" components="3" />
+		<cap name="GL_MAX_COMPUTE_WORK_GROUP_COUNT" enum="0x91BE" type="glintindex" components="3" />
+		<cap name="GL_MAX_COMPUTE_WORK_GROUP_SIZE" enum="0x91BF" type="glintindex" components="3" />
 	</category>	
 	<category name="GL_ARB_compute_variable_group_size">
 		<requirements extension="GL_ARB_compute_variable_group_size	" version=""/>

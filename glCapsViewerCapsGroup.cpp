@@ -31,6 +31,8 @@
 /// <param name="dim">No of dimensions to query</param>
 void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, int dim)
 {
+	string errorValue = "n/a";
+
 	if (type == "glint") {
 		GLint* intVal;
 		intVal = new GLint[dim];
@@ -45,7 +47,7 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "n/a";
+			capabilities[idstr] = errorValue;
 		}
 		delete[] intVal;
 	}
@@ -64,9 +66,26 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "n/a";
+			capabilities[idstr] = errorValue;
 		}
 		delete[] intVal;
+	}
+
+	if (type == "glintindex") {
+		GLint intVal;
+		string valString = "";
+		for (int i = 0; i < dim; i++) {
+			if (i > 0) {
+				valString += " ,";
+			}
+			glGetIntegeri_v(id, i, &intVal);
+			valString += to_string(intVal);
+		}
+		GLint glerr = glGetError();
+		capabilities[idstr] = valString;
+		if (glerr != GL_NO_ERROR) {
+			capabilities[idstr] = errorValue;
+		}
 	}
 
 	if (type == "glintfragmentprogram") {
@@ -83,7 +102,7 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "n/a";
+			capabilities[idstr] = errorValue;
 		}
 		delete[] intVal;
 	}
@@ -102,7 +121,7 @@ void glCapsViewerCapsGroup::addCapability(string idstr, GLenum id, string type, 
 		GLint glerr = glGetError();
 		capabilities[idstr] = valString;
 		if (glerr != GL_NO_ERROR) {
-			capabilities[idstr] = "n/a";
+			capabilities[idstr] = errorValue;
 		}
 		delete[] intVal;
 	}
