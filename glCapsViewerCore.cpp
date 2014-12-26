@@ -214,6 +214,9 @@ string glCapsViewerCore::reportToXml()
 	for (auto& ext : extensions) {
 		extNode->append_node(doc.allocate_node(node_element, "extension", ext.c_str()));
 	}
+	for (auto& ext : osextensions) {
+		extNode->append_node(doc.allocate_node(node_element, "extension", ext.c_str()));
+	}
 
 	// implementation info and caps
 	xml_node<> *capsNode = doc.allocate_node(node_element, "caps");
