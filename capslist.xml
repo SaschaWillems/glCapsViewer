@@ -224,6 +224,8 @@
 		<requirements extension="GL_ARB_debug_output" version=""/>
 		<cap name="GL_MAX_DEBUG_MESSAGE_LENGTH_ARB" enum="0x9143" type="glint" components="1" />
 		<cap name="GL_MAX_DEBUG_LOGGED_MESSAGES_ARB" enum="0x9144" type="glint" components="1" />
+		<cap name="GL_MAX_DEBUG_GROUP_STACK_DEPTH" enum="0x826C" type="glint" components="1" />
+		<cap name="GL_MAX_LABEL_LENGTH" enum="0x82E8" type="glint" components="1" />
 	</category>	
 	<category name="GL_ARB_draw_buffers">
 		<requirements extension="GL_ARB_draw_buffers" version=""/>
@@ -286,7 +288,7 @@
 	</category>			
 	<category name="GL_ARB_sync">
 		<requirements extension="GL_ARB_sync" version=""/>
-		<cap name="GL_MAX_SERVER_WAIT_TIMEOUT" enum="0x9111" type="glint" components="1" />
+		<cap name="GL_MAX_SERVER_WAIT_TIMEOUT" enum="0x9111" type="glint64" components="1" />
 	</category>			
 	<category name="GL_ARB_texture_compression">
 		<requirements extension="GL_ARB_texture_compression" version=""/>
