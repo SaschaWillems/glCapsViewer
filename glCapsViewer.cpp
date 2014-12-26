@@ -36,6 +36,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QListWidgetItem>
+#include <QTreeWidget>
 #include <QComboBox>
 #include <QInputDialog>
 #include <sstream>  
@@ -59,9 +60,6 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-
-	ui.tableWidgetImplementation->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-	ui.tableWidgetImplementation->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 }
 
 glCapsViewer::~glCapsViewer()
@@ -76,8 +74,8 @@ glCapsViewer::~glCapsViewer()
 void glCapsViewer::generateReport()
 {
 
-	ui.tableWidgetImplementation->setRowCount(0);
-	ui.listWidgetExtensions->clear();
+	ui.treeWidget->clear();
+	ui.treeWidgetExtensions->clear();
 
 	core.readExtensions();
 	core.readOsExtensions();
@@ -85,7 +83,7 @@ void glCapsViewer::generateReport()
 	core.readCapabilities();
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
-	// TODO : check if present
+
 	glCapsViewerHttp glhttp;
 	if (glhttp.checkReportPresent(core.description)) {
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database</font>");
@@ -98,79 +96,84 @@ void glCapsViewer::generateReport()
 	// Implementation detail
 	stringstream ss;
 
-	QTableWidget *table = ui.tableWidgetImplementation;
-	table->setColumnWidth(0, 250);
-	table->horizontalHeader()->setStretchLastSection(true);
-	table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-	table->verticalHeader()->setDefaultSectionSize(24);
-	table->verticalHeader()->setVisible(false);
+	QTreeWidget *tree = ui.treeWidget;
+	tree->header()->resizeSection(0, 250);
+	QTreeWidgetItem *impItem = new QTreeWidgetItem(tree);
+	impItem->setText(0, "Implementation details");
 
-	table->insertRow(ui.tableWidgetImplementation->rowCount());
-	QTableWidgetItem *item = new QTableWidgetItem("Implementation details");
-	item->setTextColor(QColor::fromRgb(0, 0, 255));
-	table->setItem(0, 0, item);
 	for (auto& s : core.implementation) {
-		table->insertRow(table->rowCount());
-		table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(s.first)));
-		table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(QString::fromStdString(s.second)));
+		QTreeWidgetItem *treeItem = new QTreeWidgetItem(impItem);
+		treeItem->setText(0, QString::fromStdString(s.first));
+		treeItem->setText(1, QString::fromStdString(s.second));
+		impItem->addChild(treeItem);
 	}
+	impItem->setExpanded(true);
 
 	// Capabilities
-	item = new QTableWidgetItem("Implementation capabilities");
-	item->setTextColor(QColor::fromRgb(0, 0, 255));
-	table->insertRow(table->rowCount());
-	table->setItem(table->rowCount() - 1, 0, item);
 	for (auto& group : core.capgroups) {
 		if (!group.visible) {
 			continue;
 		}
-		table->insertRow(table->rowCount());
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(group.name));
 		item->setTextColor(QColor::fromRgb(0, 0, 255));
-		table->setItem(table->rowCount() - 1, 0, item);
+
+		QTreeWidgetItem *groupItem = new QTreeWidgetItem(tree);
+		groupItem->setText(0, QString::fromStdString(group.name));
+
+		if (group.supported) {
+			groupItem->setText(1, QString::fromStdString(to_string(group.capabilities.size())));
+		}
+		else {
+			groupItem->setText(1, "not available");
+			groupItem->setTextColor(1, QColor::fromRgb(255, 0, 0));
+		}
 
 		if (group.supported) {
 			for (auto& cap : group.capabilities)	{
-				table->insertRow(table->rowCount());
-				ss.str("");
-				ss << "  " << cap.first;
-				table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(ss.str())));
-				table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(QString::fromStdString(cap.second)));
+				QTreeWidgetItem *capItem = new QTreeWidgetItem(groupItem);
+				capItem->setText(0, QString::fromStdString(cap.first));
+				capItem->setText(1, QString::fromStdString(cap.second));
+				groupItem->addChild(capItem);
 			}
 		}
 		else {
-			table->insertRow(table->rowCount());
 			QTableWidgetItem *item = new QTableWidgetItem("  Not supported");
 			item->setTextColor(QColor::fromRgb(255, 0, 0));
-			table->setItem(table->rowCount() - 1, 0, item);
 		}
 	}
 
 	// Extensions
+	tree = ui.treeWidgetExtensions;
+	tree->header()->resizeSection(0, 250);
+
 	stringstream cap;
 	cap << "OpenGL extensions (" << core.extensions.size() << ")";
-	QListWidgetItem *extItem = new QListWidgetItem(QString::fromStdString(cap.str()), ui.listWidgetExtensions);
-	extItem->setTextColor(QColor::fromRgb(0, 0, 255));
-	extItem->setSizeHint(QSize(extItem->sizeHint().height(), 24));
+	QTreeWidgetItem *extItem = new QTreeWidgetItem(tree);
+	extItem->setText(0, QString::fromStdString(cap.str()));
+
 	for (auto& s : core.extensions) {
 		ss.str("");
 		ss << "  " << s;
-		QListWidgetItem *item = new QListWidgetItem(QString::fromStdString(ss.str()), ui.listWidgetExtensions);
-		item->setSizeHint(QSize(extItem->sizeHint().height(), 24));
+		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
+		capItem->setText(0, QString::fromStdString(ss.str()));
+		extItem->addChild(capItem);
 	}
+
+	extItem->setExpanded(true);
 
 	// OS 
 	cap.str("");
 	cap << "OS specific extensions (" << core.osextensions.size() << ")";
-	QListWidgetItem *extosItem = new QListWidgetItem(QString::fromStdString(cap.str()), ui.listWidgetExtensions);
-	extosItem->setTextColor(QColor::fromRgb(0, 0, 255));
-	extosItem->setSizeHint(QSize(extItem->sizeHint().height(), 24));
+	extItem = new QTreeWidgetItem(tree);
+	extItem->setText(0, QString::fromStdString(cap.str()));
+
 	for (auto& s : core.osextensions) {
-		ss.str("");
-		ss << "  " << s;
-		QListWidgetItem *item = new QListWidgetItem(QString::fromStdString(ss.str()), ui.listWidgetExtensions);
-		item->setSizeHint(QSize(extItem->sizeHint().height(), 24));
+		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
+		capItem->setText(0, QString::fromStdString(s));
+		extItem->addChild(capItem);
 	}
+
+	extItem->setExpanded(true);
 }
 
 bool glCapsViewer::contextTypeSelection() 

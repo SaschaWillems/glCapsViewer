@@ -24,6 +24,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -48,8 +49,8 @@ public:
     QLabel *labelDescription;
     QLabel *labelReportPresent;
     QHBoxLayout *horizontalLayout;
-    QTableWidget *tableWidgetImplementation;
-    QListWidget *listWidgetExtensions;
+    QTreeWidget *treeWidget;
+    QTreeWidget *treeWidgetExtensions;
     QWidget *tabDatabase;
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_2;
@@ -163,36 +164,28 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        tableWidgetImplementation = new QTableWidget(tabDevice);
-        if (tableWidgetImplementation->columnCount() < 2)
-            tableWidgetImplementation->setColumnCount(2);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidgetImplementation->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        tableWidgetImplementation->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        tableWidgetImplementation->setObjectName(QStringLiteral("tableWidgetImplementation"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(tableWidgetImplementation->sizePolicy().hasHeightForWidth());
-        tableWidgetImplementation->setSizePolicy(sizePolicy);
-        tableWidgetImplementation->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
-        tableWidgetImplementation->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        tableWidgetImplementation->setAlternatingRowColors(true);
-        tableWidgetImplementation->setSelectionMode(QAbstractItemView::NoSelection);
-        tableWidgetImplementation->setShowGrid(false);
-        tableWidgetImplementation->setColumnCount(2);
-        tableWidgetImplementation->horizontalHeader()->setStretchLastSection(true);
+        treeWidget = new QTreeWidget(tabDevice);
+        treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        treeWidget->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
+        treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        treeWidget->setAlternatingRowColors(true);
+        treeWidget->setIndentation(10);
+        treeWidget->header()->setDefaultSectionSize(200);
+        treeWidget->header()->setStretchLastSection(true);
 
-        horizontalLayout->addWidget(tableWidgetImplementation);
+        horizontalLayout->addWidget(treeWidget);
 
-        listWidgetExtensions = new QListWidget(tabDevice);
-        listWidgetExtensions->setObjectName(QStringLiteral("listWidgetExtensions"));
-        listWidgetExtensions->setAutoScroll(true);
-        listWidgetExtensions->setDragDropMode(QAbstractItemView::NoDragDrop);
-        listWidgetExtensions->setAlternatingRowColors(true);
+        treeWidgetExtensions = new QTreeWidget(tabDevice);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
+        __qtreewidgetitem->setText(0, QStringLiteral("1"));
+        treeWidgetExtensions->setHeaderItem(__qtreewidgetitem);
+        treeWidgetExtensions->setObjectName(QStringLiteral("treeWidgetExtensions"));
+        treeWidgetExtensions->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
+        treeWidgetExtensions->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        treeWidgetExtensions->setAlternatingRowColors(true);
+        treeWidgetExtensions->header()->setVisible(false);
 
-        horizontalLayout->addWidget(listWidgetExtensions);
+        horizontalLayout->addWidget(treeWidgetExtensions);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -264,15 +257,15 @@ public:
         font.setUnderline(false);
         font.setWeight(50);
         font.setKerning(true);
-        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
-        __qtablewidgetitem2->setFont(font);
-        tableWidgetDatabaseDeviceReport->setHorizontalHeaderItem(0, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        __qtablewidgetitem->setFont(font);
+        tableWidgetDatabaseDeviceReport->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QFont font1;
         font1.setBold(false);
         font1.setWeight(50);
-        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
-        __qtablewidgetitem3->setFont(font1);
-        tableWidgetDatabaseDeviceReport->setHorizontalHeaderItem(1, __qtablewidgetitem3);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        __qtablewidgetitem1->setFont(font1);
+        tableWidgetDatabaseDeviceReport->setHorizontalHeaderItem(1, __qtablewidgetitem1);
         tableWidgetDatabaseDeviceReport->setObjectName(QStringLiteral("tableWidgetDatabaseDeviceReport"));
         tableWidgetDatabaseDeviceReport->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableWidgetDatabaseDeviceReport->setAlternatingRowColors(true);
@@ -379,10 +372,9 @@ public:
 #endif // QT_NO_TOOLTIP
         labelDescription->setText(QApplication::translate("glcapsviewerClass", "Getting OpenGL implementation details...", 0));
         labelReportPresent->setText(QApplication::translate("glcapsviewerClass", "TextLabel", 0));
-        QTableWidgetItem *___qtablewidgetitem = tableWidgetImplementation->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("glcapsviewerClass", "Capability", 0));
-        QTableWidgetItem *___qtablewidgetitem1 = tableWidgetImplementation->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("glcapsviewerClass", "Value", 0));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));
+        ___qtreewidgetitem->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabDevice), QApplication::translate("glcapsviewerClass", "Your device", 0));
         pushButtonRefreshDataBase->setText(QApplication::translate("glcapsviewerClass", "Refresh", 0));
 
@@ -394,10 +386,10 @@ public:
 
         label->setText(QApplication::translate("glcapsviewerClass", "Report version", 0));
         labelDatabaseDeviceImplementation->setText(QApplication::translate("glcapsviewerClass", "Implementation", 0));
-        QTableWidgetItem *___qtablewidgetitem2 = tableWidgetDatabaseDeviceReport->horizontalHeaderItem(0);
-        ___qtablewidgetitem2->setText(QApplication::translate("glcapsviewerClass", "Capability", 0));
-        QTableWidgetItem *___qtablewidgetitem3 = tableWidgetDatabaseDeviceReport->horizontalHeaderItem(1);
-        ___qtablewidgetitem3->setText(QApplication::translate("glcapsviewerClass", "Value", 0));
+        QTableWidgetItem *___qtablewidgetitem = tableWidgetDatabaseDeviceReport->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QApplication::translate("glcapsviewerClass", "Capability", 0));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidgetDatabaseDeviceReport->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QApplication::translate("glcapsviewerClass", "Value", 0));
         labelDatabaseDeviceExtensions->setText(QApplication::translate("glcapsviewerClass", "Extensions", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabDatabase), QApplication::translate("glcapsviewerClass", "Database", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabCompare), QApplication::translate("glcapsviewerClass", "Compare", 0));
