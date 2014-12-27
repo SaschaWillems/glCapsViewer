@@ -211,8 +211,17 @@ bool glCapsViewer::contextTypeSelection()
 		core.availableContextTypes.push_back("OpenGL core context");
 	}
 	// OpenGL ES context
+	// GLES 1.0
+	if (wglewIsSupported("WGL_EXT_create_context_es_profile")) {
+		core.availableContextTypes.push_back("OpenGL ES 1.0 context");
+	}
+	// GLES 2.0
 	if (wglewIsSupported("WGL_EXT_create_context_es2_profile")) {
 		core.availableContextTypes.push_back("OpenGL ES 2.0 context");
+		// GLES 3.0 (superset of ES 2.0)
+		if (glewIsSupported("GL_ARB_ES3_compatibility")) {
+			core.availableContextTypes.push_back("OpenGL ES 3.0 context");
+		}
 	}
 	core.contextType = "default";
 	if (core.availableContextTypes.size() > 1) {
@@ -244,6 +253,12 @@ bool glCapsViewer::contextTypeSelection()
 				glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 				core.contextType = "es2";
+			}
+
+			if (item == "OpenGL ES 3.0 context") {
+				glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+				core.contextType = "es3";
 			}
 
 			return true;
