@@ -68,27 +68,14 @@ glCapsViewer::~glCapsViewer()
 }
 
 /// <summary>
-///	Reads implementation details, extensions and capabilities
-///	and displays the report
+///	Updates the report status label
 /// </summary>
-void glCapsViewer::generateReport()
+void glCapsViewer::updateReportState()
 {
-
-	ui.treeWidget->clear();
-	ui.treeWidgetExtensions->clear();
-
-	core.readExtensions();
-	core.readOsExtensions();
-	core.readImplementation();
-	core.readCapabilities();
-
-	ui.labelDescription->setText(QString::fromStdString(core.description));
-
 	glCapsViewerHttp glhttp;
 	if (glhttp.checkReportPresent(core.description)) {
-		// TODO : Check update state
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database</font>");
-		// TODO : Test
+		// Report present, check if it can be updated		
 		int reportId = glhttp.getReportId(core.description);
 		stringstream capsParam;
 		for (auto& capGroup : core.capgroups) {
@@ -106,6 +93,26 @@ void glCapsViewer::generateReport()
 		ui.labelReportPresent->setText("<font color='#bc0003'>Device not yet present in database</font>");
 	}
 	ui.labelReportPresent->setVisible(true);
+}
+
+/// <summary>
+///	Reads implementation details, extensions and capabilities
+///	and displays the report
+/// </summary>
+void glCapsViewer::generateReport()
+{
+
+	ui.treeWidget->clear();
+	ui.treeWidgetExtensions->clear();
+
+	core.readExtensions();
+	core.readOsExtensions();
+	core.readImplementation();
+	core.readCapabilities();
+
+	ui.labelDescription->setText(QString::fromStdString(core.description));
+
+	updateReportState();
 
 	// Implementation detail
 	stringstream ss;
@@ -345,16 +352,17 @@ void glCapsViewer::slotUpload(){
 			QApplication::restoreOverrideCursor();
 			if (reply == "res_uploaded") {
 				QMessageBox::information(this, tr("Report submitted"), tr("Your report has been uploaded to the database!\n\nThanks for your contribution!"));
+				updateReportState();
 			}
 			else {
-				// TODO : Show error
+				QMessageBox::warning(this, tr("Error"), tr("The report could not be uploaded!"));
 			}
 		}
 	}
 	else {
 		// Check if report can be updated
 		bool canUpdate = false;
-		// TODO : Test
+		// TODO : Test, put into separate function
 		int reportId = glchttp.getReportId(core.description);
 		stringstream capsParam;
 		for (auto& capGroup : core.capgroups) {
@@ -373,16 +381,16 @@ void glCapsViewer::slotUpload(){
 				bool ok;
 				QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, "", &ok);
 				core.submitter = text.toStdString();
-				// TODO : WIP
+				// TODO : Error handling
 				if (ok) {
 					string xml = core.reportToXml();
 					string httpReply = glchttp.postReportForUpdate(xml);
 					QMessageBox::information(this, tr("httpReply"), QString::fromStdString(httpReply));
+					updateReportState();
 				}
 			}
 		}
 
-		// 
 		if (!canUpdate) {
 			QMessageBox::StandardButton reply;
 			reply = QMessageBox::question(this, "Device already present", "A report for your device and OpenGL version is aleady present in the database.\n\nDo you want to open the report in your browser?", QMessageBox::Yes | QMessageBox::No);

@@ -38,6 +38,7 @@ public:
 	Ui::glcapsviewerClass ui;
 	glCapsViewerCore core;
 	GLFWwindow* window;
+	void updateReportState();
 	void generateReport();
 	bool contextTypeSelection();
 private:
