@@ -411,7 +411,6 @@ void glCapsViewer::slotRefreshDatabase() {
 }
 
 void glCapsViewer::slotAbout() {
-	// TODO : Proper about message
 	QString aboutText = "<p>OpenGL hardware capability viewer (glCapsViewer)<br/><br/>"
 		"Copyright (c) 2011-2015 by Sascha Willems<br/><br/>"
 		"This tool is <b>FREEWARE</b><br/><br/>"
@@ -486,7 +485,14 @@ void glCapsViewer::slotDeviceVersionChanged(int index) {
 		string node_value = value_node->value();
 		table->insertRow(table->rowCount());
 		table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(node_name)));
-		table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(QString::fromStdString(node_value)));
+		if (node_value == "") {
+			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("n/a"));
+			table->item(table->rowCount() - 1, 0)->setTextColor(QColor::fromRgb(100, 100, 100));
+			table->item(table->rowCount() - 1, 1)->setTextColor(QColor::fromRgb(100, 100, 100));
+		}
+		else {
+			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(QString::fromStdString(node_value)));
+		}
 	}
 
 	// Extensions
