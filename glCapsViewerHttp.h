@@ -51,6 +51,7 @@ private:
 	QNetworkAccessManager *manager;
 	string httpGet(string url);
 	string httpPost(string url, string data);
+	string encodeUrl(string url);
 public:
 	int getReportId(string description);
 	bool checkReportPresent(string description);

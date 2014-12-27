@@ -111,6 +111,19 @@ string glCapsViewerHttp::httpPost(string url, string data)
 
 }
 
+/// <summary>
+/// Encodes an url (or string) to make it comply to RFC2396 by replacing
+/// illegal characters
+/// Some device descriptions may include a "+" that needs to be replaced (e.g. GeForce 9800 GTX+/PCI/SSE2)
+/// </summary>
+/// <param name="url">Url (or string) to be encoded</param>
+/// <returns></returns>
+string glCapsViewerHttp::encodeUrl(string url)
+{
+	QString urlStr(QString::fromStdString(url));
+	urlStr.replace("+", "%2B"); 
+	return urlStr.toStdString();
+}
 
 /// <summary>
 /// Gets the Id of a report from the online database
@@ -122,7 +135,8 @@ int glCapsViewerHttp::getReportId(string description)
 	string httpReply;
 	stringstream urlss;
 	urlss << baseUrl << "gl_checkreport.php?description=" << description;
-	httpReply = httpGet(urlss.str());
+	string url = encodeUrl(urlss.str());
+	httpReply = httpGet(url);
 	return (!httpReply.empty()) ? atoi(httpReply.c_str()) : -1;
 }
 
@@ -156,7 +170,7 @@ bool glCapsViewerHttp::checkReportCanUpdate(int reportId, string caps)
 /// <summary>
 /// Fechtes an xml with all report data from the online database
 /// </summary>
-/// <param name="reportId">Description of the report to get the report xml for</param>
+/// <param name="reportId">id of the report to get the report xml for</param>
 /// <returns>xml string</returns>
 string glCapsViewerHttp::fetchReport(int reportId)
 {
@@ -233,7 +247,9 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 	string httpReply;
 	stringstream urlss;
 	urlss << baseUrl << "services/gl_getdevicereports.php?glrenderer=" << device;
-	httpReply = httpGet(urlss.str());
+	string url;
+	url = encodeUrl(urlss.str());
+	httpReply = httpGet(url);
 
 	if (!httpReply.empty())
 	{

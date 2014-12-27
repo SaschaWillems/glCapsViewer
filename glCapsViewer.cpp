@@ -427,6 +427,9 @@ void glCapsViewer::slotTabChanged(int index)
 	}
 }
 
+/// <summary>
+///	Fetches a list of available report version for currently selected device
+/// </summary>
 void glCapsViewer::slotDatabaseDevicesItemChanged() {
 	// TODO : Check if ui.listWidgetDatabaseDevices->currentItem()->text() is assigned
 	glCapsViewerHttp glchttp;
@@ -444,6 +447,10 @@ void glCapsViewer::slotDatabaseDevicesItemChanged() {
 	}
 }
 
+/// <summary>
+///	Fetches the report for the currently selected device and report version
+/// Displays it in table form
+/// </summary>
 void glCapsViewer::slotDeviceVersionChanged(int index) {
 	// TODO : Error checking
 	if (index < 0) {
