@@ -17,9 +17,5 @@ GL_MAX_SAMPLES_ANGLE 0x8D57
 GL_APPLE_*
 Not yet...
 
-GL_ARB_blend_func_extended
-GL_MAX_DUAL_SOURCE_DRAW_BUFFERS
-
 GL_ARB_imaging (old)
 GL_ARB_matrix_palette (old)
-GL_ARB_vertex_blend (old)

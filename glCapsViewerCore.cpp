@@ -125,9 +125,21 @@ string glCapsViewerCore::readOperatingSystem()
 
 void glCapsViewerCore::readExtensions()
 {
-	const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
-	string extensionString = reinterpret_cast<const char*>(glExtensions);
-	boost::algorithm::split(extensions, extensionString, boost::algorithm::is_any_of(" "));
+	// Use glGetStringi if available (GL 3.x)
+	if ((GL_VERSION_3_0) && (glGetStringi != NULL)) {
+		GLint numExtensions;
+		glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+		for (int i = 0; i < numExtensions; i++) {
+			const GLubyte* glExt = glGetStringi(GL_EXTENSIONS, i);
+			string ext = reinterpret_cast<const char*>(glExt);
+			extensions.push_back(ext);
+		}
+	}
+	else {
+		const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
+		string extensionString = reinterpret_cast<const char*>(glExtensions);
+		boost::algorithm::split(extensions, extensionString, boost::algorithm::is_any_of(" "));
+	}
 }
 
 void glCapsViewerCore::printExtensions()
