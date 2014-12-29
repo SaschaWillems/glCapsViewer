@@ -168,6 +168,18 @@ bool glCapsViewerHttp::checkReportCanUpdate(int reportId, string caps)
 }
 
 /// <summary>
+/// Fechtes the OpenGL capability xml list from the web server
+/// </summary>
+/// <returns>xml string</returns>
+string glCapsViewerHttp::fetchCapsList()
+{
+	string capsXml;
+	stringstream urlss;
+	capsXml = httpGet("http://www.delphigl.de/glcapsviewer/files/capslist.xml");
+	return capsXml;
+}
+
+/// <summary>
 /// Fechtes an xml with all report data from the online database
 /// </summary>
 /// <param name="reportId">id of the report to get the report xml for</param>

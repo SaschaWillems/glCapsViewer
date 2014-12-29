@@ -21,7 +21,8 @@
 #include "glcapsviewer.h"
 #include "glCapsViewerCore.h"
 #include "glCapsViewerHttp.h"
-#include <sstream>   
+#include <sstream>  
+#include <fstream>
 #include <GL/glew.h>
 #include <GL/wglew.h>
 #include <GLFW/glfw3.h>
@@ -31,6 +32,7 @@
 #include <QTableWidgetItem>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileInfo>
 
 int main(int argc, char *argv[])
 {
@@ -38,6 +40,26 @@ int main(int argc, char *argv[])
 	glCapsViewer capsViewer;
 	capsViewer.ui.labelReportPresent->setVisible(false);
 	capsViewer.show();
+
+	// Check for capability list xml
+	QFileInfo capsXmlFile("./capslist.xml");
+	if (!capsXmlFile.exists()) {
+		QMessageBox::StandardButton reply;
+		reply = QMessageBox::question(&capsViewer, "File missing", "glCapsViewer could not locate the xml file containing the OpenGL capability list!\n\n\Do you want to download it?", QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes) {
+			glCapsViewerHttp glchttp;
+			string capsXml = glchttp.fetchCapsList();
+			std::ofstream destfile;
+			destfile.open("./capslist.xml");
+			destfile << capsXml;
+			destfile.close();
+			// TODO : Error checking
+			QMessageBox::information(&capsViewer, "Download complete", "The xml file containing the OpenGL capability list has been downloaded!");
+		}
+		else {
+			exit(-1);
+		}
+	}
 
 	if (!glfwInit())
 	{

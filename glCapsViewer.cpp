@@ -101,7 +101,6 @@ void glCapsViewer::updateReportState()
 /// </summary>
 void glCapsViewer::generateReport()
 {
-
 	ui.treeWidget->clear();
 	ui.treeWidgetExtensions->clear();
 
