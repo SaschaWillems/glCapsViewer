@@ -106,6 +106,7 @@ void glCapsViewer::generateReport()
 {
 	ui.treeWidget->clear();
 	ui.treeWidgetExtensions->clear();
+	ui.listWidgetCompressedFormats->clear();
 
 	core.readExtensions();
 	core.readOsExtensions();
