@@ -31,12 +31,15 @@ using namespace std;
 
 class glCapsViewerCore 
 {
+private:
+	map<GLint, string> compressedTextureFormatList;
 public:
 	vector<string> availableContextTypes;
 	map<string, string> implementation;
 	vector<glCapsViewerCapsGroup> capgroups;
 	vector<string> extensions;
 	vector<string> osextensions;
+	vector<GLint> compressedFormats;
 	string description = "";
 	string submitter = "";
 	string contextType = "";
@@ -46,8 +49,11 @@ public:
 	void readImplementation();
 	void readCapabilities();
 	void readExtensions();
+	void readCompressedFormats();
 	void printExtensions();
 	void readOsExtensions();
+	void loadCompressedTextureFormatList();
+	string getCompressedTextureFormatName(GLint formatEnum);
 	string reportToXml();
 	void exportXml(string fileName);
 };

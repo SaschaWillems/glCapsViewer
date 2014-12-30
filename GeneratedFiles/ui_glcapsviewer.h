@@ -50,7 +50,13 @@ public:
     QLabel *labelReportPresent;
     QHBoxLayout *horizontalLayout;
     QTreeWidget *treeWidget;
+    QTabWidget *tabWidgetDevice;
+    QWidget *tab;
+    QVBoxLayout *verticalLayout_4;
     QTreeWidget *treeWidgetExtensions;
+    QWidget *tab_2;
+    QVBoxLayout *verticalLayout_5;
+    QListWidget *listWidgetCompressedFormats;
     QWidget *tabDatabase;
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_2;
@@ -175,7 +181,15 @@ public:
 
         horizontalLayout->addWidget(treeWidget);
 
-        treeWidgetExtensions = new QTreeWidget(tabDevice);
+        tabWidgetDevice = new QTabWidget(tabDevice);
+        tabWidgetDevice->setObjectName(QStringLiteral("tabWidgetDevice"));
+        tab = new QWidget();
+        tab->setObjectName(QStringLiteral("tab"));
+        verticalLayout_4 = new QVBoxLayout(tab);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        treeWidgetExtensions = new QTreeWidget(tab);
         QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
         __qtreewidgetitem->setText(0, QStringLiteral("1"));
         treeWidgetExtensions->setHeaderItem(__qtreewidgetitem);
@@ -185,7 +199,24 @@ public:
         treeWidgetExtensions->setAlternatingRowColors(true);
         treeWidgetExtensions->header()->setVisible(false);
 
-        horizontalLayout->addWidget(treeWidgetExtensions);
+        verticalLayout_4->addWidget(treeWidgetExtensions);
+
+        tabWidgetDevice->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QStringLiteral("tab_2"));
+        verticalLayout_5 = new QVBoxLayout(tab_2);
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        listWidgetCompressedFormats = new QListWidget(tab_2);
+        listWidgetCompressedFormats->setObjectName(QStringLiteral("listWidgetCompressedFormats"));
+        listWidgetCompressedFormats->setAlternatingRowColors(true);
+
+        verticalLayout_5->addWidget(listWidgetCompressedFormats);
+
+        tabWidgetDevice->addTab(tab_2, QString());
+
+        horizontalLayout->addWidget(tabWidgetDevice);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -334,6 +365,7 @@ public:
         retranslateUi(glcapsviewerClass);
 
         tabWidget->setCurrentIndex(0);
+        tabWidgetDevice->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(glcapsviewerClass);
@@ -375,6 +407,8 @@ public:
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));
         ___qtreewidgetitem->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
+        tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab), QApplication::translate("glcapsviewerClass", "Extensions", 0));
+        tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_2), QApplication::translate("glcapsviewerClass", "Compressed texture formats", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabDevice), QApplication::translate("glcapsviewerClass", "Your device", 0));
         pushButtonRefreshDataBase->setText(QApplication::translate("glcapsviewerClass", "Refresh", 0));
 

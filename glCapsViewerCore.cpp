@@ -50,6 +50,16 @@
 
 using namespace std;
 
+template <typename ElemT>
+struct HexTo {
+	ElemT value;
+	operator ElemT() const { return value; }
+	friend std::istream& operator>>(std::istream& in, HexTo& out) {
+		in >> std::hex >> out.value;
+		return in;
+	}
+};
+
 /// <summary>
 /// Checks if an extension is supported (GL or os specific)
 /// </summary>
@@ -77,6 +87,7 @@ void glCapsViewerCore::clear() {
 	osextensions.clear();
 	implementation.clear();
 	capgroups.clear();
+	compressedFormats.clear();
 	description = "";
 	submitter = "";	
 }
@@ -191,6 +202,59 @@ void glCapsViewerCore::readImplementation()
 	capgroups.push_back(capsGroup);
 }
 
+
+/// <summary>
+/// Gets the enum string of the compressed texture format
+/// </summary>
+/// <param name="formatEnum">OpenGL enum of the compressed texture format</param>
+string glCapsViewerCore::getCompressedTextureFormatName(GLint formatEnum)
+{
+	
+	if (compressedTextureFormatList.count(formatEnum) > 0) {
+		return compressedTextureFormatList[formatEnum];
+	}
+	else {
+		return to_string(formatEnum);
+	}
+}
+
+void glCapsViewerCore::readCompressedFormats()
+{
+	GLint numFormats;
+	glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &numFormats);
+	GLint* formats;
+	formats = new GLint[numFormats];
+	glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, formats);
+	for (int i = 0; i < numFormats; i++) {
+		compressedFormats.push_back(formats[i]);
+	}
+	delete[] formats;
+}
+
+
+/// <summary>
+/// Loads the list of available compressed texture formats from xml file
+/// </summary>
+void glCapsViewerCore::loadCompressedTextureFormatList()
+{
+	using namespace rapidxml;
+	xml_document<> doc;
+	xml_node<> * root_node;
+	ifstream theFile("compressedTextureFormats.xml");
+	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+	buffer.push_back('\0');
+	doc.parse<0>(&buffer[0]);
+	root_node = doc.first_node("compressedtextureformats");	
+
+	for (xml_node<> * format_node = root_node->first_node("format"); format_node; format_node = format_node->next_sibling("format"))
+	{
+		string formatName = format_node->first_attribute("name")->value();
+		uint32_t formatEnum = boost::lexical_cast<HexTo<uint32_t>>(format_node->first_attribute("enum")->value());
+		compressedTextureFormatList[formatEnum] = formatName;
+	}
+}
+
+
 using namespace boost::property_tree;
 
 string glCapsViewerCore::reportToXml() 
@@ -242,6 +306,16 @@ string glCapsViewerCore::reportToXml()
 		}
 	}
 
+	// compressed texture formats
+	xml_node<> *compFormatNode = doc.allocate_node(node_element, "compressedtextureformats");
+	root->append_node(compFormatNode);
+	for (auto& compressedFormat : compressedFormats) {
+		string formatStr = to_string(compressedFormat);
+		char * cstr = new char[formatStr.length() + 1];
+		strcpy(cstr, formatStr.c_str());
+		compFormatNode->append_node(doc.allocate_node(node_element, "format", cstr));
+	}
+
 	stringstream ss;
 	ss << doc;
 	return ss.str();
@@ -255,16 +329,6 @@ void glCapsViewerCore::exportXml(string fileName)
 	destfile << xml;
 	destfile.close();
 }
-
-template <typename ElemT>
-struct HexTo {
-	ElemT value;
-	operator ElemT() const { return value; }
-	friend std::istream& operator>>(std::istream& in, HexTo& out) {
-		in >> std::hex >> out.value;
-		return in;
-	}
-};
 
 void glCapsViewerCore::readCapabilities()
 {
@@ -313,5 +377,4 @@ void glCapsViewerCore::readCapabilities()
 		capgroups.push_back(capsGroup);
 
 	}
-
 }

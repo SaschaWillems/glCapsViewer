@@ -60,6 +60,9 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+	// TODO : Same as capslist.xml, check if exists and if not, download from server
+	core.loadCompressedTextureFormatList();
 }
 
 glCapsViewer::~glCapsViewer()
@@ -108,6 +111,8 @@ void glCapsViewer::generateReport()
 	core.readOsExtensions();
 	core.readImplementation();
 	core.readCapabilities();
+	// TODO : Check if extension is present!
+	core.readCompressedFormats();
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 
@@ -198,6 +203,22 @@ void glCapsViewer::generateReport()
 	}
 
 	extItem->setExpanded(true);
+
+	// Supported Compressed texture formats
+	// TODO : Display error if ext not supported or list empty
+	for (auto& compressedFormat : core.compressedFormats) {
+		string formatString = core.getCompressedTextureFormatName(compressedFormat);
+		QListWidgetItem *formatItem = new QListWidgetItem(QString::fromStdString(formatString), ui.listWidgetCompressedFormats);
+		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
+	}
+
+	// Tab captions
+	stringstream tabText;
+	tabText << "Extensions (" << core.extensions.size() + core.osextensions.size() << ")";
+	ui.tabWidgetDevice->setTabText(0, QString::fromStdString(tabText.str()));
+	tabText.str("");
+	tabText << "Compressed tex. formats (" << core.compressedFormats.size() << ")";
+	ui.tabWidgetDevice->setTabText(1, QString::fromStdString(tabText.str()));
 }
 
 bool glCapsViewer::contextTypeSelection() 

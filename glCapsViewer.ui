@@ -131,24 +131,52 @@ color:black;
              </widget>
             </item>
             <item>
-             <widget class="QTreeWidget" name="treeWidgetExtensions">
-              <property name="styleSheet">
-               <string notr="true">QTreeView::item { height: 24px;}</string>
+             <widget class="QTabWidget" name="tabWidgetDevice">
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
-              </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
-              </property>
-              <attribute name="headerVisible">
-               <bool>false</bool>
-              </attribute>
-              <column>
-               <property name="text">
-                <string notr="true">1</string>
-               </property>
-              </column>
+              <widget class="QWidget" name="tab">
+               <attribute name="title">
+                <string>Extensions</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_4">
+                <item>
+                 <widget class="QTreeWidget" name="treeWidgetExtensions">
+                  <property name="styleSheet">
+                   <string notr="true">QTreeView::item { height: 24px;}</string>
+                  </property>
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::NoEditTriggers</set>
+                  </property>
+                  <property name="alternatingRowColors">
+                   <bool>true</bool>
+                  </property>
+                  <attribute name="headerVisible">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string notr="true">1</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_2">
+               <attribute name="title">
+                <string>Compressed texture formats</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <widget class="QListWidget" name="listWidgetCompressedFormats">
+                  <property name="alternatingRowColors">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
