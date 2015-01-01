@@ -133,9 +133,16 @@ void glCapsViewer::getInternalFormatInfo()
 
 		map<GLenum, string> internalFormats;
 		vector<string> internalFormatNames;
-		internalFormats[GL_RGBA8] = "GL_RGBA8";
-		internalFormats[GL_RGBA16] = "GL_RGBA16";
-		internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
+		internalFormats[GL_DEPTH_COMPONENT] = "GL_DEPTH_COMPONENT";
+		internalFormats[GL_DEPTH_STENCIL] = "GL_DEPTH_STENCIL";
+		internalFormats[GL_STENCIL_INDEX] = "GL_STENCIL_INDEX";
+		internalFormats[GL_RED] = "GL_RED";
+		internalFormats[GL_RG] = "GL_RG";
+		internalFormats[GL_RGB] = "GL_RGB";
+		internalFormats[GL_RGBA] = "GL_RGBA";
+		//internalFormats[GL_RGBA8] = "GL_RGBA8";
+		//internalFormats[GL_RGBA16] = "GL_RGBA16";
+		//internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
 		// Add all detected compressed formats
 		for (auto& compressedFormat : core.compressedFormats) {
 			internalFormats[compressedFormat] = core.getEnumName(compressedFormat);
@@ -143,6 +150,7 @@ void glCapsViewer::getInternalFormatInfo()
 
 		map<GLenum, string> pnames;
 		pnames[GL_INTERNALFORMAT_SUPPORTED] = "GL_INTERNALFORMAT_SUPPORTED";
+		pnames[GL_INTERNALFORMAT_PREFERRED] = "GL_INTERNALFORMAT_PREFERRED";
 		pnames[GL_TEXTURE_IMAGE_FORMAT] = "GL_TEXTURE_IMAGE_FORMAT";
 		pnames[GL_TEXTURE_IMAGE_TYPE] = "GL_TEXTURE_IMAGE_TYPE";
 		pnames[GL_TEXTURE_COMPRESSED] = "GL_TEXTURE_COMPRESSED";
@@ -160,6 +168,17 @@ void glCapsViewer::getInternalFormatInfo()
 			QTreeWidgetItem *formatItem = new QTreeWidgetItem(targetItem);
 			formatItem->setText(0, QString::fromStdString(internalFormat.second));
 			formatItem->addChild(targetItem);
+
+			// Check if internal format is supported first
+			GLint formatSupported;
+			glGetInternalformativ(target.first, internalFormat.first, GL_INTERNALFORMAT_SUPPORTED, 1, &formatSupported);
+
+			if (formatSupported == GL_FALSE) {
+				formatItem->setText(1, "not supported");
+				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
+				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
+				continue;
+			}
 
 			for (auto& pname : pnames) {
 				GLint param;
@@ -196,6 +215,8 @@ void glCapsViewer::getInternalFormatInfo()
 				}
 
 			}
+
+			targetItem->sortChildren(0, Qt::AscendingOrder);
 
 		}
 
