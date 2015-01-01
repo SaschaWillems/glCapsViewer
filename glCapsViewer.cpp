@@ -99,6 +99,110 @@ void glCapsViewer::updateReportState()
 }
 
 /// <summary>
+///	Reads information about implementation-dependent support for internal formats
+/// TODO : Create xml structure instead of hardcoding
+/// TODO : Data structures for xml export (and database upload)
+/// TODO : Move to core
+/// </summary>
+void glCapsViewer::getInternalFormatInfo()
+{
+	// internal texture formats
+	// TODO : Just some quick testing, move to core
+	QTreeWidget *tree = ui.treeWidgetInternalFormats;
+	tree->header()->resizeSection(0, 250);
+	tree->clear();
+
+	map<GLenum, string> targets;
+	targets[GL_TEXTURE_1D] = "GL_TEXTURE_1D";
+	targets[GL_TEXTURE_1D_ARRAY] = "GL_TEXTURE_1D_ARRAY";
+	targets[GL_TEXTURE_2D] = "GL_TEXTURE_2D";
+	targets[GL_TEXTURE_2D_ARRAY] = "GL_TEXTURE_2D_ARRAY";
+	targets[GL_TEXTURE_3D] = "GL_TEXTURE_3D";
+	targets[GL_TEXTURE_CUBE_MAP] = "GL_TEXTURE_CUBE_MAP";
+	targets[GL_TEXTURE_CUBE_MAP_ARRAY] = "GL_TEXTURE_CUBE_MAP_ARRAY";
+	targets[GL_TEXTURE_RECTANGLE] = "GL_TEXTURE_RECTANGLE";
+	targets[GL_TEXTURE_BUFFER] = "GL_TEXTURE_BUFFER";
+	targets[GL_RENDERBUFFER] = "GL_RENDERBUFFER";
+	targets[GL_TEXTURE_2D_MULTISAMPLE] = "GL_TEXTURE_2D_MULTISAMPLE";
+	targets[GL_TEXTURE_2D_MULTISAMPLE_ARRAY] = "GL_TEXTURE_2D_MULTISAMPLE_ARRAY";
+
+	for (auto& target : targets) {
+
+		QTreeWidgetItem *targetItem = new QTreeWidgetItem(tree);
+		targetItem->setText(0, QString::fromStdString(target.second));
+
+		map<GLenum, string> internalFormats;
+		vector<string> internalFormatNames;
+		internalFormats[GL_RGBA8] = "GL_RGBA8";
+		internalFormats[GL_RGBA16] = "GL_RGBA16";
+		internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
+		// Add all detected compressed formats
+		for (auto& compressedFormat : core.compressedFormats) {
+			internalFormats[compressedFormat] = core.getEnumName(compressedFormat);
+		}
+
+		map<GLenum, string> pnames;
+		pnames[GL_INTERNALFORMAT_SUPPORTED] = "GL_INTERNALFORMAT_SUPPORTED";
+		pnames[GL_TEXTURE_IMAGE_FORMAT] = "GL_TEXTURE_IMAGE_FORMAT";
+		pnames[GL_TEXTURE_IMAGE_TYPE] = "GL_TEXTURE_IMAGE_TYPE";
+		pnames[GL_TEXTURE_COMPRESSED] = "GL_TEXTURE_COMPRESSED";
+		pnames[GL_MAX_WIDTH] = "GL_MAX_WIDTH";
+		pnames[GL_MAX_HEIGHT] = "GL_MAX_HEIGHT";
+		pnames[GL_MAX_DEPTH] = "GL_MAX_DEPTH";
+		// pnames[GL_MAX_COMBINED_DIMENSIONS] = "GL_MAX_COMBINED_DIMENSIONS"; TODO : Usually GL_MAX...*GL_MAX...*GL_MAX, redundant info
+		pnames[GL_FRAMEBUFFER_BLEND] = "GL_FRAMEBUFFER_BLEND";
+		pnames[GL_READ_PIXELS] = "GL_READ_PIXELS";
+		pnames[GL_MANUAL_GENERATE_MIPMAP] = "GL_MANUAL_GENERATE_MIPMAP";
+		pnames[GL_AUTO_GENERATE_MIPMAP] = "GL_AUTO_GENERATE_MIPMAP";
+
+		for (auto& internalFormat : internalFormats) {
+
+			QTreeWidgetItem *formatItem = new QTreeWidgetItem(targetItem);
+			formatItem->setText(0, QString::fromStdString(internalFormat.second));
+			formatItem->addChild(targetItem);
+
+			for (auto& pname : pnames) {
+				GLint param;
+				glGetInternalformativ(target.first, internalFormat.first, pname.first, 1, &param);
+
+				if ((pname.second == "GL_MAX_WIDTH") || (pname.second == "GL_MAX_HEIGHT") || (pname.second == "GL_MAX_DEPTH")) {
+					if (param == 0) {
+						continue;
+					}
+				}
+
+				QTreeWidgetItem *paramItem = new QTreeWidgetItem(formatItem);
+				paramItem->setText(0, QString::fromStdString(pname.second));
+				string enumString;
+				enumString = core.getEnumName(param);
+
+				// Switch some values
+				if ((pname.first == GL_INTERNALFORMAT_SUPPORTED) || (pname.first == GL_TEXTURE_COMPRESSED))  {
+					enumString = (param == 0) ? "GL_FALSE" : "GL_TRUE";
+				}
+
+				paramItem->setText(1, QString::fromStdString(enumString));
+				paramItem->addChild(formatItem);
+
+				// Experimental coloring
+				if (enumString == "GL_NONE") {
+					paramItem->setTextColor(1, QColor::fromRgb(255, 0, 0));
+				}
+				if (enumString == "GL_CAVEAT_SUPPORT") {
+					paramItem->setTextColor(1, QColor::fromRgb(255, 150, 0));
+				}
+				if (enumString == "GL_FULL_SUPPORT") {
+					paramItem->setTextColor(1, QColor::fromRgb(0, 128, 0));
+				}
+
+			}
+
+		}
+
+	}
+}
+
+/// <summary>
 ///	Reads implementation details, extensions and capabilities
 ///	and displays the report
 /// </summary>
@@ -212,6 +316,8 @@ void glCapsViewer::generateReport()
 		QListWidgetItem *formatItem = new QListWidgetItem(QString::fromStdString(formatString), ui.listWidgetCompressedFormats);
 		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
 	}
+
+	getInternalFormatInfo();
 
 	// Tab captions
 	stringstream tabText;

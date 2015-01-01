@@ -57,6 +57,9 @@ public:
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_5;
     QListWidget *listWidgetCompressedFormats;
+    QWidget *tab_3;
+    QVBoxLayout *verticalLayout_6;
+    QTreeWidget *treeWidgetInternalFormats;
     QWidget *tabDatabase;
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_2;
@@ -215,6 +218,24 @@ public:
         verticalLayout_5->addWidget(listWidgetCompressedFormats);
 
         tabWidgetDevice->addTab(tab_2, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        verticalLayout_6 = new QVBoxLayout(tab_3);
+        verticalLayout_6->setSpacing(6);
+        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
+        treeWidgetInternalFormats = new QTreeWidget(tab_3);
+        treeWidgetInternalFormats->setObjectName(QStringLiteral("treeWidgetInternalFormats"));
+        treeWidgetInternalFormats->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
+        treeWidgetInternalFormats->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        treeWidgetInternalFormats->setAlternatingRowColors(true);
+        treeWidgetInternalFormats->setIndentation(10);
+        treeWidgetInternalFormats->header()->setDefaultSectionSize(250);
+        treeWidgetInternalFormats->header()->setStretchLastSection(true);
+
+        verticalLayout_6->addWidget(treeWidgetInternalFormats);
+
+        tabWidgetDevice->addTab(tab_3, QString());
 
         horizontalLayout->addWidget(tabWidgetDevice);
 
@@ -409,6 +430,10 @@ public:
         ___qtreewidgetitem->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab), QApplication::translate("glcapsviewerClass", "Extensions", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_2), QApplication::translate("glcapsviewerClass", "Compressed texture formats", 0));
+        QTreeWidgetItem *___qtreewidgetitem1 = treeWidgetInternalFormats->headerItem();
+        ___qtreewidgetitem1->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));
+        ___qtreewidgetitem1->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
+        tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_3), QApplication::translate("glcapsviewerClass", "Internal formats", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabDevice), QApplication::translate("glcapsviewerClass", "Your device", 0));
         pushButtonRefreshDataBase->setText(QApplication::translate("glcapsviewerClass", "Refresh", 0));
 

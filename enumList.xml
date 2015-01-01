@@ -41,4 +41,51 @@
 	<enum value="0x8C4D">GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT</enum>
 	<enum value="0x8C4E">GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT</enum>
 	<enum value="0x8C4F">GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT</enum>
+	<!-- Internal format query -->
+	<enum value="0">GL_NONE</enum>
+	<enum value="0x82B7">GL_FULL_SUPPORT</enum>
+	<enum value="0x82B8">GL_CAVEAT_SUPPORT</enum>
+	<!-- Texture format stuff -->
+	<enum value="0x1400">GL_BYTE</enum>
+	<enum value="0x1401">GL_UNSIGNED_BYTE</enum>
+	<enum value="0x1402">GL_SHORT</enum>
+	<enum value="0x1403">GL_UNSIGNED_SHORT</enum>
+	<enum value="0x1404">GL_INT</enum>
+	<enum value="0x1405">GL_UNSIGNED_INT</enum>
+	<enum value="0x1406">GL_FLOAT</enum>
+	<enum value="0x1407">GL_2_BYTES</enum>
+	<enum value="0x1408">GL_3_BYTES</enum>
+	<enum value="0x1409">GL_4_BYTES</enum>
+	<enum value="0x140A">GL_DOUBLE</enum>
+	<enum value="0x1902">GL_DEPTH_COMPONENT</enum>
+	<enum value="0x1903">GL_RED</enum>
+	<enum value="0x1904">GL_GREEN</enum>
+	<enum value="0x1905">GL_BLUE</enum>
+	<enum value="0x1906">GL_ALPHA</enum>
+	<enum value="0x1907">GL_RGB</enum>
+	<enum value="0x1908">GL_RGBA</enum>
+	<enum value="0x1909">GL_LUMINANCE</enum>
+	<!-- GL_ARB_texture_rg -->
+	<enum value="0x8225">GL_COMPRESSED_RED</enum>
+	<enum value="0x8226">GL_COMPRESSED_RG</enum>
+	<enum value="0x8227">GL_RG</enum>
+	<enum value="0x8228">GL_RG_INTEGER</enum>
+	<enum value="0x8229">GL_R8</enum>
+	<enum value="0x822A">GL_R16</enum>
+	<enum value="0x822B">GL_RG8</enum>
+	<enum value="0x822C">GL_RG16</enum>
+	<enum value="0x822D">GL_R16F</enum>
+	<enum value="0x822E">GL_R32F</enum>
+	<enum value="0x822F">GL_RG16F</enum>
+	<enum value="0x8230">GL_RG32F</enum>
+	<enum value="0x8231">GL_R8I</enum>
+	<enum value="0x8232">GL_R8UI</enum>
+	<enum value="0x8233">GL_R16I</enum>
+	<enum value="0x8234">GL_R16UI</enum>
+	<enum value="0x8235">GL_R32I</enum>
+	<enum value="0x8236">GL_R32UI</enum>
+	<enum value="0x8237">GL_RG8I</enum>
+	<enum value="0x8238">GL_RG8UI</enum>
+	<enum value="0x8239">GL_RG16I</enum>
+	<enum value="0x823A">GL_RG16UI</enum>
 </enums>

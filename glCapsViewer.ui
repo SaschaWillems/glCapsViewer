@@ -177,6 +177,45 @@ color:black;
                 </item>
                </layout>
               </widget>
+              <widget class="QWidget" name="tab_3">
+               <attribute name="title">
+                <string>Internal formats</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <item>
+                 <widget class="QTreeWidget" name="treeWidgetInternalFormats">
+                  <property name="styleSheet">
+                   <string notr="true">QTreeView::item { height: 24px;}</string>
+                  </property>
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::NoEditTriggers</set>
+                  </property>
+                  <property name="alternatingRowColors">
+                   <bool>true</bool>
+                  </property>
+                  <property name="indentation">
+                   <number>10</number>
+                  </property>
+                  <attribute name="headerDefaultSectionSize">
+                   <number>250</number>
+                  </attribute>
+                  <attribute name="headerStretchLastSection">
+                   <bool>true</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>key</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>value</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>

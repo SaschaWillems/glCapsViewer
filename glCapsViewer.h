@@ -44,6 +44,7 @@ public:
 private:
 	QNetworkAccessManager* nam;
 	void refreshDeviceList();
+	void getInternalFormatInfo();
 private slots:
 	void slotRefreshReport();
 	void slotClose();
