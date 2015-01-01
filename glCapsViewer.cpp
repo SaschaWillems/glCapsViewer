@@ -104,6 +104,16 @@ void glCapsViewer::updateReportState()
 /// TODO : Data structures for xml export (and database upload)
 /// TODO : Move to core
 /// </summary>
+
+void colorInternalFormatItem(QTreeWidgetItem *item, int column) {
+	if (item->text(column) == "GL_NONE") 
+		item->setTextColor(column, QColor::fromRgb(255, 0, 0));
+	if (item->text(column) == "GL_CAVEAT_SUPPORT") 
+		item->setTextColor(column, QColor::fromRgb(255, 150, 0));
+	if (item->text(column) == "GL_FULL_SUPPORT") 
+		item->setTextColor(column, QColor::fromRgb(0, 128, 0));
+}
+
 void glCapsViewer::getInternalFormatInfo()
 {
 	// internal texture formats
@@ -162,6 +172,23 @@ void glCapsViewer::getInternalFormatInfo()
 		pnames[GL_READ_PIXELS] = "GL_READ_PIXELS";
 		pnames[GL_MANUAL_GENERATE_MIPMAP] = "GL_MANUAL_GENERATE_MIPMAP";
 		pnames[GL_AUTO_GENERATE_MIPMAP] = "GL_AUTO_GENERATE_MIPMAP";
+		pnames[GL_FILTER] = "GL_FILTER";
+
+		map<GLenum, string> supportList;
+		supportList[GL_VERTEX_TEXTURE] = "GL_VERTEX_TEXTURE";
+		supportList[GL_TESS_CONTROL_TEXTURE] = "GL_TESS_CONTROL_TEXTURE";
+		supportList[GL_TESS_EVALUATION_TEXTURE] = "GL_TESS_EVALUATION_TEXTURE";
+		supportList[GL_GEOMETRY_TEXTURE] = "GL_GEOMETRY_TEXTURE";
+		supportList[GL_FRAGMENT_TEXTURE] = "GL_FRAGMENT_TEXTURE";
+		supportList[GL_COMPUTE_TEXTURE] = "GL_COMPUTE_TEXTURE";
+
+		supportList[GL_TEXTURE_SHADOW] = "GL_TEXTURE_SHADOW";
+		supportList[GL_TEXTURE_GATHER] = "GL_TEXTURE_GATHER";
+		supportList[GL_TEXTURE_GATHER_SHADOW] = "GL_TEXTURE_GATHER_SHADOW";
+
+		supportList[GL_SHADER_IMAGE_LOAD] = "GL_SHADER_IMAGE_LOAD";
+		supportList[GL_SHADER_IMAGE_STORE] = "GL_SHADER_IMAGE_STORE";
+		supportList[GL_SHADER_IMAGE_ATOMIC] = "GL_SHADER_IMAGE_ATOMIC";
 
 		for (auto& internalFormat : internalFormats) {
 
@@ -202,18 +229,23 @@ void glCapsViewer::getInternalFormatInfo()
 
 				paramItem->setText(1, QString::fromStdString(enumString));
 				paramItem->addChild(formatItem);
+				colorInternalFormatItem(paramItem, 1);
+			}
 
-				// Experimental coloring
-				if (enumString == "GL_NONE") {
-					paramItem->setTextColor(1, QColor::fromRgb(255, 0, 0));
-				}
-				if (enumString == "GL_CAVEAT_SUPPORT") {
-					paramItem->setTextColor(1, QColor::fromRgb(255, 150, 0));
-				}
-				if (enumString == "GL_FULL_SUPPORT") {
-					paramItem->setTextColor(1, QColor::fromRgb(0, 128, 0));
-				}
-
+			QTreeWidgetItem *subItem;
+			// Different supports
+			subItem = new QTreeWidgetItem(formatItem);
+			subItem->setText(0, "Shader support");
+			for (auto& supportType : supportList) {
+				GLint param;
+				glGetInternalformativ(target.first, internalFormat.first, supportType.first, 1, &param);
+				string enumString;
+				enumString = core.getEnumName(param);
+				QTreeWidgetItem *paramItem = new QTreeWidgetItem(subItem);
+				paramItem->setText(0, QString::fromStdString(supportType.second));
+				paramItem->setText(1, QString::fromStdString(enumString));
+				paramItem->addChild(subItem);
+				colorInternalFormatItem(paramItem, 1);
 			}
 
 			targetItem->sortChildren(0, Qt::AscendingOrder);
