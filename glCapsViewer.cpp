@@ -62,7 +62,7 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
 	// TODO : Same as capslist.xml, check if exists and if not, download from server
-	core.loadCompressedTextureFormatList();
+	core.loadEnumList();
 }
 
 glCapsViewer::~glCapsViewer()
@@ -208,7 +208,7 @@ void glCapsViewer::generateReport()
 	// Supported Compressed texture formats
 	// TODO : Display error if ext not supported or list empty
 	for (auto& compressedFormat : core.compressedFormats) {
-		string formatString = core.getCompressedTextureFormatName(compressedFormat);
+		string formatString = core.getEnumName(compressedFormat);
 		QListWidgetItem *formatItem = new QListWidgetItem(QString::fromStdString(formatString), ui.listWidgetCompressedFormats);
 		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
 	}

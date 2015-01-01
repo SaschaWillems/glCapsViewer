@@ -204,17 +204,18 @@ void glCapsViewerCore::readImplementation()
 
 
 /// <summary>
-/// Gets the enum string of the compressed texture format
+/// Gets the enum string of the passed OpenGL enum
 /// </summary>
-/// <param name="formatEnum">OpenGL enum of the compressed texture format</param>
-string glCapsViewerCore::getCompressedTextureFormatName(GLint formatEnum)
+/// <param name="formatEnum">OpenGL enum of the to get the string for</param>
+/// <returns>String containing the name of the enum, or enum value as string if enum was not found</returns>
+string glCapsViewerCore::getEnumName(GLint glenum)
 {
 	
-	if (compressedTextureFormatList.count(formatEnum) > 0) {
-		return compressedTextureFormatList[formatEnum];
+	if (enumList.count(glenum) > 0) {
+		return enumList[glenum];
 	}
 	else {
-		return to_string(formatEnum);
+		return to_string(glenum);
 	}
 }
 
@@ -235,22 +236,22 @@ void glCapsViewerCore::readCompressedFormats()
 /// <summary>
 /// Loads the list of available compressed texture formats from xml file
 /// </summary>
-void glCapsViewerCore::loadCompressedTextureFormatList()
+void glCapsViewerCore::loadEnumList()
 {
 	using namespace rapidxml;
 	xml_document<> doc;
 	xml_node<> * root_node;
-	ifstream theFile("compressedTextureFormats.xml");
+	ifstream theFile("enumList.xml");
 	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
 	buffer.push_back('\0');
 	doc.parse<0>(&buffer[0]);
-	root_node = doc.first_node("compressedtextureformats");	
+	root_node = doc.first_node("enums");	
 
-	for (xml_node<> * format_node = root_node->first_node("format"); format_node; format_node = format_node->next_sibling("format"))
+	for (xml_node<> * format_node = root_node->first_node("enum"); format_node; format_node = format_node->next_sibling("enum"))
 	{
-		string formatName = format_node->first_attribute("name")->value();
-		uint32_t formatEnum = boost::lexical_cast<HexTo<uint32_t>>(format_node->first_attribute("enum")->value());
-		compressedTextureFormatList[formatEnum] = formatName;
+		string enumName = format_node->value();
+		uint32_t enumValue = boost::lexical_cast<HexTo<uint32_t>>(format_node->first_attribute("value")->value());
+		enumList[enumValue] = enumName;
 	}
 }
 

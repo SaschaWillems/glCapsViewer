@@ -32,7 +32,7 @@ using namespace std;
 class glCapsViewerCore 
 {
 private:
-	map<GLint, string> compressedTextureFormatList;
+	map<GLint, string> enumList;
 public:
 	vector<string> availableContextTypes;
 	map<string, string> implementation;
@@ -52,8 +52,8 @@ public:
 	void readCompressedFormats();
 	void printExtensions();
 	void readOsExtensions();
-	void loadCompressedTextureFormatList();
-	string getCompressedTextureFormatName(GLint formatEnum);
+	void loadEnumList();
+	string getEnumName(GLint glenum);
 	string reportToXml();
 	void exportXml(string fileName);
 };
