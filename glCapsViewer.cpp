@@ -116,11 +116,22 @@ void colorInternalFormatItem(QTreeWidgetItem *item, int column) {
 
 void glCapsViewer::getInternalFormatInfo()
 {
-	// internal texture formats
-	// TODO : Just some quick testing, move to core
+
 	QTreeWidget *tree = ui.treeWidgetInternalFormats;
 	tree->header()->resizeSection(0, 250);
 	tree->clear();
+
+	// Check if extension is supported
+	if (!core.extensionSupported("GL_ARB_INTERNALFORMAT_QUERY")) {
+		QTreeWidgetItem *infoItem = new QTreeWidgetItem(tree);
+		infoItem->setText(0, "Extension not supported");
+		infoItem->setTextColor(0, QColor::fromRgb(255, 0, 0));
+		return;
+	}
+
+	// internal texture formats
+	// TODO : Just some quick testing, move to core
+	// TODO : GL_ARB_INTERNALFORMAT_QUERY2 
 
 	map<GLenum, string> targets;
 	targets[GL_TEXTURE_1D] = "GL_TEXTURE_1D";
@@ -143,6 +154,7 @@ void glCapsViewer::getInternalFormatInfo()
 
 		map<GLenum, string> internalFormats;
 		vector<string> internalFormatNames;
+		// TODO : List of internalFormats from xml
 		internalFormats[GL_DEPTH_COMPONENT] = "GL_DEPTH_COMPONENT";
 		internalFormats[GL_DEPTH_STENCIL] = "GL_DEPTH_STENCIL";
 		internalFormats[GL_STENCIL_INDEX] = "GL_STENCIL_INDEX";
@@ -150,6 +162,7 @@ void glCapsViewer::getInternalFormatInfo()
 		internalFormats[GL_RG] = "GL_RG";
 		internalFormats[GL_RGB] = "GL_RGB";
 		internalFormats[GL_RGBA] = "GL_RGBA";
+  		internalFormats[GL_DEPTH_COMPONENT32F] = "GL_DEPTH_COMPONENT32F";
 		//internalFormats[GL_RGBA8] = "GL_RGBA8";
 		//internalFormats[GL_RGBA16] = "GL_RGBA16";
 		//internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
