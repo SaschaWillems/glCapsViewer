@@ -352,13 +352,13 @@ void glCapsViewer::generateReport()
 	extItem->setText(0, QString::fromStdString(cap.str()));
 
 	for (auto& s : core.extensions) {
-		ss.str("");
-		ss << "  " << s;
+		if (s == "") continue;
 		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
-		capItem->setText(0, QString::fromStdString(ss.str()));
+		capItem->setText(0, QString::fromStdString(s));
 		extItem->addChild(capItem);
 	}
 
+	extItem->sortChildren(0, Qt::AscendingOrder);
 	extItem->setExpanded(true);
 
 	// OS 
@@ -368,11 +368,13 @@ void glCapsViewer::generateReport()
 	extItem->setText(0, QString::fromStdString(cap.str()));
 
 	for (auto& s : core.osextensions) {
+		if (s == "") continue;
 		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
 		capItem->setText(0, QString::fromStdString(s));
 		extItem->addChild(capItem);
 	}
 
+	extItem->sortChildren(0, Qt::AscendingOrder);
 	extItem->setExpanded(true);
 
 	// Supported Compressed texture formats
