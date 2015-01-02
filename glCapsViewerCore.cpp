@@ -38,6 +38,7 @@
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/lexical_cast.hpp>
@@ -68,13 +69,13 @@ struct HexTo {
 bool glCapsViewerCore::extensionSupported(string ext) 
 {
 	for (auto& currExt : extensions) {
-		if (ext == currExt) {
+		if (boost::iequals(currExt, ext)) {
 			return true;
 		}
 	}
 
 	for (auto& currExt : osextensions) {
-		if (ext == currExt) {
+		if (boost::iequals(currExt, ext)) {
 			return true;
 		}
 	}

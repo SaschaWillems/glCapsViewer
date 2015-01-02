@@ -122,7 +122,7 @@ void glCapsViewer::getInternalFormatInfo()
 	tree->clear();
 
 	// Check if extension is supported
-	if (!core.extensionSupported("GL_ARB_INTERNALFORMAT_QUERY")) {
+	if (!core.extensionSupported("GL_ARB_internalformat_query")) {
 		QTreeWidgetItem *infoItem = new QTreeWidgetItem(tree);
 		infoItem->setText(0, "Extension not supported");
 		infoItem->setTextColor(0, QColor::fromRgb(255, 0, 0));
