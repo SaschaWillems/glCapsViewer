@@ -77,20 +77,9 @@ void glCapsViewer::updateReportState()
 {
 	glCapsViewerHttp glhttp;
 	if (glhttp.checkReportPresent(core.description)) {
-		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database</font>");
+		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database, all fields up-to-date</font>");
 		// Report present, check if it can be updated		
 		int reportId = glhttp.getReportId(core.description);
-		//stringstream capsParam;
-		//for (auto& capGroup : core.capgroups) {
-		//	for (auto& cap : capGroup.capabilities) {
-		//		if (cap.second != "n/a") {
-		//			capsParam << cap.first << ",";
-		//		}
-		//	}
-		//}
-		//if (glhttp.checkReportCanUpdate(reportId, capsParam.str())) {
-		//	ui.labelReportPresent->setText("<font color='#0000FF'>Device already present in database, but can be updated with missing values!</font>");
-		//}
 		if (canUpdateReport(reportId)) {
 			ui.labelReportPresent->setText("<font color='#0000FF'>Device already present in database, but can be updated with missing values!</font>");
 		}
@@ -572,6 +561,7 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 
 	bool capsMissing = false;
 	bool compressedFormatsMissing = false;
+	bool internalFormatsMissing = false;
 
 	// Check if caps are missing
 	vector<string> capsList;
@@ -593,15 +583,15 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 		}
 	}
 
-	// Check if compressed formats are missing
+	// Check if compressed formats are present
 	xml_node<> * compressedFormatsNode = root_node->first_node("compressedtextureformats");
-	if (compressedFormatsNode == NULL) {
+	if (compressedFormatsNode->first_node("format") == NULL) {
 		compressedFormatsMissing = true;
 	}
 
 	// TODO : Check internal formats
 
-	return "";
+	return (capsMissing || compressedFormatsMissing || internalFormatsMissing);
 }
 
 void glCapsViewer::slotClose(){
