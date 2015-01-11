@@ -9,8 +9,8 @@
     <file>Resources/close48.png</file>
     <file>Resources/about48.png</file>
     <file>Resources/browse48.png</file>
-    <file>Resources/refresh48.png</file>
     <file>Resources/settings48.png</file>
     <file>Resources/upload48.png</file>
+    <file>Resources/refresh48.png</file>
   </qresource>
 </RCC>

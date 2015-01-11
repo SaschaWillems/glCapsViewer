@@ -367,7 +367,8 @@ public:
         glcapsviewerClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(glcapsviewerClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        mainToolBar->setIconSize(QSize(64, 32));
+        mainToolBar->setMovable(true);
+        mainToolBar->setIconSize(QSize(64, 24));
         mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         mainToolBar->setFloatable(false);
         glcapsviewerClass->addToolBar(Qt::TopToolBarArea, mainToolBar);

@@ -152,22 +152,6 @@ bool glCapsViewerHttp::checkReportPresent(string description)
 }
 
 /// <summary>
-/// Checks if the online report has missing caps that can be updated from the
-/// local report. A php script will check all passed caps for null values.
-/// </summary>
-/// <param name="reportId">Id of the report to check for update possibility</param>
-/// <param name="caps">List of coma separated caps to check against</param>
-/// <returns></returns>
-bool glCapsViewerHttp::checkReportCanUpdate(int reportId, string caps)
-{
-	string httpReply;
-	stringstream urlss;
-	urlss << baseUrl << "services/gl_checkreportupdate.php?reportId=" << reportId << "&caps=" << caps;
-	httpReply = httpGet(urlss.str());
-	return (httpReply == "true") ? true : false;
-}
-
-/// <summary>
 /// Fechtes the OpenGL capability xml list from the web server
 /// </summary>
 /// <returns>xml string</returns>

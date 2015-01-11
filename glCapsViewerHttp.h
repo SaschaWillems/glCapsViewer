@@ -47,7 +47,7 @@ class glCapsViewerHttp :
 {
 	Q_OBJECT
 private:
-	string baseUrl = "http://delphigl.de/glcapsviewer/";
+	string baseUrl = "http://opengl.delphigl.de/";
 	QNetworkAccessManager *manager;
 	string httpGet(string url);
 	string httpPost(string url, string data);
@@ -55,7 +55,6 @@ private:
 public:
 	int getReportId(string description);
 	bool checkReportPresent(string description);
-	bool checkReportCanUpdate(int reportId, string caps);
 	vector<string> fetchDevices();
 	vector<reportInfo> fetchDeviceReports(string device);
 	string fetchReport(int reportId);
