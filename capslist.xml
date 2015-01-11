@@ -143,8 +143,8 @@
 		<cap name="GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS" enum="0x8A32" type="glint" components="1" />	
 		<cap name="GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS" enum="0x8A32" type="glint" components="1" />	
 		<cap name="GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS" enum="0x8A33" type="glint" components="1" />	
-		<cap name="GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT" enum="0x8A34" type="glint" components="1" />	
-	</category>
+		<cap name="GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT" enum="0x8A34" type="glint" components="1" />
+  </category>
 	<category name="GL_ARB_ES2_compatibility">
 		<requirements extension="GL_ARB_ES2_compatibility" version=""/>
 		<cap name="GL_MAX_VARYING_VECTORS" enum="0x8DFC" type="glint" components="1" />
@@ -194,7 +194,12 @@
 		<cap name="GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS" enum="0x90DC" type="glint" components="1" />
 		<cap name="GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS" enum="0x90DD" type="glint" components="1" />
 		<cap name="GL_MAX_SHADER_STORAGE_BLOCK_SIZE" enum="0x90DE" type="glint64" components="1" />
-	</category>	
+    <cap name="GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT" enum="0x90DF" type="glint" components="1" />
+  </category>
+  <category name="GL_ARB_texture_buffer_range">
+    <requirements extension="GL_ARB_texture_buffer_range" version=""/>
+    <cap name="GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT" enum="0x919F" type="glint" components="1" />
+  </category>
 	<category name="GL_ARB_compute_shader">
 		<requirements extension="GL_ARB_compute_shader" version=""/>
 		<cap name="GL_MAX_COMPUTE_SHARED_MEMORY_SIZE" enum="0x8262" type="glint" components="1" />
