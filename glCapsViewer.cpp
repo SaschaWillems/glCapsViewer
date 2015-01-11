@@ -564,6 +564,8 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 	bool internalFormatsMissing = false;
 
 	// Check if caps are missing
+
+	// Gather caps available client-side
 	vector<string> capsList;
 	for (auto& capsGroup : core.capgroups) {
 		for (auto& cap : capsGroup.capabilities) {
@@ -573,15 +575,27 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 		}
 	}
 	xml_node<> * implementation_node = root_node->first_node("implementation");
-	for (xml_node<> * value_node = implementation_node->first_node(); value_node; value_node = value_node->next_sibling())
-	{
-		string node_name = value_node->name();
-		string node_value = value_node->value();
-		if ((node_value != "") && (std::find(capsList.begin(), capsList.end(), node_name) == capsList.end())) {
-			capsMissing = true;
-			break;
+
+	vector<string> capsMissingList;
+	for (auto& cap : capsList) {
+
+		for (xml_node<> * value_node = implementation_node->first_node(); value_node; value_node = value_node->next_sibling())
+		{
+			string node_name = value_node->name();
+			string node_value = value_node->value();			
+			if (node_name == cap) {
+	
+				if (node_value == "") {
+					capsMissingList.push_back(node_name);
+				}
+				break;
+
+			}
 		}
+
 	}
+
+	capsMissing = (capsMissingList.size() > 0);
 
 	// Check if compressed formats are present
 	xml_node<> * compressedFormatsNode = root_node->first_node("compressedtextureformats");
