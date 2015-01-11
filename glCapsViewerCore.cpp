@@ -315,7 +315,7 @@ string glCapsViewerCore::reportToXml()
 		string formatStr = to_string(compressedFormat);
 		char * cstr = new char[formatStr.length() + 1];
 		strcpy(cstr, formatStr.c_str());
-		compFormatNode->append_node(doc.allocate_node(node_element, "format", cstr));
+		compFormatNode->append_node(doc.allocate_node(node_element, "compressedtextureformat", cstr));
 	}
 
 	stringstream ss;

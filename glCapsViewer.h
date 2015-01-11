@@ -43,6 +43,7 @@ public:
 	bool contextTypeSelection();
 private:
 	QNetworkAccessManager* nam;
+	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
 	void getInternalFormatInfo();
 private slots:

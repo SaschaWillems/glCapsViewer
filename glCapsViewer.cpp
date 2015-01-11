@@ -80,15 +80,18 @@ void glCapsViewer::updateReportState()
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database</font>");
 		// Report present, check if it can be updated		
 		int reportId = glhttp.getReportId(core.description);
-		stringstream capsParam;
-		for (auto& capGroup : core.capgroups) {
-			for (auto& cap : capGroup.capabilities) {
-				if (cap.second != "n/a") {
-					capsParam << cap.first << ",";
-				}
-			}
-		}
-		if (glhttp.checkReportCanUpdate(reportId, capsParam.str())) {
+		//stringstream capsParam;
+		//for (auto& capGroup : core.capgroups) {
+		//	for (auto& cap : capGroup.capabilities) {
+		//		if (cap.second != "n/a") {
+		//			capsParam << cap.first << ",";
+		//		}
+		//	}
+		//}
+		//if (glhttp.checkReportCanUpdate(reportId, capsParam.str())) {
+		//	ui.labelReportPresent->setText("<font color='#0000FF'>Device already present in database, but can be updated with missing values!</font>");
+		//}
+		if (canUpdateReport(reportId)) {
 			ui.labelReportPresent->setText("<font color='#0000FF'>Device already present in database, but can be updated with missing values!</font>");
 		}
 	}
@@ -172,20 +175,34 @@ void glCapsViewer::getInternalFormatInfo()
 		}
 
 		map<GLenum, string> pnames;
-		pnames[GL_INTERNALFORMAT_SUPPORTED] = "GL_INTERNALFORMAT_SUPPORTED";
+		// GL_ARB_internalformat_query
 		pnames[GL_INTERNALFORMAT_PREFERRED] = "GL_INTERNALFORMAT_PREFERRED";
+		pnames[GL_READ_PIXELS_FORMAT] = "GL_READ_PIXELS_FORMAT";
+		pnames[GL_READ_PIXELS_TYPE] = "GL_READ_PIXELS_TYPE";
 		pnames[GL_TEXTURE_IMAGE_FORMAT] = "GL_TEXTURE_IMAGE_FORMAT";
 		pnames[GL_TEXTURE_IMAGE_TYPE] = "GL_TEXTURE_IMAGE_TYPE";
-		pnames[GL_TEXTURE_COMPRESSED] = "GL_TEXTURE_COMPRESSED";
-		pnames[GL_MAX_WIDTH] = "GL_MAX_WIDTH";
-		pnames[GL_MAX_HEIGHT] = "GL_MAX_HEIGHT";
-		pnames[GL_MAX_DEPTH] = "GL_MAX_DEPTH";
-		// pnames[GL_MAX_COMBINED_DIMENSIONS] = "GL_MAX_COMBINED_DIMENSIONS"; TODO : Usually GL_MAX...*GL_MAX...*GL_MAX, redundant info
-		pnames[GL_FRAMEBUFFER_BLEND] = "GL_FRAMEBUFFER_BLEND";
-		pnames[GL_READ_PIXELS] = "GL_READ_PIXELS";
-		pnames[GL_MANUAL_GENERATE_MIPMAP] = "GL_MANUAL_GENERATE_MIPMAP";
-		pnames[GL_AUTO_GENERATE_MIPMAP] = "GL_AUTO_GENERATE_MIPMAP";
-		pnames[GL_FILTER] = "GL_FILTER";
+		pnames[GL_GET_TEXTURE_IMAGE_FORMAT] = "GL_GET_TEXTURE_IMAGE_FORMAT";
+		pnames[GL_GET_TEXTURE_IMAGE_TYPE] = "GL_GET_TEXTURE_IMAGE_TYPE";
+
+		// Only for compressed
+		pnames[GL_TEXTURE_COMPRESSED_BLOCK_WIDTH] = "GL_TEXTURE_COMPRESSED_BLOCK_WIDTH";
+		pnames[GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT] = "GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT";
+		pnames[GL_TEXTURE_COMPRESSED_BLOCK_SIZE] = "GL_TEXTURE_COMPRESSED_BLOCK_SIZE";
+
+		// GL_ARB_internalformat_query2
+		if (core.extensionSupported("GL_ARB_internalformat_query2")) {
+			pnames[GL_INTERNALFORMAT_SUPPORTED] = "GL_INTERNALFORMAT_SUPPORTED";
+			pnames[GL_TEXTURE_COMPRESSED] = "GL_TEXTURE_COMPRESSED";
+			pnames[GL_MAX_WIDTH] = "GL_MAX_WIDTH";
+			pnames[GL_MAX_HEIGHT] = "GL_MAX_HEIGHT";
+			pnames[GL_MAX_DEPTH] = "GL_MAX_DEPTH";
+			// pnames[GL_MAX_COMBINED_DIMENSIONS] = "GL_MAX_COMBINED_DIMENSIONS"; TODO : Usually GL_MAX...*GL_MAX...*GL_MAX, redundant info
+			pnames[GL_FRAMEBUFFER_BLEND] = "GL_FRAMEBUFFER_BLEND";
+			pnames[GL_READ_PIXELS] = "GL_READ_PIXELS";
+			pnames[GL_MANUAL_GENERATE_MIPMAP] = "GL_MANUAL_GENERATE_MIPMAP";
+			pnames[GL_AUTO_GENERATE_MIPMAP] = "GL_AUTO_GENERATE_MIPMAP";
+			pnames[GL_FILTER] = "GL_FILTER";
+		}
 
 		map<GLenum, string> supportList;
 		supportList[GL_VERTEX_TEXTURE] = "GL_VERTEX_TEXTURE";
@@ -521,7 +538,6 @@ void glCapsViewer::slotRefreshReport()
 
 void glCapsViewer::refreshDeviceList()
 {
-	// TODO : not finished yet
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	glCapsViewerHttp glchttp;
 	vector<string> deviceList;
@@ -540,6 +556,52 @@ void glCapsViewer::refreshDeviceList()
 		}
 	}
 	QApplication::restoreOverrideCursor();
+}
+
+bool glCapsViewer::canUpdateReport(int reportId) {
+
+	// Download report and check against xml
+	glCapsViewerHttp glchttp;
+	string reportXml = glchttp.fetchReport(reportId);
+
+	using namespace rapidxml;
+	xml_document<> doc;
+	xml_node<> * root_node;
+	doc.parse<0>(&reportXml[0]);
+	root_node = doc.first_node("report");
+
+	bool capsMissing = false;
+	bool compressedFormatsMissing = false;
+
+	// Check if caps are missing
+	vector<string> capsList;
+	for (auto& capsGroup : core.capgroups) {
+		for (auto& cap : capsGroup.capabilities) {
+			if (cap.second != "n/a") {
+				capsList.push_back(cap.first);
+			}
+		}
+	}
+	xml_node<> * implementation_node = root_node->first_node("implementation");
+	for (xml_node<> * value_node = implementation_node->first_node(); value_node; value_node = value_node->next_sibling())
+	{
+		string node_name = value_node->name();
+		string node_value = value_node->value();
+		if ((node_value != "") && (std::find(capsList.begin(), capsList.end(), node_name) == capsList.end())) {
+			capsMissing = true;
+			break;
+		}
+	}
+
+	// Check if compressed formats are missing
+	xml_node<> * compressedFormatsNode = root_node->first_node("compressedtextureformats");
+	if (compressedFormatsNode == NULL) {
+		compressedFormatsMissing = true;
+	}
+
+	// TODO : Check internal formats
+
+	return "";
 }
 
 void glCapsViewer::slotClose(){
@@ -572,17 +634,18 @@ void glCapsViewer::slotUpload(){
 	else {
 		// Check if report can be updated
 		bool canUpdate = false;
-		// TODO : Test, put into separate function
+		//// TODO : Test, put into separate function
 		int reportId = glchttp.getReportId(core.description);
-		stringstream capsParam;
-		for (auto& capGroup : core.capgroups) {
-			for (auto& cap : capGroup.capabilities) {
-				if (cap.second != "n/a") {
-					capsParam << cap.first << ",";
-				}
-			}
-		}
-		canUpdate = glchttp.checkReportCanUpdate(reportId, capsParam.str());
+		//stringstream capsParam;
+		//for (auto& capGroup : core.capgroups) {
+		//	for (auto& cap : capGroup.capabilities) {
+		//		if (cap.second != "n/a") {
+		//			capsParam << cap.first << ",";
+		//		}
+		//	}
+		//}
+		//canUpdate = glchttp.checkReportCanUpdate(reportId, capsParam.str());
+		canUpdate = canUpdateReport(reportId);
 		if (canUpdate) {
 			QMessageBox::StandardButton reply;
 			reply = QMessageBox::question(this, "Report outdated", "There is a report for your device present in the database, but it is missing some capabilities.\n\nDo you want to update the report?", QMessageBox::Yes | QMessageBox::No);
