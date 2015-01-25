@@ -164,7 +164,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="glcapsviewer.cpp" />
-    <ClCompile Include="glcapsviewerCapsGroup.cpp" />
+    <ClCompile Include="capsGroup.cpp" />
     <ClCompile Include="glcapsviewerCore.cpp" />
     <ClCompile Include="glcapsviewerHttp.cpp" />
     <ClCompile Include="internalFormatInfo.cpp" />
@@ -213,7 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_glcapsviewer.h" />
-    <ClInclude Include="glCapsViewerCapsGroup.h" />
+    <ClInclude Include="capsGroup.h" />
     <ClInclude Include="internalFormatInfo.h" />
     <ClInclude Include="internalFormatTarget.h" />
     <CustomBuild Include="glCapsViewerCore.h">

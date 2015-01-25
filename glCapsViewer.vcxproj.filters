@@ -56,9 +56,6 @@
     <ClCompile Include="glcapsviewerCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glcapsviewerCapsGroup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_glcapsviewerHttp.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="internalFormatInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="capsGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,13 +93,13 @@
     <ClInclude Include="GeneratedFiles\ui_glcapsviewer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="glCapsViewerCapsGroup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="internalFormatTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="internalFormatInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="capsGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

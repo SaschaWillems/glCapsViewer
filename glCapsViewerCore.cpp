@@ -46,7 +46,7 @@
 #include <rapidxml.hpp>
 #include <rapidxml_print.hpp>
 
-#include <glCapsViewerCapsGroup.h>
+#include <capsGroup.h>
 #include "glCapsViewerCore.h"
 
 using namespace std;
@@ -192,7 +192,7 @@ void glCapsViewerCore::readImplementation()
 	description = ss.str();
 
 	// Not visible, but will be exported to xml
-	glCapsViewerCapsGroup capsGroup;
+	capsViewer::capsGroup capsGroup;
 	capsGroup.name = "implementation";
 	capsGroup.supported = true;
 	capsGroup.visible = false;
@@ -366,7 +366,7 @@ void glCapsViewerCore::readCapabilities()
 	for (xml_node<> * category_node = root_node->first_node("category"); category_node; category_node = category_node->next_sibling())
 	{
 		string catName = category_node->first_attribute("name")->value();
-		glCapsViewerCapsGroup capsGroup;
+		capsViewer::capsGroup capsGroup;
 		capsGroup.name = catName;
 		capsGroup.supported = true;
 

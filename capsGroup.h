@@ -28,16 +28,20 @@
 
 using namespace std;
 
-class glCapsViewerCapsGroup
-{
-private:
-	//
-public:
-	map<string, string> implementation;
-	map<string, string> capabilities;
-	string name;
-	bool supported;
-	bool visible = true;
-	void addCapability(string idstr, GLenum id, string type, int dim);
-};
+namespace capsViewer {
+
+	class capsGroup
+	{
+	private:
+		//
+	public:
+		map<string, string> implementation;
+		map<string, string> capabilities;
+		string name;
+		bool supported;
+		bool visible = true;
+		void addCapability(string idstr, GLenum id, string type, int dim);
+	};
+
+}
 

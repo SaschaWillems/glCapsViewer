@@ -25,7 +25,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <map>
-#include <glCapsViewerCapsGroup.h>
+#include <capsGroup.h>
 #include <internalFormatTarget.h>
 
 using namespace std;
@@ -37,7 +37,7 @@ private:
 public:
 	vector<string> availableContextTypes;
 	map<string, string> implementation;
-	vector<glCapsViewerCapsGroup> capgroups;
+	vector<capsViewer::capsGroup> capgroups;
 	vector<string> extensions;
 	vector<string> osextensions;
 	vector<GLint> compressedFormats;
