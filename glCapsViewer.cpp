@@ -107,7 +107,7 @@ void colorInternalFormatItem(QTreeWidgetItem *item, int column) {
 		item->setTextColor(column, QColor::fromRgb(0, 128, 0));
 }
 
-void glCapsViewer::getInternalFormatInfo()
+void glCapsViewer::generateInternalFormatInfo()
 {
 
 	QTreeWidget *tree = ui.treeWidgetInternalFormats;
@@ -122,23 +122,10 @@ void glCapsViewer::getInternalFormatInfo()
 		return;
 	}
 
-	// internal texture formats
-	// TODO : Just some quick testing, move to core
-	// TODO : GL_ARB_INTERNALFORMAT_QUERY2 
-
-	GLenum targets[] = { GL_TEXTURE_1D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_3D, GL_TEXTURE_CUBE_MAP,
-		GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_BUFFER, GL_RENDERBUFFER, GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_2D_MULTISAMPLE_ARRAY };
-	vector<capsViewer::internalFormatTarget> internalFormats;
-	for (auto& target : targets) {
-		internalFormats.push_back(capsViewer::internalFormatTarget(target, core.compressedFormats));
-	}
-
-	for (auto& target : internalFormats) {
+	for (auto& target : core.internalFormatTargets) {
 
 		QTreeWidgetItem *targetItem = new QTreeWidgetItem(tree);
 		targetItem->setText(0, QString::fromStdString(core.getEnumName(target.target)));
-
-		target.getInternalFormatInfo();
 
 		for (auto& textureFormat : target.textureFormats) {
 			QTreeWidgetItem *formatItem = new QTreeWidgetItem(targetItem);
@@ -307,7 +294,7 @@ void glCapsViewer::generateReport()
 		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
 	}
 
-	getInternalFormatInfo();
+	generateInternalFormatInfo();
 
 	// Tab captions
 	stringstream tabText;

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	glCapsViewer capsViewer;
-	capsViewer.ui.labelReportPresent->setVisible(false);
+	capsViewer.ui.labelReportPresent->setText("...");
 	capsViewer.show();
 
 	// Check for capability list xml

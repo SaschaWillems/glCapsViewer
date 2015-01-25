@@ -41,7 +41,7 @@ namespace capsViewer {
 		}
 	}
 
-	void internalFormatTarget::getInternalFormatInfo()
+	void internalFormatTarget::getInternalFormatInfo(bool internalformatquery2)
 	{
 		// TODO : List of internalFormats from xml
 		// TODO : Additional formats
@@ -82,18 +82,18 @@ namespace capsViewer {
 			}
 
 			// TODO : Only for GL_ARB_internalformat_query2
-			//if (core.extensionSupported("GL_ARB_internalformat_query2")) {
-			textureFormat.addValueInfo(infoTypeValue, GL_INTERNALFORMAT_SUPPORTED, "GL_INTERNALFORMAT_SUPPORTED");
-			textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_COMPRESSED, "GL_TEXTURE_COMPRESSED");
-			textureFormat.addValueInfo(infoTypeValue, GL_MAX_WIDTH, "GL_MAX_WIDTH");
-			textureFormat.addValueInfo(infoTypeValue, GL_MAX_HEIGHT, "GL_MAX_HEIGHT");
-			textureFormat.addValueInfo(infoTypeValue, GL_MAX_DEPTH, "GL_MAX_DEPTH");
-			textureFormat.addValueInfo(infoTypeValue, GL_FRAMEBUFFER_BLEND, "GL_FRAMEBUFFER_BLEND");
-			textureFormat.addValueInfo(infoTypeValue, GL_READ_PIXELS, "GL_READ_PIXELS");
-			textureFormat.addValueInfo(infoTypeValue, GL_MANUAL_GENERATE_MIPMAP, "GL_MANUAL_GENERATE_MIPMAP");
-			textureFormat.addValueInfo(infoTypeValue, GL_AUTO_GENERATE_MIPMAP, "GL_AUTO_GENERATE_MIPMAP");
-			textureFormat.addValueInfo(infoTypeValue, GL_FILTER, "GL_FILTER");
-			//}
+			if (internalformatquery2) {
+				textureFormat.addValueInfo(infoTypeValue, GL_INTERNALFORMAT_SUPPORTED, "GL_INTERNALFORMAT_SUPPORTED");
+				textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_COMPRESSED, "GL_TEXTURE_COMPRESSED");
+				textureFormat.addValueInfo(infoTypeValue, GL_MAX_WIDTH, "GL_MAX_WIDTH");
+				textureFormat.addValueInfo(infoTypeValue, GL_MAX_HEIGHT, "GL_MAX_HEIGHT");
+				textureFormat.addValueInfo(infoTypeValue, GL_MAX_DEPTH, "GL_MAX_DEPTH");
+				textureFormat.addValueInfo(infoTypeValue, GL_FRAMEBUFFER_BLEND, "GL_FRAMEBUFFER_BLEND");
+				textureFormat.addValueInfo(infoTypeValue, GL_READ_PIXELS, "GL_READ_PIXELS");
+				textureFormat.addValueInfo(infoTypeValue, GL_MANUAL_GENERATE_MIPMAP, "GL_MANUAL_GENERATE_MIPMAP");
+				textureFormat.addValueInfo(infoTypeValue, GL_AUTO_GENERATE_MIPMAP, "GL_AUTO_GENERATE_MIPMAP");
+				textureFormat.addValueInfo(infoTypeValue, GL_FILTER, "GL_FILTER");
+			}
 
 			// Support
 			textureFormat.addValueInfo(infoTypeSupport, GL_VERTEX_TEXTURE, "GL_VERTEX_TEXTURE");

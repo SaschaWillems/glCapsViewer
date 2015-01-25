@@ -235,7 +235,18 @@ void glCapsViewerCore::readCompressedFormats()
 
 void glCapsViewerCore::readInternalFormats()
 {
-	//
+	// TODO : Move to xml
+	GLenum targets[] = { GL_TEXTURE_1D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_3D, GL_TEXTURE_CUBE_MAP,
+		GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_BUFFER, GL_RENDERBUFFER, GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_2D_MULTISAMPLE_ARRAY };
+	for (auto& target : targets) {
+		internalFormatTargets.push_back(capsViewer::internalFormatTarget(target, compressedFormats));
+	}
+
+	bool internalformatquery2 = extensionSupported("GL_ARB_internalformat_query2");
+	for (auto& target : internalFormatTargets) {
+		target.getInternalFormatInfo(internalformatquery2);
+	}
+
 }
 
 /// <summary>

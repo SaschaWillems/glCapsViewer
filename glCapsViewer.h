@@ -45,7 +45,7 @@ private:
 	QNetworkAccessManager* nam;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
-	void getInternalFormatInfo();
+	void generateInternalFormatInfo();
 private slots:
 	void slotRefreshReport();
 	void slotClose();
