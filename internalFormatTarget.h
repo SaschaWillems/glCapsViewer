@@ -38,7 +38,6 @@ namespace capsViewer {
 	{
 	public:
 		GLenum target;
-		map<GLenum, string> internalFormats;
 		vector<capsViewer::internalFormatInfo> textureFormats;
 		internalFormatTarget(GLenum target, vector<GLint> compressedFormats);
 		void getInternalFormatInfo(bool internalformatquery2);

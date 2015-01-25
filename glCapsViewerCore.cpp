@@ -334,6 +334,35 @@ string glCapsViewerCore::reportToXml()
 	}
 
 	// Internal formats
+	xml_node<> *internalFormatInfoNode = doc.allocate_node(node_element, "internalformatinformation");
+	root->append_node(internalFormatInfoNode);
+	for (auto& internalFormatTarget : internalFormatTargets) {
+		string str = getEnumName(internalFormatTarget.target);
+		char * cstr = new char[str.length() + 1];
+		strcpy(cstr, str.c_str());
+		xml_node<> *formatTargetNode = doc.allocate_node(node_element, cstr);
+		internalFormatInfoNode->append_node(formatTargetNode);
+		
+		for (auto& internalTextureFormat : internalFormatTarget.textureFormats) {
+			string str = getEnumName(internalTextureFormat.textureFormat);
+			char * cstr = new char[str.length() + 1];
+			strcpy(cstr, str.c_str());
+			xml_node<> *internalFormatNode = doc.allocate_node(node_element, cstr);
+			internalFormatNode->append_attribute(doc.allocate_attribute("supported", internalTextureFormat.supported ? "true" : "false"));
+			formatTargetNode->append_node(internalFormatNode);
+
+			for (auto& formatInfoValue : internalTextureFormat.formatInfoValues) {
+				string str = to_string(formatInfoValue.infoValue);
+				char * cstr = new char[str.length() + 1];
+				strcpy(cstr, str.c_str());
+				xml_node<> *formatInfoValueNode = doc.allocate_node(node_element, formatInfoValue.infoString.c_str(), cstr);
+				internalFormatNode->append_node(formatInfoValueNode);
+			}
+
+		}
+
+
+	}
 
 
 	stringstream ss;
