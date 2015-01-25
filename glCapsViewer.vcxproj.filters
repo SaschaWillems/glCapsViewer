@@ -65,6 +65,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_glcapsviewerHttp.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="internalFormatTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="internalFormatInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="glcapsviewer.h">
@@ -88,6 +94,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="glCapsViewerCapsGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="internalFormatTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="internalFormatInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

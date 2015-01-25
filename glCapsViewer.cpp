@@ -22,6 +22,7 @@
 
 #include "glCapsViewer.h"
 #include "glCapsViewerHttp.h"
+#include "internalFormatTarget.h"
 #include <GL/glew.h>
 #include <GL/wglew.h>
 #include <GLFW/glfw3.h>
@@ -125,152 +126,65 @@ void glCapsViewer::getInternalFormatInfo()
 	// TODO : Just some quick testing, move to core
 	// TODO : GL_ARB_INTERNALFORMAT_QUERY2 
 
-	map<GLenum, string> targets;
-	targets[GL_TEXTURE_1D] = "GL_TEXTURE_1D";
-	targets[GL_TEXTURE_1D_ARRAY] = "GL_TEXTURE_1D_ARRAY";
-	targets[GL_TEXTURE_2D] = "GL_TEXTURE_2D";
-	targets[GL_TEXTURE_2D_ARRAY] = "GL_TEXTURE_2D_ARRAY";
-	targets[GL_TEXTURE_3D] = "GL_TEXTURE_3D";
-	targets[GL_TEXTURE_CUBE_MAP] = "GL_TEXTURE_CUBE_MAP";
-	targets[GL_TEXTURE_CUBE_MAP_ARRAY] = "GL_TEXTURE_CUBE_MAP_ARRAY";
-	targets[GL_TEXTURE_RECTANGLE] = "GL_TEXTURE_RECTANGLE";
-	targets[GL_TEXTURE_BUFFER] = "GL_TEXTURE_BUFFER";
-	targets[GL_RENDERBUFFER] = "GL_RENDERBUFFER";
-	targets[GL_TEXTURE_2D_MULTISAMPLE] = "GL_TEXTURE_2D_MULTISAMPLE";
-	targets[GL_TEXTURE_2D_MULTISAMPLE_ARRAY] = "GL_TEXTURE_2D_MULTISAMPLE_ARRAY";
-
+	GLenum targets[] = { GL_TEXTURE_1D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_3D, GL_TEXTURE_CUBE_MAP,
+		GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_BUFFER, GL_RENDERBUFFER, GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_2D_MULTISAMPLE_ARRAY };
+	vector<capsViewer::internalFormatTarget> internalFormats;
 	for (auto& target : targets) {
+		internalFormats.push_back(capsViewer::internalFormatTarget(target, core.compressedFormats));
+	}
+
+	for (auto& target : internalFormats) {
 
 		QTreeWidgetItem *targetItem = new QTreeWidgetItem(tree);
-		targetItem->setText(0, QString::fromStdString(target.second));
+		targetItem->setText(0, QString::fromStdString(core.getEnumName(target.target)));
 
-		map<GLenum, string> internalFormats;
-		vector<string> internalFormatNames;
-		// TODO : List of internalFormats from xml
-		internalFormats[GL_DEPTH_COMPONENT] = "GL_DEPTH_COMPONENT";
-		internalFormats[GL_DEPTH_STENCIL] = "GL_DEPTH_STENCIL";
-		internalFormats[GL_STENCIL_INDEX] = "GL_STENCIL_INDEX";
-		internalFormats[GL_RED] = "GL_RED";
-		internalFormats[GL_RG] = "GL_RG";
-		internalFormats[GL_RGB] = "GL_RGB";
-		internalFormats[GL_RGBA] = "GL_RGBA";
-  		internalFormats[GL_DEPTH_COMPONENT32F] = "GL_DEPTH_COMPONENT32F";
-		//internalFormats[GL_RGBA8] = "GL_RGBA8";
-		//internalFormats[GL_RGBA16] = "GL_RGBA16";
-		//internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
-		// Add all detected compressed formats
-		for (auto& compressedFormat : core.compressedFormats) {
-			internalFormats[compressedFormat] = core.getEnumName(compressedFormat);
-		}
+		target.getInternalFormatInfo();
 
-		map<GLenum, string> pnames;
-		// GL_ARB_internalformat_query
-		pnames[GL_INTERNALFORMAT_PREFERRED] = "GL_INTERNALFORMAT_PREFERRED";
-		pnames[GL_READ_PIXELS_FORMAT] = "GL_READ_PIXELS_FORMAT";
-		pnames[GL_READ_PIXELS_TYPE] = "GL_READ_PIXELS_TYPE";
-		pnames[GL_TEXTURE_IMAGE_FORMAT] = "GL_TEXTURE_IMAGE_FORMAT";
-		pnames[GL_TEXTURE_IMAGE_TYPE] = "GL_TEXTURE_IMAGE_TYPE";
-		pnames[GL_GET_TEXTURE_IMAGE_FORMAT] = "GL_GET_TEXTURE_IMAGE_FORMAT";
-		pnames[GL_GET_TEXTURE_IMAGE_TYPE] = "GL_GET_TEXTURE_IMAGE_TYPE";
-
-		// Only for compressed
-		pnames[GL_TEXTURE_COMPRESSED_BLOCK_WIDTH] = "GL_TEXTURE_COMPRESSED_BLOCK_WIDTH";
-		pnames[GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT] = "GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT";
-		pnames[GL_TEXTURE_COMPRESSED_BLOCK_SIZE] = "GL_TEXTURE_COMPRESSED_BLOCK_SIZE";
-
-		// GL_ARB_internalformat_query2
-		if (core.extensionSupported("GL_ARB_internalformat_query2")) {
-			pnames[GL_INTERNALFORMAT_SUPPORTED] = "GL_INTERNALFORMAT_SUPPORTED";
-			pnames[GL_TEXTURE_COMPRESSED] = "GL_TEXTURE_COMPRESSED";
-			pnames[GL_MAX_WIDTH] = "GL_MAX_WIDTH";
-			pnames[GL_MAX_HEIGHT] = "GL_MAX_HEIGHT";
-			pnames[GL_MAX_DEPTH] = "GL_MAX_DEPTH";
-			// pnames[GL_MAX_COMBINED_DIMENSIONS] = "GL_MAX_COMBINED_DIMENSIONS"; TODO : Usually GL_MAX...*GL_MAX...*GL_MAX, redundant info
-			pnames[GL_FRAMEBUFFER_BLEND] = "GL_FRAMEBUFFER_BLEND";
-			pnames[GL_READ_PIXELS] = "GL_READ_PIXELS";
-			pnames[GL_MANUAL_GENERATE_MIPMAP] = "GL_MANUAL_GENERATE_MIPMAP";
-			pnames[GL_AUTO_GENERATE_MIPMAP] = "GL_AUTO_GENERATE_MIPMAP";
-			pnames[GL_FILTER] = "GL_FILTER";
-		}
-
-		map<GLenum, string> supportList;
-		supportList[GL_VERTEX_TEXTURE] = "GL_VERTEX_TEXTURE";
-		supportList[GL_TESS_CONTROL_TEXTURE] = "GL_TESS_CONTROL_TEXTURE";
-		supportList[GL_TESS_EVALUATION_TEXTURE] = "GL_TESS_EVALUATION_TEXTURE";
-		supportList[GL_GEOMETRY_TEXTURE] = "GL_GEOMETRY_TEXTURE";
-		supportList[GL_FRAGMENT_TEXTURE] = "GL_FRAGMENT_TEXTURE";
-		supportList[GL_COMPUTE_TEXTURE] = "GL_COMPUTE_TEXTURE";
-
-		supportList[GL_TEXTURE_SHADOW] = "GL_TEXTURE_SHADOW";
-		supportList[GL_TEXTURE_GATHER] = "GL_TEXTURE_GATHER";
-		supportList[GL_TEXTURE_GATHER_SHADOW] = "GL_TEXTURE_GATHER_SHADOW";
-
-		supportList[GL_SHADER_IMAGE_LOAD] = "GL_SHADER_IMAGE_LOAD";
-		supportList[GL_SHADER_IMAGE_STORE] = "GL_SHADER_IMAGE_STORE";
-		supportList[GL_SHADER_IMAGE_ATOMIC] = "GL_SHADER_IMAGE_ATOMIC";
-
-		for (auto& internalFormat : internalFormats) {
-
+		for (auto& textureFormat : target.textureFormats) {
 			QTreeWidgetItem *formatItem = new QTreeWidgetItem(targetItem);
-			formatItem->setText(0, QString::fromStdString(internalFormat.second));
+			formatItem->setText(0, QString::fromStdString(core.getEnumName(textureFormat.textureFormat)));
 			formatItem->addChild(targetItem);
 
-			// Check if internal format is supported first
-			GLint formatSupported;
-			glGetInternalformativ(target.first, internalFormat.first, GL_INTERNALFORMAT_SUPPORTED, 1, &formatSupported);
-
-			if (formatSupported == GL_FALSE) {
+			if (!textureFormat.supported) {
 				formatItem->setText(1, "not supported");
 				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
 				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
 				continue;
 			}
 
-			for (auto& pname : pnames) {
-				GLint param;
-				glGetInternalformativ(target.first, internalFormat.first, pname.first, 1, &param);
-
-				if ((pname.second == "GL_MAX_WIDTH") || (pname.second == "GL_MAX_HEIGHT") || (pname.second == "GL_MAX_DEPTH")) {
-					if (param == 0) {
-						continue;
+			for (auto& formatInfoValue : textureFormat.formatInfoValues) {
+				if (formatInfoValue.infoType == capsViewer::infoTypeValue) {
+					QTreeWidgetItem *paramItem = new QTreeWidgetItem(formatItem);
+					paramItem->setText(0, QString::fromStdString(formatInfoValue.infoString));
+					string enumString;
+					enumString = core.getEnumName(formatInfoValue.infoValue);
+					// Switch some values
+					if ((formatInfoValue.infoEnum == GL_INTERNALFORMAT_SUPPORTED) || (formatInfoValue.infoEnum == GL_TEXTURE_COMPRESSED))  {
+						enumString = (formatInfoValue.infoValue == 0) ? "GL_FALSE" : "GL_TRUE";
 					}
+					paramItem->setText(1, QString::fromStdString(enumString));
+					paramItem->addChild(formatItem);
+					colorInternalFormatItem(paramItem, 1);
 				}
-
-				QTreeWidgetItem *paramItem = new QTreeWidgetItem(formatItem);
-				paramItem->setText(0, QString::fromStdString(pname.second));
-				string enumString;
-				enumString = core.getEnumName(param);
-
-				// Switch some values
-				if ((pname.first == GL_INTERNALFORMAT_SUPPORTED) || (pname.first == GL_TEXTURE_COMPRESSED))  {
-					enumString = (param == 0) ? "GL_FALSE" : "GL_TRUE";
-				}
-
-				paramItem->setText(1, QString::fromStdString(enumString));
-				paramItem->addChild(formatItem);
-				colorInternalFormatItem(paramItem, 1);
 			}
 
-			QTreeWidgetItem *subItem;
-			// Different supports
-			subItem = new QTreeWidgetItem(formatItem);
-			subItem->setText(0, "Shader support");
-			for (auto& supportType : supportList) {
-				GLint param;
-				glGetInternalformativ(target.first, internalFormat.first, supportType.first, 1, &param);
-				string enumString;
-				enumString = core.getEnumName(param);
-				QTreeWidgetItem *paramItem = new QTreeWidgetItem(subItem);
-				paramItem->setText(0, QString::fromStdString(supportType.second));
-				paramItem->setText(1, QString::fromStdString(enumString));
-				paramItem->addChild(subItem);
-				colorInternalFormatItem(paramItem, 1);
+			QTreeWidgetItem *supportItem = new QTreeWidgetItem(formatItem);
+			supportItem->setText(0, "Shader support");
+
+			for (auto& formatInfoValue : textureFormat.formatInfoValues) {
+				if (formatInfoValue.infoType == capsViewer::infoTypeSupport) {
+					QTreeWidgetItem *valueItem = new QTreeWidgetItem(supportItem);
+					valueItem->setText(0, QString::fromStdString(formatInfoValue.infoString));
+					string enumString;
+					enumString = core.getEnumName(formatInfoValue.infoValue);
+					valueItem->setText(1, QString::fromStdString(enumString));
+					valueItem->addChild(formatItem);
+					colorInternalFormatItem(valueItem, 1);
+				}
 			}
-
-			targetItem->sortChildren(0, Qt::AscendingOrder);
-
 		}
 
+		targetItem->sortChildren(0, Qt::AscendingOrder);
 	}
 }
 
@@ -290,6 +204,8 @@ void glCapsViewer::generateReport()
 	core.readCapabilities();
 	// TODO : Check if extension is present!
 	core.readCompressedFormats();
+	// TODO : Check if extension is present!
+	core.readInternalFormats();
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 

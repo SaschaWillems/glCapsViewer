@@ -233,6 +233,10 @@ void glCapsViewerCore::readCompressedFormats()
 	delete[] formats;
 }
 
+void glCapsViewerCore::readInternalFormats()
+{
+	//
+}
 
 /// <summary>
 /// Loads the list of available compressed texture formats from xml file
@@ -317,6 +321,9 @@ string glCapsViewerCore::reportToXml()
 		strcpy(cstr, formatStr.c_str());
 		compFormatNode->append_node(doc.allocate_node(node_element, "compressedtextureformat", cstr));
 	}
+
+	// Internal formats
+
 
 	stringstream ss;
 	ss << doc;

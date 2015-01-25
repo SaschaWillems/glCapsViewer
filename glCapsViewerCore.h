@@ -26,6 +26,7 @@
 #include <GLFW/glfw3.h>
 #include <map>
 #include <glCapsViewerCapsGroup.h>
+#include <internalFormatTarget.h>
 
 using namespace std;
 
@@ -40,6 +41,7 @@ public:
 	vector<string> extensions;
 	vector<string> osextensions;
 	vector<GLint> compressedFormats;
+	vector<capsViewer::internalFormatTarget> internalFormatTargets;
 	string description = "";
 	string submitter = "";
 	string contextType = "";
@@ -50,6 +52,7 @@ public:
 	void readCapabilities();
 	void readExtensions();
 	void readCompressedFormats();
+	void readInternalFormats();
 	void printExtensions();
 	void readOsExtensions();
 	void loadEnumList();

@@ -167,6 +167,8 @@
     <ClCompile Include="glcapsviewerCapsGroup.cpp" />
     <ClCompile Include="glcapsviewerCore.cpp" />
     <ClCompile Include="glcapsviewerHttp.cpp" />
+    <ClCompile Include="internalFormatInfo.cpp" />
+    <ClCompile Include="internalFormatTarget.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +214,8 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_glcapsviewer.h" />
     <ClInclude Include="glCapsViewerCapsGroup.h" />
+    <ClInclude Include="internalFormatInfo.h" />
+    <ClInclude Include="internalFormatTarget.h" />
     <CustomBuild Include="glCapsViewerCore.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Message>

@@ -69,7 +69,9 @@
 	<enum value="0x81A5">GL_DEPTH_COMPONENT16</enum>
 	<enum value="0x81A6">GL_DEPTH_COMPONENT24</enum>
 	<enum value="0x81A7">GL_DEPTH_COMPONENT32</enum>
-	<!-- Internal formats -->
+  <enum value="0x8CAC">GL_DEPTH_COMPONENT32F</enum>
+  <enum value="0x84F9">GL_DEPTH_STENCIL</enum>
+  <!-- Internal formats -->
 	<enum value="803B">GL_ALPHA4</enum>
 	<enum value="803C">GL_ALPHA8</enum>
 	<enum value="803D">GL_ALPHA12</enum>
