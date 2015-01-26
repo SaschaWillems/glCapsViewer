@@ -340,14 +340,16 @@ string glCapsViewerCore::reportToXml()
 		string str = getEnumName(internalFormatTarget.target);
 		char * cstr = new char[str.length() + 1];
 		strcpy(cstr, str.c_str());
-		xml_node<> *formatTargetNode = doc.allocate_node(node_element, cstr);
+		xml_node<> *formatTargetNode = doc.allocate_node(node_element, "target");
+		formatTargetNode->append_attribute(doc.allocate_attribute("name", cstr));
 		internalFormatInfoNode->append_node(formatTargetNode);
 		
 		for (auto& internalTextureFormat : internalFormatTarget.textureFormats) {
 			string str = getEnumName(internalTextureFormat.textureFormat);
 			char * cstr = new char[str.length() + 1];
 			strcpy(cstr, str.c_str());
-			xml_node<> *internalFormatNode = doc.allocate_node(node_element, cstr);
+			xml_node<> *internalFormatNode = doc.allocate_node(node_element, "format");
+			internalFormatNode->append_attribute(doc.allocate_attribute("name", cstr));
 			internalFormatNode->append_attribute(doc.allocate_attribute("supported", internalTextureFormat.supported ? "true" : "false"));
 			formatTargetNode->append_node(internalFormatNode);
 
@@ -355,7 +357,8 @@ string glCapsViewerCore::reportToXml()
 				string str = to_string(formatInfoValue.infoValue);
 				char * cstr = new char[str.length() + 1];
 				strcpy(cstr, str.c_str());
-				xml_node<> *formatInfoValueNode = doc.allocate_node(node_element, formatInfoValue.infoString.c_str(), cstr);
+				xml_node<> *formatInfoValueNode = doc.allocate_node(node_element, "value", cstr);
+				formatInfoValueNode->append_attribute(doc.allocate_attribute("name", formatInfoValue.infoString.c_str()));
 				internalFormatNode->append_node(formatInfoValueNode);
 			}
 
