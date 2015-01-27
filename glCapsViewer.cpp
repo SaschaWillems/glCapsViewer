@@ -192,7 +192,9 @@ void glCapsViewer::generateReport()
 	// TODO : Check if extension is present!
 	core.readCompressedFormats();
 	// TODO : Check if extension is present!
-	core.readInternalFormats();
+	if (core.extensionSupported("GL_ARB_internalformat_query")) {
+		core.readInternalFormats();
+	}
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 
