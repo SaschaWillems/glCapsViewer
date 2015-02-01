@@ -70,7 +70,6 @@ namespace capsViewer {
 			textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_IMAGE_TYPE, "GL_TEXTURE_IMAGE_TYPE");
 			textureFormat.addValueInfo(infoTypeValue, GL_GET_TEXTURE_IMAGE_FORMAT, "GL_GET_TEXTURE_IMAGE_FORMAT");
 			textureFormat.addValueInfo(infoTypeValue, GL_GET_TEXTURE_IMAGE_TYPE, "GL_GET_TEXTURE_IMAGE_TYPE");
-			textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_COMPRESSED, "GL_TEXTURE_COMPRESSED");
 
 			// Compressed format block sizes
 			GLint compressedFormat;
@@ -81,7 +80,6 @@ namespace capsViewer {
 				textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_COMPRESSED_BLOCK_SIZE, "GL_TEXTURE_COMPRESSED_BLOCK_SIZE");
 			}
 
-			// TODO : Only for GL_ARB_internalformat_query2
 			if (internalformatquery2) {
 				textureFormat.addValueInfo(infoTypeValue, GL_INTERNALFORMAT_SUPPORTED, "GL_INTERNALFORMAT_SUPPORTED");
 				textureFormat.addValueInfo(infoTypeValue, GL_TEXTURE_COMPRESSED, "GL_TEXTURE_COMPRESSED");
