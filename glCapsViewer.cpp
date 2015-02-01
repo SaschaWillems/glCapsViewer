@@ -22,6 +22,7 @@
 
 #include "glCapsViewer.h"
 #include "glCapsViewerHttp.h"
+#include "settingsDialog.h"
 #include "internalFormatTarget.h"
 #include <GL/glew.h>
 #include <GL/wglew.h>
@@ -53,6 +54,7 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	connect(ui.actionSave_xml, SIGNAL(triggered()), this, SLOT(slotExportXml()));
 	connect(ui.actionDatabase, SIGNAL(triggered()), this, SLOT(slotBrowseDatabase()));
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
+	connect(ui.actionSettings, SIGNAL(triggered()), this, SLOT(slotSettings()));
 	connect(ui.actionUpload, SIGNAL(triggered()), this, SLOT(slotUpload()));
 	connect(ui.pushButtonRefreshDataBase, SIGNAL(released()), this, SLOT(slotRefreshDatabase()));
 	connect(ui.listWidgetDatabaseDevices, SIGNAL(itemSelectionChanged()), this, SLOT(slotDatabaseDevicesItemChanged()));
@@ -607,6 +609,12 @@ void glCapsViewer::slotAbout() {
 		"For usage and distribution details refer to the readme<br/><br/>"
 		"<a href='http://www.saschawillems.de'>http://www.saschawillems.de</a></p>";
 	QMessageBox::about(this, tr("About the OpenGL hardware capability viewer"), aboutText);
+}
+
+void glCapsViewer::slotSettings() {
+	capsViewer::settingsDialog dialog;
+	dialog.setModal(true);
+	dialog.exec();
 }
 
 void glCapsViewer::slotTabChanged(int index)

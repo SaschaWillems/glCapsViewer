@@ -52,6 +52,7 @@ private slots:
 	void slotExportXml();
 	void slotBrowseDatabase();
 	void slotAbout();
+	void slotSettings();
 	void slotUpload();
 	void slotRefreshDatabase();
 	void slotDatabaseDevicesItemChanged();
