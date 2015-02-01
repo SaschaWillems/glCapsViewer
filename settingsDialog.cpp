@@ -61,10 +61,11 @@ namespace capsViewer {
 		mainGrid->addLayout(topLayout, 2, 0);
 
 		mainGrid->addLayout(createLabeledEdit("DNS Name / IP:", "editProxyDns"), 3, 0);
-		mainGrid->addLayout(createLabeledEdit("User name (if required):", "editProxyUser"), 4, 0);
-		mainGrid->addLayout(createLabeledEdit("Password (if required):", "editProxyPassword"), 5, 0);
+		mainGrid->addLayout(createLabeledEdit("Port:", "editProxyPort"), 4, 0);
+		mainGrid->addLayout(createLabeledEdit("User name (if required):", "editProxyUser"), 5, 0);
+		mainGrid->addLayout(createLabeledEdit("Password (if required):", "editProxyPassword"), 6, 0);
 
-		mainGrid->addLayout(createCheckBox("Use proxy settings for upload", "checkBoxUseProxy"), 6, 0);
+		mainGrid->addLayout(createCheckBox("Use proxy settings for upload", "checkBoxUseProxy"), 7, 0);
 		
 		QHBoxLayout* hLayout = new QHBoxLayout;
 		QPushButton* btn;
@@ -79,7 +80,7 @@ namespace capsViewer {
 			}
 			hLayout->addWidget(btn);
 		}
-		mainGrid->addLayout(hLayout, 7, 0);
+		mainGrid->addLayout(hLayout, 8, 0);
 		setLayout(mainGrid);
 
 		this->setWindowTitle("Settings");
@@ -89,6 +90,7 @@ namespace capsViewer {
 		QLineEdit* edit;
 		this->findChild<QLineEdit*>("editSubmitterName", Qt::FindChildrenRecursively)->setText(settings.value("global/submitterName", "").toString());
 		this->findChild<QLineEdit*>("editProxyDns", Qt::FindChildrenRecursively)->setText(settings.value("proxy/dns", "").toString());
+		this->findChild<QLineEdit*>("editProxyPort", Qt::FindChildrenRecursively)->setText(settings.value("proxy/port", "").toString());
 		this->findChild<QLineEdit*>("editProxyUser", Qt::FindChildrenRecursively)->setText(settings.value("proxy/user", "").toString());
 		this->findChild<QLineEdit*>("editProxyPassword", Qt::FindChildrenRecursively)->setText(settings.value("proxy/password", "").toString());
 		this->findChild<QCheckBox*>("checkBoxUseProxy", Qt::FindChildrenRecursively)->setChecked(settings.value("proxy/enabled", "false").toBool());
@@ -108,6 +110,8 @@ namespace capsViewer {
 
 		edit = this->findChild<QLineEdit*>("editProxyDns", Qt::FindChildrenRecursively);
 		settings.setValue("proxy/dns", edit->text());
+		edit = this->findChild<QLineEdit*>("editProxyPort", Qt::FindChildrenRecursively);
+		settings.setValue("proxy/port", edit->text());
 		edit = this->findChild<QLineEdit*>("editProxyUser", Qt::FindChildrenRecursively);
 		settings.setValue("proxy/user", edit->text());
 		edit = this->findChild<QLineEdit*>("editProxyPassword", Qt::FindChildrenRecursively);

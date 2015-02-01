@@ -13,6 +13,11 @@ namespace capsViewer {
 		settings();
 		~settings();
 		QString submitterName;
+		QString proxyDns;
+		QString proxyPort;
+		QString proxyUserName;
+		QString proxyUserPassword;
+		bool proxyEnabled;
 		void restore();
 	};
 
