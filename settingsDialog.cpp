@@ -64,7 +64,6 @@ namespace capsViewer {
 		mainGrid->addLayout(createLabeledEdit("Port:", "editProxyPort"), 4, 0);
 		mainGrid->addLayout(createLabeledEdit("User name (if required):", "editProxyUser"), 5, 0);
 		mainGrid->addLayout(createLabeledEdit("Password (if required):", "editProxyPassword"), 6, 0);
-
 		mainGrid->addLayout(createCheckBox("Use proxy settings for upload", "checkBoxUseProxy"), 7, 0);
 		
 		QHBoxLayout* hLayout = new QHBoxLayout;

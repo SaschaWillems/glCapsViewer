@@ -43,8 +43,8 @@ public:
 	void generateReport();
 	bool contextTypeSelection();
 private:
-	capsViewer::settings appSettings;
 	QNetworkAccessManager* nam;
+	capsViewer::settings appSettings;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
 	void generateInternalFormatInfo();

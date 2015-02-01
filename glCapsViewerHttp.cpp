@@ -21,6 +21,7 @@
 */
 
 #include "glCapsViewerHttp.h"
+#include <QNetworkProxy>
 #include <rapidxml.hpp>
 #include <sstream>
 #include <QMessageBox>
@@ -34,6 +35,24 @@ glCapsViewerHttp::glCapsViewerHttp()
 
 glCapsViewerHttp::~glCapsViewerHttp()
 {
+}
+
+/// <summary>
+/// Checks if the OpenGL hardware database can be reached
+/// </summary>
+/// <returns>true if request succeeded, false if not (e.g. wrong proxy, or website down</returns>
+bool glCapsViewerHttp::checkServerConnection()
+{
+	manager = new QNetworkAccessManager(NULL);
+
+	QUrl qurl(QString::fromStdString("http://opengl.delphigl.de/services/gl_serverstate.php"));
+	QNetworkReply* reply = manager->get(QNetworkRequest(qurl));
+
+	QEventLoop loop;
+	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	loop.exec(QEventLoop::ExcludeUserInputEvents);
+
+	return (reply->error() == QNetworkReply::NoError);
 }
 
 /// <summary>

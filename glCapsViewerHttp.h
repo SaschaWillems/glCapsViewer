@@ -48,6 +48,7 @@ class glCapsViewerHttp :
 	Q_OBJECT
 private:
 	string baseUrl = "http://opengl.delphigl.de/";
+	QNetworkProxy *proxy;
 	QNetworkAccessManager *manager;
 	string httpGet(string url);
 	string httpPost(string url, string data);
@@ -57,6 +58,7 @@ public:
 	bool checkReportPresent(string description);
 	vector<string> fetchDevices();
 	vector<reportInfo> fetchDeviceReports(string device);
+	bool checkServerConnection();
 	string fetchReport(int reportId);
 	string postReport(string xml);
 	string postReportForUpdate(string xml);

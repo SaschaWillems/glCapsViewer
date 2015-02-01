@@ -82,6 +82,18 @@ glCapsViewer::~glCapsViewer()
 void glCapsViewer::updateReportState()
 {
 	glCapsViewerHttp glhttp;
+
+	ui.labelReportPresent->setText("<font color='#000000'>Connecting to database...</font>");
+	ui.labelReportPresent->setVisible(true);
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	if (!glhttp.checkServerConnection()) {
+		ui.labelReportPresent->setText("<font color='#FF0000'>Could not connect to the OpenGL hardware database!\n\nPlease check your internet connection and proxy settings!</font>");
+		ui.labelReportPresent->setVisible(true);
+		QApplication::restoreOverrideCursor();
+		return;
+	}
+
 	if (glhttp.checkReportPresent(core.description)) {
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database, all fields up-to-date</font>");
 		// Report present, check if it can be updated		
@@ -94,6 +106,7 @@ void glCapsViewer::updateReportState()
 		ui.labelReportPresent->setText("<font color='#bc0003'>Device not yet present in database</font>");
 	}
 	ui.labelReportPresent->setVisible(true);
+	QApplication::restoreOverrideCursor();
 }
 
 /// <summary>
@@ -525,11 +538,15 @@ void glCapsViewer::slotClose(){
 void glCapsViewer::slotUpload(){
 	glCapsViewerHttp glchttp;
 
+	if (!glchttp.checkServerConnection()) {
+		QMessageBox::warning(this, tr("Error"), tr("Could not connect to the OpenGL hardware database!\n\nPlease check your internet connection and proxy settings!"));
+		return;
+	}
+
 	if (!glchttp.checkReportPresent(core.description)) {
 		// TODO : Depending on context type? (ES / GL)
-
 		bool ok;
-		QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, "", &ok);
+		QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, appSettings.submitterName, &ok);
 		core.submitter = text.toStdString();
 		if (ok) {
 			QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -548,17 +565,7 @@ void glCapsViewer::slotUpload(){
 	else {
 		// Check if report can be updated
 		bool canUpdate = false;
-		//// TODO : Test, put into separate function
 		int reportId = glchttp.getReportId(core.description);
-		//stringstream capsParam;
-		//for (auto& capGroup : core.capgroups) {
-		//	for (auto& cap : capGroup.capabilities) {
-		//		if (cap.second != "n/a") {
-		//			capsParam << cap.first << ",";
-		//		}
-		//	}
-		//}
-		//canUpdate = glchttp.checkReportCanUpdate(reportId, capsParam.str());
 		canUpdate = canUpdateReport(reportId);
 		if (canUpdate) {
 			QMessageBox::StandardButton reply;
@@ -566,7 +573,7 @@ void glCapsViewer::slotUpload(){
 			if (reply == QMessageBox::Yes) {
 				// Submitter name to be stored in report update log
 				bool ok;
-				QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, "", &ok);
+				QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, appSettings.submitterName, &ok);
 				core.submitter = text.toStdString();
 				// TODO : Error handling
 				if (ok) {
@@ -597,7 +604,7 @@ void glCapsViewer::slotExportXml(){
 }
 
 void glCapsViewer::slotBrowseDatabase() {
-	QString link = "http://openglcaps.delphigl.de";
+	QString link = "http://opengl.delphigl.de";
 	QDesktopServices::openUrl(QUrl(link));
 }
 
@@ -618,6 +625,7 @@ void glCapsViewer::slotSettings() {
 	capsViewer::settingsDialog dialog(appSettings);
 	dialog.setModal(true);
 	dialog.exec();
+	appSettings.restore();
 }
 
 void glCapsViewer::slotTabChanged(int index)

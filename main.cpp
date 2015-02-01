@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	QFileInfo capsXmlFile("./capslist.xml");
 	if (!capsXmlFile.exists()) {
 		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(&capsViewer, "File missing", "glCapsViewer could not locate the xml file containing the OpenGL capability list!\n\n\Do you want to download it?", QMessageBox::Yes | QMessageBox::No);
+		reply = QMessageBox::question(&capsViewer, "File missing", "glCapsViewer could not locate the xml file containing the OpenGL capability list!\n\nDo you want to download it?", QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes) {
 			glCapsViewerHttp glchttp;
 			string capsXml = glchttp.fetchCapsList();
