@@ -1,4 +1,5 @@
 #include "settingsDialog.h"
+#include "settings.h"
 
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -35,8 +36,10 @@ namespace capsViewer {
 		return hLayout;
 	}
 
-	settingsDialog::settingsDialog(QWidget * parent, Qt::WindowFlags f)
+	settingsDialog::settingsDialog(settings appSet, QWidget * parent, Qt::WindowFlags f)
 	{
+		appSettings = appSet;
+
 		QGridLayout* mainGrid = new QGridLayout;
 		QVBoxLayout* topLayout = new QVBoxLayout;
 		//topLayout->addWidget(new QTextEdit);
@@ -80,6 +83,15 @@ namespace capsViewer {
 		setLayout(mainGrid);
 
 		this->setWindowTitle("Settings");
+
+		// Restore settings
+		QSettings settings("saschawillems", "glcapsviewer");
+		QLineEdit* edit;
+		this->findChild<QLineEdit*>("editSubmitterName", Qt::FindChildrenRecursively)->setText(settings.value("global/submitterName", "").toString());
+		this->findChild<QLineEdit*>("editProxyDns", Qt::FindChildrenRecursively)->setText(settings.value("proxy/dns", "").toString());
+		this->findChild<QLineEdit*>("editProxyUser", Qt::FindChildrenRecursively)->setText(settings.value("proxy/user", "").toString());
+		this->findChild<QLineEdit*>("editProxyPassword", Qt::FindChildrenRecursively)->setText(settings.value("proxy/password", "").toString());
+		this->findChild<QCheckBox*>("checkBoxUseProxy", Qt::FindChildrenRecursively)->setChecked(settings.value("proxy/enabled", "false").toBool());
 	}
 
 
@@ -108,7 +120,7 @@ namespace capsViewer {
 
 	void settingsDialog::slotCancel()
 	{
-
+		this->close();
 	}
 
 }

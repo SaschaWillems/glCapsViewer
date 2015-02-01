@@ -145,10 +145,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_settingsDialog.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_settingsDialog.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_glcapsviewer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -167,10 +164,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_settingsDialog.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="glcapsviewer.cpp" />
     <ClCompile Include="capsGroup.cpp" />
     <ClCompile Include="glcapsviewerCore.cpp" />
@@ -178,6 +171,7 @@
     <ClCompile Include="internalFormatInfo.cpp" />
     <ClCompile Include="internalFormatTarget.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="settings.cpp" />
     <ClCompile Include="settingsDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +219,7 @@
     <ClInclude Include="capsGroup.h" />
     <ClInclude Include="internalFormatInfo.h" />
     <ClInclude Include="internalFormatTarget.h" />
+    <ClInclude Include="settings.h" />
     <CustomBuild Include="settingsDialog.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing settingsDialog.h...</Message>

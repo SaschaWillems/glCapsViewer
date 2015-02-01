@@ -23,6 +23,7 @@
 #include "glCapsViewer.h"
 #include "glCapsViewerHttp.h"
 #include "settingsDialog.h"
+#include "settings.h"
 #include "internalFormatTarget.h"
 #include <GL/glew.h>
 #include <GL/wglew.h>
@@ -63,6 +64,8 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+	appSettings.restore();
 
 	// TODO : Same as capslist.xml, check if exists and if not, download from server
 	core.loadEnumList();
@@ -581,7 +584,7 @@ void glCapsViewer::slotUpload(){
 			if (reply == QMessageBox::Yes) {
 				reportId = glchttp.getReportId(core.description);
 				stringstream ss;
-				ss << "http://delphigl.de/glcapsviewer/gl_generatereport.php?reportID=" << to_string(reportId);
+				ss << "http://opengl.delphigl.de/gl_generatereport.php?reportID=" << to_string(reportId);
 				QDesktopServices::openUrl(QUrl(QString::fromStdString(ss.str())));
 			}
 		}
@@ -612,7 +615,7 @@ void glCapsViewer::slotAbout() {
 }
 
 void glCapsViewer::slotSettings() {
-	capsViewer::settingsDialog dialog;
+	capsViewer::settingsDialog dialog(appSettings);
 	dialog.setModal(true);
 	dialog.exec();
 }

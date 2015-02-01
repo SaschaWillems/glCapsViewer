@@ -27,6 +27,7 @@
 #include <QNetworkReply>
 #include "ui_glcapsviewer.h"
 #include "glCapsViewerCore.h"
+#include "settings.h"
 
 class glCapsViewer : public QMainWindow
 {
@@ -42,6 +43,7 @@ public:
 	void generateReport();
 	bool contextTypeSelection();
 private:
+	capsViewer::settings appSettings;
 	QNetworkAccessManager* nam;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
