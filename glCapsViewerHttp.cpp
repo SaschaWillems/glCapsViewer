@@ -204,7 +204,7 @@ string glCapsViewerHttp::postReport(string xml)
 {
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "/convertreport.php";
+	urlss << baseUrl << "services/gl_convertreport.php";
 	httpReply = httpPost(urlss.str(), xml);
 	return httpReply;
 }
