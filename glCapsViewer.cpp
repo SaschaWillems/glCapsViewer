@@ -69,6 +69,12 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 
 	// TODO : Same as capslist.xml, check if exists and if not, download from server
 	core.loadEnumList();
+
+	#ifdef DEVDATABASE
+		stringstream newTitle;
+		newTitle << this->windowTitle().toStdString() << " - ! Connected to development database !";
+		this->setWindowTitle(QString::fromStdString(newTitle.str()));
+	#endif
 }
 
 glCapsViewer::~glCapsViewer()
@@ -522,7 +528,8 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 
 	// Check if compressed formats are present
 	xml_node<> * compressedFormatsNode = root_node->first_node("compressedtextureformats");
-	if (compressedFormatsNode->first_node("format") == NULL) {
+	// No compressed formats in database but present for current device
+	if ( (compressedFormatsNode->first_node("format") == NULL) && (core.compressedFormats.size() > 0) ) {
 		compressedFormatsMissing = true;
 	}
 

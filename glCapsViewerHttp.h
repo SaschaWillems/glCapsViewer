@@ -47,7 +47,11 @@ class glCapsViewerHttp :
 {
 	Q_OBJECT
 private:
+#ifdef DEVDATABASE
+	string baseUrl = "http://www.delphigl.de/opengldatabase_dev/";
+#else
 	string baseUrl = "http://opengl.delphigl.de/";
+#endif
 	QNetworkProxy *proxy;
 	QNetworkAccessManager *manager;
 	string httpGet(string url);
