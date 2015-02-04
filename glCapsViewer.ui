@@ -417,6 +417,8 @@ color: rgb(0, 0, 255);</string>
    <addaction name="separator"/>
    <addaction name="actionUpload"/>
    <addaction name="actionSave_xml"/>
+   <addaction name="separator"/>
+   <addaction name="actionDevice"/>
    <addaction name="actionDatabase"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
@@ -506,6 +508,21 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="toolTip">
     <string>Export current OpenGL report to xml</string>
+   </property>
+  </action>
+  <action name="actionDevice">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="glcapsviewer.qrc">
+     <normaloff>:/glcapsviewer/Resources/device48.png</normaloff>:/glcapsviewer/Resources/device48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Device</string>
+   </property>
+   <property name="toolTip">
+    <string>Show device in database</string>
    </property>
   </action>
  </widget>

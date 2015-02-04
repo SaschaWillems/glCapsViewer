@@ -53,6 +53,7 @@ private slots:
 	void slotClose();
 	void slotExportXml();
 	void slotBrowseDatabase();
+	void slotShowDeviceOnline();
 	void slotAbout();
 	void slotSettings();
 	void slotUpload();

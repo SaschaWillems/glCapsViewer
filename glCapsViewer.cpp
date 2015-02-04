@@ -57,6 +57,7 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
 	connect(ui.actionSettings, SIGNAL(triggered()), this, SLOT(slotSettings()));
 	connect(ui.actionUpload, SIGNAL(triggered()), this, SLOT(slotUpload()));
+	connect(ui.actionDevice, SIGNAL(triggered()), this, SLOT(slotShowDeviceOnline()));
 	connect(ui.pushButtonRefreshDataBase, SIGNAL(released()), this, SLOT(slotRefreshDatabase()));
 	connect(ui.listWidgetDatabaseDevices, SIGNAL(itemSelectionChanged()), this, SLOT(slotDatabaseDevicesItemChanged()));
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(slotTabChanged(int)));
@@ -91,6 +92,7 @@ void glCapsViewer::updateReportState()
 
 	ui.labelReportPresent->setText("<font color='#000000'>Connecting to database...</font>");
 	ui.labelReportPresent->setVisible(true);
+	ui.actionDevice->setEnabled(false);
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	if (!glhttp.checkServerConnection()) {
@@ -101,6 +103,7 @@ void glCapsViewer::updateReportState()
 	}
 
 	if (glhttp.checkReportPresent(core.description)) {
+		ui.actionDevice->setEnabled(true);
 		ui.labelReportPresent->setText("<font color='#00813e'>Device already present in database, all fields up-to-date</font>");
 		// Report present, check if it can be updated		
 		int reportId = glhttp.getReportId(core.description);
@@ -611,8 +614,17 @@ void glCapsViewer::slotExportXml(){
 }
 
 void glCapsViewer::slotBrowseDatabase() {
-	QString link = "http://opengl.delphigl.de";
+	glCapsViewerHttp glchttp;
+	QString link = QString::fromStdString(glchttp.getBaseUrl());
 	QDesktopServices::openUrl(QUrl(link));
+}
+
+void glCapsViewer::slotShowDeviceOnline() {
+	glCapsViewerHttp glchttp;
+	int reportId = glchttp.getReportId(core.description);
+	stringstream ss;
+	ss << glchttp.getBaseUrl() << "gl_generatereport.php?reportID=" << to_string(reportId);
+	QDesktopServices::openUrl(QUrl(QString::fromStdString(ss.str())));
 }
 
 void glCapsViewer::slotRefreshDatabase() {

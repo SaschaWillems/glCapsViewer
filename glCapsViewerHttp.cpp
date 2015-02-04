@@ -288,3 +288,11 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 	return reportList;
 }
 
+/// <summary>
+/// Returns the base url of the OpenGL hardware database
+/// </summary>
+string glCapsViewerHttp::getBaseUrl()
+{
+	return baseUrl;
+}
+

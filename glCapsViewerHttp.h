@@ -63,6 +63,7 @@ public:
 	vector<string> fetchDevices();
 	vector<reportInfo> fetchDeviceReports(string device);
 	bool checkServerConnection();
+	string getBaseUrl();
 	string fetchReport(int reportId);
 	string postReport(string xml);
 	string postReportForUpdate(string xml);

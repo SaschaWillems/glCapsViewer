@@ -40,6 +40,7 @@ public:
     QAction *actionAbout;
     QAction *actionExit;
     QAction *actionSave_xml;
+    QAction *actionDevice;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout_2;
     QTabWidget *tabWidget;
@@ -133,6 +134,12 @@ public:
         QIcon icon7;
         icon7.addFile(QStringLiteral(":/glcapsviewer/Resources/save48.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionSave_xml->setIcon(icon7);
+        actionDevice = new QAction(glcapsviewerClass);
+        actionDevice->setObjectName(QStringLiteral("actionDevice"));
+        actionDevice->setEnabled(false);
+        QIcon icon8;
+        icon8.addFile(QStringLiteral(":/glcapsviewer/Resources/device48.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionDevice->setIcon(icon8);
         centralWidget = new QWidget(glcapsviewerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout_2 = new QHBoxLayout(centralWidget);
@@ -245,9 +252,9 @@ public:
 
         horizontalLayout_3->addLayout(verticalLayout);
 
-        QIcon icon8;
-        icon8.addFile(QStringLiteral(":/glcapsviewer/Resources/gpu32.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabDevice, icon8, QString());
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/glcapsviewer/Resources/gpu32.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget->addTab(tabDevice, icon9, QString());
         tabDatabase = new QWidget();
         tabDatabase->setObjectName(QStringLiteral("tabDatabase"));
         horizontalLayout_5 = new QHBoxLayout(tabDatabase);
@@ -259,9 +266,9 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         pushButtonRefreshDataBase = new QPushButton(tabDatabase);
         pushButtonRefreshDataBase->setObjectName(QStringLiteral("pushButtonRefreshDataBase"));
-        QIcon icon9;
-        icon9.addFile(QStringLiteral(":/glcapsviewer/Resources/refresh16.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonRefreshDataBase->setIcon(icon9);
+        QIcon icon10;
+        icon10.addFile(QStringLiteral(":/glcapsviewer/Resources/refresh16.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonRefreshDataBase->setIcon(icon10);
         pushButtonRefreshDataBase->setFlat(false);
 
         verticalLayout_2->addWidget(pushButtonRefreshDataBase, 0, Qt::AlignLeft);
@@ -349,14 +356,14 @@ public:
 
         horizontalLayout_5->addLayout(verticalLayout_2);
 
-        QIcon icon10;
-        icon10.addFile(QStringLiteral(":/glcapsviewer/Resources/db24.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabDatabase, icon10, QString());
+        QIcon icon11;
+        icon11.addFile(QStringLiteral(":/glcapsviewer/Resources/db24.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget->addTab(tabDatabase, icon11, QString());
         tabCompare = new QWidget();
         tabCompare->setObjectName(QStringLiteral("tabCompare"));
-        QIcon icon11;
-        icon11.addFile(QStringLiteral(":/glcapsviewer/Resources/compare24.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabCompare, icon11, QString());
+        QIcon icon12;
+        icon12.addFile(QStringLiteral(":/glcapsviewer/Resources/compare24.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget->addTab(tabCompare, icon12, QString());
 
         horizontalLayout_2->addWidget(tabWidget);
 
@@ -377,6 +384,8 @@ public:
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionUpload);
         mainToolBar->addAction(actionSave_xml);
+        mainToolBar->addSeparator();
+        mainToolBar->addAction(actionDevice);
         mainToolBar->addAction(actionDatabase);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionSettings);
@@ -423,6 +432,10 @@ public:
         actionSave_xml->setText(QApplication::translate("glcapsviewerClass", "Save xml", 0));
 #ifndef QT_NO_TOOLTIP
         actionSave_xml->setToolTip(QApplication::translate("glcapsviewerClass", "Export current OpenGL report to xml", 0));
+#endif // QT_NO_TOOLTIP
+        actionDevice->setText(QApplication::translate("glcapsviewerClass", "Device", 0));
+#ifndef QT_NO_TOOLTIP
+        actionDevice->setToolTip(QApplication::translate("glcapsviewerClass", "Show device in database", 0));
 #endif // QT_NO_TOOLTIP
         labelDescription->setText(QApplication::translate("glcapsviewerClass", "Getting OpenGL implementation details...", 0));
         labelReportPresent->setText(QApplication::translate("glcapsviewerClass", "TextLabel", 0));
