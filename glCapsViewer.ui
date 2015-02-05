@@ -368,15 +368,6 @@ color: rgb(0, 0, 255);</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabCompare">
-       <attribute name="icon">
-        <iconset resource="glcapsviewer.qrc">
-         <normaloff>:/glcapsviewer/Resources/compare24.png</normaloff>:/glcapsviewer/Resources/compare24.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Compare</string>
-       </attribute>
-      </widget>
      </widget>
     </item>
    </layout>

@@ -74,7 +74,6 @@ public:
     QTableWidget *tableWidgetDatabaseDeviceReport;
     QLabel *labelDatabaseDeviceExtensions;
     QListWidget *listWidgetDatabaseDeviceExtensions;
-    QWidget *tabCompare;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
 
@@ -359,11 +358,6 @@ public:
         QIcon icon11;
         icon11.addFile(QStringLiteral(":/glcapsviewer/Resources/db24.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tabDatabase, icon11, QString());
-        tabCompare = new QWidget();
-        tabCompare->setObjectName(QStringLiteral("tabCompare"));
-        QIcon icon12;
-        icon12.addFile(QStringLiteral(":/glcapsviewer/Resources/compare24.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabCompare, icon12, QString());
 
         horizontalLayout_2->addWidget(tabWidget);
 
@@ -465,7 +459,6 @@ public:
         ___qtablewidgetitem1->setText(QApplication::translate("glcapsviewerClass", "Value", 0));
         labelDatabaseDeviceExtensions->setText(QApplication::translate("glcapsviewerClass", "Extensions", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabDatabase), QApplication::translate("glcapsviewerClass", "Database", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tabCompare), QApplication::translate("glcapsviewerClass", "Compare", 0));
     } // retranslateUi
 
 };
