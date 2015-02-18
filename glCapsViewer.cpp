@@ -26,7 +26,9 @@
 #include "settings.h"
 #include "internalFormatTarget.h"
 #include <GL/glew.h>
-#include <GL/wglew.h>
+#ifdef _WIN32
+	#include <GL/wglew.h>
+#endif
 #include <GLFW/glfw3.h>
 #include <QDesktopServices>
 #include <QtWidgets/QTextBrowser>
@@ -339,6 +341,8 @@ bool glCapsViewer::contextTypeSelection()
 	// Get available context types
 	core.availableContextTypes.clear();
 	core.availableContextTypes.push_back("OpenGL default");
+
+#ifdef _WIN32	
 	// Core context
 	if (wglewIsSupported("WGL_ARB_create_context_profile")) {
 		core.availableContextTypes.push_back("OpenGL core context");
@@ -356,6 +360,7 @@ bool glCapsViewer::contextTypeSelection()
 			core.availableContextTypes.push_back("OpenGL ES 3.0 context");
 		}
 	}
+#endif
 	core.contextType = "default";
 	if (core.availableContextTypes.size() > 1) {
 		QStringList items;

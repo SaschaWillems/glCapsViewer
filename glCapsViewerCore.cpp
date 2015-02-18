@@ -22,11 +22,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <Windows.h>
-#include <time.h> 
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+#ifdef _WIN32
+	#include <Windows.h>
+#endif 
+#ifdef __linux__
+	#include <GL/glx.h>
+#endif
+#include <time.h> 
 
 #include <string>
 #include <iostream>
@@ -163,6 +168,7 @@ void glCapsViewerCore::printExtensions()
 
 void glCapsViewerCore::readOsExtensions() 
 {
+#ifdef _WIN32
 	typedef const char* (WINAPI * PFNWGLGETEXTENSIONSSTRINGARBPROC)(HDC hdc);
 	PFNWGLGETEXTENSIONSSTRINGARBPROC  pwglGetExtensionsStringARB = 0;
 	#define wglGetExtensionsStringARB pwglGetExtensionsStringARB
@@ -177,6 +183,18 @@ void glCapsViewerCore::readOsExtensions()
 			boost::algorithm::split(osextensions, wglExtensionString, boost::algorithm::is_any_of(" "));
 		}
 	}
+#endif
+#ifdef __linux__
+	Display *dpy(XOpenDisplay(NULL));
+	int screen = XDefaultScreen(dpy);
+	const char* glXExtensions = glXQueryExtensionsString(dpy, screen);
+	if (glXExtensions)
+	{
+		std::string glXExtensionString = reinterpret_cast<const char*>(glXExtensions);
+		boost::algorithm::split(osextensions, glXExtensionString, boost::algorithm::is_any_of(" "));
+	}
+#endif
+	// TODO : MacOSX
 }
 
 void glCapsViewerCore::readImplementation()
