@@ -30,6 +30,7 @@
 #endif 
 #ifdef __linux__
 	#include <GL/glx.h>
+	#include <sys/utsname.h>
 #endif
 #include <time.h> 
 
@@ -134,10 +135,15 @@ string glCapsViewerCore::readOperatingSystem()
 		} else {
 			return "Windows (unknown)";
 		}
-	#else
-		// TODO 
-		return "unknown";
 	#endif
+	#ifdef __linux__
+		struct utsname osname;
+		uname(&osname);
+		stringstream osinfo;
+		osinfo << osname.sysname << " " << osname.release << " (" << osname.machine << ")";
+		return osinfo.str();
+	#endif
+	// TODO : MacOSX
 }
 
 void glCapsViewerCore::readExtensions()
