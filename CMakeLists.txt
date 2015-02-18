@@ -4,18 +4,25 @@ cmake_policy(VERSION 2.8.11)
 project(glcapsviewer)
 set(NAME glcapsviewer)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR OFF)
+set(CMAKE_AUTOMOC OFF)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+add_definitions(-std=c++11)
 
 include_directories("." "GeneratedFiles")
-
 
 file(GLOB SOURCE *.cpp)
 file(GLOB HEADER *.h)
 
 #Required packages
+
+IF(UNIX)
+	find_package(PkgConfig REQUIRED)
+	find_package (Threads)
+	find_package(X11 REQUIRED)
+	pkg_search_module(GLFW REQUIRED glfw3)
+ENDIF()
 
 #Qt
 find_package(Qt5Core REQUIRED)
@@ -26,16 +33,16 @@ file (GLOB Resources *.qrc)
 QT5_ADD_RESOURCES(ResourceSources ${Resources})
 
 #Gl
-find_package(OPENGL REQUIRED)
+find_package(OpenGL REQUIRED)
 
 #Glew
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
-link_directories(${GLEW_LIBRARY})
+link_directories(${GLEW_LIBRARIES})
 
 #Glfw
 include_directories(${GLFW_INCLUDE_DIR})
-link_directories(${GLFW_LIBRARY})
+link_directories(${GLFW_LIBRARIES})
 
 #Boost
 find_package(Boost REQUIRED)
@@ -54,6 +61,7 @@ ENDIF(MSVC)
 # Unicode
 add_definitions(-DUNICODE -D_UNICODE)
 
+
 add_executable(${NAME} WIN32
 ${SOURCE}
 ${HEADER}
@@ -63,7 +71,8 @@ target_link_libraries(${NAME} Qt5::Core)
 target_link_libraries(${NAME} Qt5::Gui)	
 target_link_libraries(${NAME} Qt5::Network)	
 target_link_libraries(${NAME} Qt5::Widgets)
-target_link_libraries(${NAME} ${GLEW_LIBRARY}/glew32.lib)
+target_link_libraries(${NAME} ${GLEW_LIBRARIES})
 target_link_libraries(${NAME} ${OPENGL_LIBRARIES})
-target_link_libraries(${NAME} ${Boost_LIBRARIES} )
-target_link_libraries(${NAME} ${GLFW_LIBRARY}/glfw3.lib)
+target_link_libraries(${NAME} ${Boost_LIBRARIES})
+target_link_libraries(${NAME} glfw ${GLFW_LIBRARY})
+
