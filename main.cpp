@@ -18,13 +18,15 @@
 *
 */
 
-#include "glcapsviewer.h"
+#include "glCapsViewer.h"
 #include "glCapsViewerCore.h"
 #include "glCapsViewerHttp.h"
 #include <sstream>  
 #include <fstream>
 #include <GL/glew.h>
-#include <GL/wglew.h>
+#ifdef _WIN32
+	#include <GL/wglew.h>
+#endif
 #include <GLFW/glfw3.h>
 #include <QtWidgets/QApplication>
 #include <QTreeWidgetItem>
@@ -33,6 +35,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileInfo>
+
 
 int main(int argc, char *argv[])
 {
@@ -61,6 +64,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
 	if (!glfwInit())
 	{
 		exit(EXIT_FAILURE);
@@ -69,10 +73,10 @@ int main(int argc, char *argv[])
 	// Create basic window first to see what context types are supported
 
 	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-	capsViewer.window = glfwCreateWindow(1280, 720, "glCapsViewer", NULL, NULL);
+	capsViewer.window = glfwCreateWindow(640, 480, "glCapsViewer", NULL, NULL);
 	if (!capsViewer.window)
 	{
-		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window!"));
+		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window (1)!"));
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
@@ -97,7 +101,7 @@ int main(int argc, char *argv[])
 	//If the window couldn't be created
 	if (!capsViewer.window)
 	{
-		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window!"));
+		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window (2)!"));
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
