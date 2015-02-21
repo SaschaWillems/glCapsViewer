@@ -57,13 +57,13 @@ check_include_file_cxx("rapidxml.hpp" RAPIDXML_HPP_FOUND)
 IF(NOT RAPIDXML_HPP_FOUND)
     # The rapidxml headers in Fedora's package have ".h" suffixes
     check_include_file_cxx("rapidxml.h" RAPIDXML_H_FOUND)
-	IF(RAPIDXML_H_FOUND)
-	    # Create stub to map header from .hpp to .h
+    IF(RAPIDXML_H_FOUND)
+        # Create stub to map header from .hpp to .h
         set(STUBS "${CMAKE_BINARY_DIR}/stubs")
-	    file(WRITE "${STUBS}/rapidxml.hpp" "#include <rapidxml.h>\n")
-		file(WRITE "${STUBS}/rapidxml_print.hpp" "#include <rapidxml_print.h>\n")
+        file(WRITE "${STUBS}/rapidxml.hpp" "#include <rapidxml.h>\n")
+        file(WRITE "${STUBS}/rapidxml_print.hpp" "#include <rapidxml_print.h>\n")
         include_directories(${STUBS})
-	ELSE()
+    ELSE()
         message(FATAL_ERROR "required header rapidxml.{h|hpp} not found")
     ENDIF()
 ENDIF()
