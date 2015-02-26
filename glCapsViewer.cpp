@@ -29,6 +29,9 @@
 #ifdef _WIN32
 	#include <GL/wglew.h>
 #endif
+#ifdef __linux__
+	#include <GL/glxew.h>
+#endif
 #include <GLFW/glfw3.h>
 #include <QDesktopServices>
 #include <QtWidgets/QTextBrowser>
@@ -354,6 +357,25 @@ bool glCapsViewer::contextTypeSelection()
 	}
 	// GLES 2.0
 	if (wglewIsSupported("WGL_EXT_create_context_es2_profile")) {
+		core.availableContextTypes.push_back("OpenGL ES 2.0 context");
+		// GLES 3.0 (superset of ES 2.0)
+		if (glewIsSupported("GL_ARB_ES3_compatibility")) {
+			core.availableContextTypes.push_back("OpenGL ES 3.0 context");
+		}
+	}
+#endif
+#ifdef __linux__
+	// Core context
+	if (glxewIsSupported("GLX_ARB_create_context_profile")) {
+		core.availableContextTypes.push_back("OpenGL core context");
+	}
+	// OpenGL ES context
+	// GLES 1.0
+	if (glxewIsSupported("GLX_EXT_create_context_es_profile")) {
+		core.availableContextTypes.push_back("OpenGL ES 1.0 context");
+	}
+	// GLES 2.0
+	if (glxewIsSupported("GLX_EXT_create_context_es2_profile")) {
 		core.availableContextTypes.push_back("OpenGL ES 2.0 context");
 		// GLES 3.0 (superset of ES 2.0)
 		if (glewIsSupported("GL_ARB_ES3_compatibility")) {
