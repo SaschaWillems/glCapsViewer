@@ -9,6 +9,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-std=c++11)
+add_definitions(-std=c++0x)
 
 include_directories("." "GeneratedFiles")
 
