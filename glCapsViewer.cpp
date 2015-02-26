@@ -29,9 +29,6 @@
 #ifdef _WIN32
 	#include <GL/wglew.h>
 #endif
-#ifdef __linux__
-	#include <GL/glxew.h>
-#endif
 #include <GLFW/glfw3.h>
 #include <QDesktopServices>
 #include <QtWidgets/QTextBrowser>
@@ -49,6 +46,9 @@
 #include <QInputDialog>
 #include <sstream>  
 #include <rapidxml.hpp>
+#ifdef __linux__
+	#include <GL/glxew.h>
+#endif
 
 glCapsViewer::glCapsViewer(QWidget *parent)
 	: QMainWindow(parent)
@@ -216,6 +216,7 @@ void glCapsViewer::generateReport()
 	ui.treeWidget->clear();
 	ui.treeWidgetExtensions->clear();
 	ui.listWidgetCompressedFormats->clear();
+
 
 	core.readExtensions();
 	core.readOsExtensions();
