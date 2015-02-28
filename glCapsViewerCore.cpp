@@ -42,6 +42,7 @@
 #include <iomanip>
 #include <ctime>
 #include <QXmlStreamReader>
+#include <QDebug>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -275,7 +276,7 @@ void glCapsViewerCore::readInternalFormats()
 }
 
 /// <summary>
-/// Loads the list of available compressed texture formats from xml file
+/// Loads mapping list of OpenGL enum values and strings from xml file
 /// </summary>
 bool glCapsViewerCore::loadEnumList()
 {
@@ -421,48 +422,72 @@ void glCapsViewerCore::exportXml(string fileName)
 void glCapsViewerCore::readCapabilities()
 {
 
-	using namespace rapidxml;
-	xml_document<> doc;
-	xml_node<> * root_node;
-	// Read the xml file into a vector
-	ifstream theFile("capslist.xml");
-	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+	ifstream enumListxml("capslist.xml");
+	vector<char> buffer((istreambuf_iterator<char>(enumListxml)), istreambuf_iterator<char>());
 	buffer.push_back('\0');
-	doc.parse<0>(&buffer[0]);
-	root_node = doc.first_node("categories");
+	QXmlStreamReader xmlStream(&buffer[0]);
+	QXmlStreamAttributes nodeAttribs;
 
-	for (xml_node<> * category_node = root_node->first_node("category"); category_node; category_node = category_node->next_sibling())
-	{
-		string catName = category_node->first_attribute("name")->value();
-		capsViewer::capsGroup capsGroup;
-		capsGroup.name = catName;
-		capsGroup.supported = true;
+	while (!xmlStream.atEnd())  {
 
-		// TODO : Check requirement (gl version, extension)
-		// TODO : wgl and glx need to be checked different (wglewIsSupported, etc.)
-		string reqExt = category_node->first_node("requirements")->first_attribute("extension")->value();
-		string reqVersion = category_node->first_node("requirements")->first_attribute("version")->value();
+		xmlStream.readNext();
 
-		// Check extension
-		if (reqExt != "") {
-			capsGroup.supported = extensionSupported(reqExt);
-		}
-		if (reqVersion != "") {
-			// TODO : Check against supported OpenGL version
-		}
+		if (xmlStream.name() == "category") {
+			// TODO : Check requirement (gl version, extension)
+			// TODO : wgl and glx need to be checked different (wglewIsSupported, etc.)
+			nodeAttribs = xmlStream.attributes();
+			QString catName = nodeAttribs.value("name").toString();
+			capsViewer::capsGroup capsGroup;
+			capsGroup.name = catName.toStdString();
+			capsGroup.supported = false;
 
-		if (capsGroup.supported) {
-			for (xml_node<> * cap_node = category_node->first_node("cap"); cap_node; cap_node = cap_node->next_sibling("cap"))
-			{
-				string capName = cap_node->first_attribute("name")->value();
-				string capType = cap_node->first_attribute("type")->value();
-				uint32_t capComponents = boost::lexical_cast<HexTo<uint32_t>>(cap_node->first_attribute("components")->value());
-				uint32_t capEnum = boost::lexical_cast<HexTo<uint32_t>>(cap_node->first_attribute("enum")->value());
-				capsGroup.addCapability(capName, capEnum, capType, capComponents);
+			while (!xmlStream.atEnd()) {
+
+				xmlStream.readNext();
+
+				if ((xmlStream.name() == "requirements") && (xmlStream.isStartElement())) {
+					QXmlStreamAttributes nodeAttribs = xmlStream.attributes();
+					string reqExt = nodeAttribs.value("extension").toString().toStdString();
+					string reqVersion = nodeAttribs.value("version").toString().toStdString();
+
+					// Check extension
+					if (!reqExt.empty()) {
+						capsGroup.supported = extensionSupported(reqExt);
+					}
+
+					if (!reqVersion.empty()) {
+						replace(reqVersion.begin(), reqVersion.end(), '.', '_');
+						stringstream glewVersion;
+						glewVersion << "GL_VERSION_" << reqVersion;
+						capsGroup.supported = glewIsSupported(glewVersion.str().c_str());
+					}
+
+					if ((reqExt.empty()) && (reqVersion.empty())) {
+						capsGroup.supported = true;
+					}
+				}
+
+				if (capsGroup.supported) {
+					if ((xmlStream.name() == "cap") && (xmlStream.isStartElement())) {
+						QXmlStreamAttributes nodeAttribs = xmlStream.attributes();
+						string capName = nodeAttribs.value("name").toString().toStdString();
+						string capType = nodeAttribs.value("type").toString().toStdString();
+						string capEnumStr = nodeAttribs.value("enum").toString().toStdString();
+						int capComponents = nodeAttribs.value("components").toInt();
+						uint32_t capEnum = boost::lexical_cast<HexTo<uint32_t>>(nodeAttribs.value("enum").toString().toStdString());
+						capsGroup.addCapability(capName, capEnum, capType, capComponents);
+					}
+				}
+
+				if (xmlStream.name() == "category") {
+					break;
+				}
+
 			}
-		}
 
-		capgroups.push_back(capsGroup);
+			capgroups.push_back(capsGroup);
+
+		}
 
 	}
 }
