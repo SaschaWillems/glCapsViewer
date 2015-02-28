@@ -73,8 +73,11 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 
 	appSettings.restore();
 
-	// TODO : Same as capslist.xml, check if exists and if not, download from server
-	core.loadEnumList();
+	if (!core.loadEnumList()) {
+		QMessageBox::warning(this, tr("Error"), tr("Could not load enum list!"));
+		// TODO : Instead of exiting, download from server and try to load again
+		exit(EXIT_FAILURE);
+	}
 
 	#ifdef DEVDATABASE
 		stringstream newTitle;

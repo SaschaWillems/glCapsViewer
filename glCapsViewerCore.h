@@ -55,7 +55,7 @@ public:
 	void readInternalFormats();
 	void printExtensions();
 	void readOsExtensions();
-	void loadEnumList();
+	bool loadEnumList();
 	string getEnumName(GLint glenum);
 	string reportToXml();
 	void exportXml(string fileName);

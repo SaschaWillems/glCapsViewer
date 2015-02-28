@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <ctime>
+#include <QXmlStreamReader>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -103,7 +104,7 @@ void glCapsViewerCore::clear() {
 /// Reads the name of the operating system.
 /// </summary>
 /// <returns>Short name of the operating system</returns>
-// TODO : Linux and Mac OSX
+// TODO : Mac OSX
 string glCapsViewerCore::readOperatingSystem()
 {
 	#ifdef _WIN32
@@ -276,23 +277,34 @@ void glCapsViewerCore::readInternalFormats()
 /// <summary>
 /// Loads the list of available compressed texture formats from xml file
 /// </summary>
-void glCapsViewerCore::loadEnumList()
+bool glCapsViewerCore::loadEnumList()
 {
-	using namespace rapidxml;
-	xml_document<> doc;
-	xml_node<> * root_node;
-	ifstream theFile("enumList.xml");
-	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+	ifstream enumListxml("enumList.xml");
+	vector<char> buffer((istreambuf_iterator<char>(enumListxml)), istreambuf_iterator<char>());
 	buffer.push_back('\0');
-	doc.parse<0>(&buffer[0]);
-	root_node = doc.first_node("enums");	
+	QXmlStreamReader xmlStream(&buffer[0]);
+	
+	while (!xmlStream.atEnd())  {
 
-	for (xml_node<> * format_node = root_node->first_node("enum"); format_node; format_node = format_node->next_sibling("enum"))
-	{
-		string enumName = format_node->value();
-		uint32_t enumValue = boost::lexical_cast<HexTo<uint32_t>>(format_node->first_attribute("value")->value());
-		enumList[enumValue] = enumName;
+		if (xmlStream.isStartElement())
+		{
+			QString xmlTag(xmlStream.name().toString());
+
+			if (xmlTag == "enum") {
+				QXmlStreamAttributes attrib = xmlStream.attributes();
+				QString enumVal = attrib.value("value").toString();
+				QString enumName = xmlStream.readElementText();
+				// Convert from hex value
+				uint32_t enumValue = boost::lexical_cast<HexTo<uint32_t>>(enumVal.toStdString());
+				enumList[enumValue] = enumName.toStdString();
+			}
+		}
+
+		xmlStream.readNext();
+
 	}
+
+	return xmlStream.hasError();
 }
 
 
