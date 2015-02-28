@@ -304,7 +304,7 @@ bool glCapsViewerCore::loadEnumList()
 
 	}
 
-	return xmlStream.hasError();
+	return (!xmlStream.hasError());
 }
 
 
