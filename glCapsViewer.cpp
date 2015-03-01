@@ -632,7 +632,7 @@ void glCapsViewer::slotUpload(){
 			if (reply == QMessageBox::Yes) {
 				reportId = glchttp.getReportId(core.description);
 				stringstream ss;
-				ss << "http://opengl.delphigl.de/gl_generatereport.php?reportID=" << to_string(reportId);
+				ss << glCapsViewerHttp::getBaseUrl() << "gl_generatereport.php?reportID=" << to_string(reportId);
 				QDesktopServices::openUrl(QUrl(QString::fromStdString(ss.str())));
 			}
 		}
@@ -645,8 +645,7 @@ void glCapsViewer::slotExportXml(){
 }
 
 void glCapsViewer::slotBrowseDatabase() {
-	glCapsViewerHttp glchttp;
-	QString link = QString::fromStdString(glchttp.getBaseUrl());
+	QString link = QString::fromStdString(glCapsViewerHttp::getBaseUrl());
 	QDesktopServices::openUrl(QUrl(link));
 }
 

@@ -153,7 +153,7 @@ int glCapsViewerHttp::getReportId(string description)
 {
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "gl_checkreport.php?description=" << description;
+	urlss << getBaseUrl() << "gl_checkreport.php?description=" << description;
 	string url = encodeUrl(urlss.str());
 	httpReply = httpGet(url);
 	return (!httpReply.empty()) ? atoi(httpReply.c_str()) : -1;
@@ -191,7 +191,7 @@ string glCapsViewerHttp::fetchReport(int reportId)
 {
 	string reportXml;
 	stringstream urlss;
-	urlss << baseUrl << "services/gl_getreport.php?reportId=" << reportId;
+	urlss << getBaseUrl() << "services/gl_getreport.php?reportId=" << reportId;
 	reportXml = httpGet(urlss.str());
 	return reportXml;
 }
@@ -204,7 +204,7 @@ string glCapsViewerHttp::postReport(string xml)
 {
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "services/gl_convertreport.php";
+	urlss << getBaseUrl() << "services/gl_convertreport.php";
 	httpReply = httpPost(urlss.str(), xml);
 	return httpReply;
 }
@@ -217,7 +217,7 @@ string glCapsViewerHttp::postReportForUpdate(string xml)
 {
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "services/gl_updatereport.php";
+	urlss << getBaseUrl() << "services/gl_updatereport.php";
 	httpReply = httpPost(urlss.str(), xml);
 	return httpReply;
 }
@@ -231,7 +231,7 @@ vector<string> glCapsViewerHttp::fetchDevices()
 	vector<string> deviceList;
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "services/gl_getdevices.php";
+	urlss << getBaseUrl() << "services/gl_getdevices.php";
 	httpReply = httpGet(urlss.str());
 
 	if (!httpReply.empty())
@@ -261,7 +261,7 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 	vector<reportInfo> reportList;
 	string httpReply;
 	stringstream urlss;
-	urlss << baseUrl << "services/gl_getdevicereports.php?glrenderer=" << device;
+	urlss << getBaseUrl() << "services/gl_getdevicereports.php?glrenderer=" << device;
 	string url;
 	url = encodeUrl(urlss.str());
 	httpReply = httpGet(url);
@@ -293,6 +293,10 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 /// </summary>
 string glCapsViewerHttp::getBaseUrl()
 {
-	return baseUrl;
+#ifdef DEVDATABASE
+	return "http://www.delphigl.de/opengldatabase_dev/";
+#else
+	return "http://opengl.delphigl.de/";
+#endif
 }
 
