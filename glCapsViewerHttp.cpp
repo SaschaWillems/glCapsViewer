@@ -22,11 +22,11 @@
 
 #include "glCapsViewerHttp.h"
 #include <QNetworkProxy>
-#include <rapidxml.hpp>
 #include <sstream>
 #include <QMessageBox>
 #include <QEventLoop>
 #include <QHttpMultiPart>
+#include <QXmlStreamReader>
 
 glCapsViewerHttp::glCapsViewerHttp()
 {
@@ -225,7 +225,7 @@ string glCapsViewerHttp::postReportForUpdate(string xml)
 /// <summary>
 /// Fetches all available devices from the online database and lists them in the ui
 /// </summary>
-/// <returns></returns>
+/// <returns>List of reports as vector</returns>
 vector<string> glCapsViewerHttp::fetchDevices() 
 {
 	vector<string> deviceList;
@@ -234,17 +234,15 @@ vector<string> glCapsViewerHttp::fetchDevices()
 	urlss << getBaseUrl() << "services/gl_getdevices.php";
 	httpReply = httpGet(urlss.str());
 
-	if (!httpReply.empty())
-	{
-		using namespace rapidxml;
-		xml_document<> doc;
-		xml_node<> * root_node;
-		doc.parse<0>(&httpReply[0]);
-		root_node = doc.first_node("devices");
+	if (!httpReply.empty()) {
+		QXmlStreamReader xmlReader(&httpReply[0]);
+		while (!xmlReader.atEnd())  {
 
-		for (xml_node<> * device_node = root_node->first_node("device"); device_node; device_node = device_node->next_sibling("device"))
-		{
-			deviceList.push_back(device_node->value());
+			if ((xmlReader.name() == "device") && (xmlReader.isStartElement())) {
+				deviceList.push_back(xmlReader.readElementText().toStdString());
+			}
+
+			xmlReader.readNext();
 		}
 	}
 
@@ -268,21 +266,23 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 
 	if (!httpReply.empty())
 	{
-		using namespace rapidxml;
-		xml_document<> doc;
-		xml_node<> * root_node;
-		doc.parse<0>(&httpReply[0]);
-		root_node = doc.first_node("reports");
+		QXmlStreamReader xmlReader(&httpReply[0]);
 
-		for (xml_node<> * device_node = root_node->first_node("report"); device_node; device_node = device_node->next_sibling("report"))
-		{
-			reportInfo report;
-			report.device = device;
-			report.version = device_node->value();
-			report.operatingSystem = device_node->first_attribute("os")->value();
-			report.reportId = atoi(device_node->first_attribute("id")->value());
-			reportList.push_back(report);
+		while (!xmlReader.atEnd()) {
+
+			if ((xmlReader.name() == "report") && (xmlReader.isStartElement())) {
+				reportInfo report;
+				report.device = device;
+				QXmlStreamAttributes xmlAttribs = xmlReader.attributes();
+				report.operatingSystem = xmlAttribs.value("os").toString().toStdString();
+				report.reportId = xmlAttribs.value("id").toInt();
+				report.version = xmlReader.readElementText().toStdString();
+				reportList.push_back(report);
+			}
+
+			xmlReader.readNext();
 		}
+
 	};
 
 	return reportList;

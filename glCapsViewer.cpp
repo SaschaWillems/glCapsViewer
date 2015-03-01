@@ -45,7 +45,7 @@
 #include <QComboBox>
 #include <QInputDialog>
 #include <sstream>  
-#include <rapidxml.hpp>
+#include <QXmlStreamReader>
 #ifdef __linux__
 	#include <GL/glxew.h>
 #endif
@@ -516,19 +516,11 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 	glCapsViewerHttp glchttp;
 	string reportXml = glchttp.fetchReport(reportId);
 
-	using namespace rapidxml;
-	xml_document<> doc;
-	xml_node<> * root_node;
-	doc.parse<0>(&reportXml[0]);
-	root_node = doc.first_node("report");
-
 	bool capsMissing = false;
 	bool compressedFormatsMissing = false;
 	bool internalFormatsMissing = false;
 
-	// Check if caps are missing
-
-	// Gather caps available client-side
+	// Gather client-side available caps
 	vector<string> capsList;
 	for (auto& capsGroup : core.capgroups) {
 		for (auto& cap : capsGroup.capabilities) {
@@ -537,34 +529,46 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 			}
 		}
 	}
-	xml_node<> * implementation_node = root_node->first_node("implementation");
 
-	vector<string> capsMissingList;
-	for (auto& cap : capsList) {
+	QXmlStreamReader xmlReader(&reportXml[0]);
 
-		for (xml_node<> * value_node = implementation_node->first_node(); value_node; value_node = value_node->next_sibling())
-		{
-			string node_name = value_node->name();
-			string node_value = value_node->value();			
-			if (node_name == cap) {
-	
-				if (node_value == "") {
-					capsMissingList.push_back(node_name);
+	vector<string> capsMissingDatabase;
+	vector<int> compressedFormatsDatabase;
+	while (!xmlReader.atEnd()) {
+		if ((xmlReader.isStartElement()) && (xmlReader.name() == "implementation")) {
+			while (!xmlReader.atEnd()) {
+				xmlReader.readNext();
+				if (xmlReader.name() == "implementation") {
+					break;
 				}
-				break;
+				QString nodeName = xmlReader.name().toString();
+				QString nodeValue = xmlReader.readElementText();
+				if (nodeValue == "") {
+					capsMissingDatabase.push_back(nodeName.toStdString());
+				}
 
 			}
 		}
-
+		if ((xmlReader.isStartElement()) && (xmlReader.name() == "format")) {
+			compressedFormatsDatabase.push_back(atoi(xmlReader.readElementText().toStdString().c_str()));
+		}
+		xmlReader.readNext();
 	}
 
-	capsMissing = (capsMissingList.size() > 0);
+	// Check for missing caps
+	for (auto& capMissingDatabase : capsMissingDatabase) {
+		if (std::find(capsList.begin(), capsList.end(), capMissingDatabase) != capsList.end()) {
+			capsMissing = true;
+			break;
+		}
+	}
 
-	// Check if compressed formats are present
-	xml_node<> * compressedFormatsNode = root_node->first_node("compressedtextureformats");
-	// No compressed formats in database but present for current device
-	if ( (compressedFormatsNode->first_node("format") == NULL) && (core.compressedFormats.size() > 0) ) {
-		compressedFormatsMissing = true;
+	// Check for missing compressed formats
+	for (auto& compressedFormatClient : core.compressedFormats) {
+		if (std::find(compressedFormatsDatabase.begin(), compressedFormatsDatabase.end(), compressedFormatClient) == compressedFormatsDatabase.end()) {
+			compressedFormatsMissing = true;
+			break;
+		}
 	}
 
 	// TODO : Check internal formats
@@ -729,42 +733,48 @@ void glCapsViewer::slotDeviceVersionChanged(int index) {
 	table->verticalHeader()->setDefaultSectionSize(24);
 	table->verticalHeader()->setVisible(false);
 
-	using namespace rapidxml;
-	xml_document<> doc;
-	xml_node<> * root_node;
-	doc.parse<0>(&reportXml[0]);
-	root_node = doc.first_node("report");
+	QXmlStreamReader xmlReader(&reportXml[0]);
 
-	// Implementation
-	xml_node<> * implementation_node = root_node->first_node("implementation");
-	for (xml_node<> * value_node = implementation_node->first_node(); value_node; value_node = value_node->next_sibling())
-	{
-		string node_name = value_node->name();
-		string node_value = value_node->value();
-		table->insertRow(table->rowCount());
-		table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(QString::fromStdString(node_name)));
-		if (node_value == "") {
-			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("n/a"));
-			table->item(table->rowCount() - 1, 0)->setTextColor(QColor::fromRgb(100, 100, 100));
-			table->item(table->rowCount() - 1, 1)->setTextColor(QColor::fromRgb(100, 100, 100));
+	while (!xmlReader.atEnd()) {
+
+		if ((xmlReader.isStartElement()) && (xmlReader.name() == "implementation")) {
+			while (!xmlReader.atEnd()) {
+				xmlReader.readNext();
+				if (xmlReader.name() == "implementation") {
+					break;
+				}
+				table->insertRow(table->rowCount());
+				table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(xmlReader.name().toString()));
+				QString nodeValue = xmlReader.readElementText();
+				if (nodeValue == "") {
+					table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("n/a"));
+					table->item(table->rowCount() - 1, 0)->setTextColor(QColor::fromRgb(100, 100, 100));
+					table->item(table->rowCount() - 1, 1)->setTextColor(QColor::fromRgb(100, 100, 100));
+				}
+				else {
+					table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(nodeValue));
+				}
+			}
 		}
-		else {
-			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(QString::fromStdString(node_value)));
+
+		int extCount = 0;
+		if ((xmlReader.isStartElement()) && (xmlReader.name() == "extensions")) {
+			while (!xmlReader.atEnd()) {
+				xmlReader.readNext();
+				if (xmlReader.name() != "extension") {
+					break;
+				}
+				QListWidgetItem *deviceItem = new QListWidgetItem(xmlReader.readElementText(), ui.listWidgetDatabaseDeviceExtensions);
+				deviceItem->setSizeHint(QSize(deviceItem->sizeHint().height(), 24));
+				extCount++;
+			}
+			stringstream ss;
+			ss << "Extensions (" << extCount << ")";
+			ui.labelDatabaseDeviceExtensions->setText(QString::fromStdString(ss.str()));
 		}
+
+		xmlReader.readNext();
 	}
 
-	// Extensions
-	ui.listWidgetDatabaseDeviceExtensions->clear();
-	xml_node<> * extension_node = root_node->first_node("extensions");
-	int extCount = 0;
-	for (xml_node<> * value_node = extension_node->first_node(); value_node; value_node = value_node->next_sibling())
-	{
-		QListWidgetItem *deviceItem = new QListWidgetItem(QString::fromStdString(value_node->value()), ui.listWidgetDatabaseDeviceExtensions);
-		deviceItem->setSizeHint(QSize(deviceItem->sizeHint().height(), 24));
-		extCount++;
-	}
-	stringstream ss;
-	ss << "Extensions (" << extCount << ")";
-	ui.labelDatabaseDeviceExtensions->setText(QString::fromStdString(ss.str()));
 	QApplication::restoreOverrideCursor();
 }
