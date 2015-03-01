@@ -16,15 +16,6 @@ include_directories("." "GeneratedFiles")
 file(GLOB SOURCE *.cpp)
 file(GLOB HEADER *.h)
 
-#Required packages
-
-IF(UNIX)
-	find_package(PkgConfig REQUIRED)
-	find_package (Threads)
-	find_package(X11 REQUIRED)
-	pkg_search_module(GLFW REQUIRED glfw3)
-ENDIF()
-
 #Qt
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -42,8 +33,25 @@ include_directories(${GLEW_INCLUDE_DIR})
 link_directories(${GLEW_LIBRARIES})
 
 #Glfw
-include_directories(${GLFW_INCLUDE_DIR})
-link_directories(${GLFW_LIBRARIES})
+find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h)
+find_library(GLFW_LIBRARY NAMES glfw3 glfw)
+
+set(GLFW_INCLUDE_DIRS ${GLFW_INCLUDE_DIR})
+set(GLFW_LIBRARIES ${GLFW_LIBRARY})
+
+include(FindPackageHandleStandardArgs)
+
+find_package_handle_standard_args(GLFW
+	REQUIRED_VARS GLFW_INCLUDE_DIR GLFW_LIBRARY)
+
+if(GLFW_FOUND AND NOT TARGET GLFW::GLFW)
+	add_library(GLFW::GLFW UNKNOWN IMPORTED)
+	set_target_properties(GLFW::GLFW PROPERTIES
+		IMPORTED_LOCATION "${GLFW_LIBRARY}"
+		INTERFACE_INCLUDE_DIRECTORIES "${GLFW_INCLUDE_DIRS}")
+endif()
+
+mark_as_advanced(GLFW_INCLUDE_DIR GLFW_LIBRARY)
 
 #Boost
 find_package(Boost REQUIRED)
