@@ -42,17 +42,12 @@
 #include <iomanip>
 #include <ctime>
 #include <QXmlStreamReader>
-#include <QDebug>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
-#include <rapidxml.hpp>
-#include <rapidxml_print.hpp>
 
 #include <capsGroup.h>
 #include "glCapsViewerCore.h"
@@ -309,105 +304,94 @@ bool glCapsViewerCore::loadEnumList()
 }
 
 
-using namespace boost::property_tree;
-
 string glCapsViewerCore::reportToXml() 
 {
 	const string appVersion = "glCapsViewer 1.0(beta) - Copyright 2011-2015 by Sascha Willems (www.saschawillems.de)";
 	const string appAbout = "glCapsViewer 1.0(beta)";
 	const string fileVersion = "3.0";
 
-	using namespace rapidxml;
-	xml_document<> doc;
-	xml_node<> *root = doc.allocate_node(node_element, "implementationinfo");
-	doc.append_node(root);
-	root->append_node(doc.allocate_node(node_element, "fileversion", fileVersion.c_str()));
-	root->append_node(doc.allocate_node(node_element, "appversion", appVersion.c_str()));
-	root->append_node(doc.allocate_node(node_element, "description", description.c_str()));
-	root->append_node(doc.allocate_node(node_element, "contexttype", contextType.c_str()));
+	QString xmlStr;
+	QXmlStreamWriter xmlWriter(&xmlStr);
+	xmlWriter.setAutoFormatting(true);
+	xmlWriter.writeStartDocument();
+
+	xmlWriter.writeStartElement("implementationinfo");
+	xmlWriter.writeTextElement("fileversion", QString::fromStdString(fileVersion));
+	xmlWriter.writeTextElement("appversion", QString::fromStdString(appVersion));
+	xmlWriter.writeTextElement("description", QString::fromStdString(description));
+	xmlWriter.writeTextElement("contexttype", QString::fromStdString(contextType));
 
 	auto t = std::time(nullptr);
 	auto tm = *std::localtime(&t);
 	char buffer[256];
 	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &tm);
 	string datetimestr = reinterpret_cast<const char*>(buffer);
-	root->append_node(doc.allocate_node(node_element, "date", datetimestr.c_str()));
+	xmlWriter.writeTextElement("date", QString::fromStdString(datetimestr));
+	xmlWriter.writeTextElement("submitter", QString::fromStdString(submitter));
+	xmlWriter.writeTextElement("os", QString::fromStdString(implementation["Operating system"]));
 
-	root->append_node(doc.allocate_node(node_element, "submitter", submitter.c_str()));
-	root->append_node(doc.allocate_node(node_element, "os", implementation["Operating system"].c_str()));
-
-	// extensions
-	xml_node<> *extNode = doc.allocate_node(node_element, "extensions");
-	string extCount = to_string(extensions.size() + osextensions.size());
-	extNode->append_attribute(doc.allocate_attribute("count", extCount.c_str()));
-	root->append_node(extNode);
+	// Extensions
+	xmlWriter.writeStartElement("extensions");
 	for (auto& ext : extensions) {
-		extNode->append_node(doc.allocate_node(node_element, "extension", ext.c_str()));
+		xmlWriter.writeTextElement("extension", QString::fromStdString(ext));
 	}
 	for (auto& ext : osextensions) {
-		extNode->append_node(doc.allocate_node(node_element, "extension", ext.c_str()));
+		xmlWriter.writeTextElement("extension", QString::fromStdString(ext));
 	}
+	xmlWriter.writeEndElement();
 
-	// implementation info and caps
-	xml_node<> *capsNode = doc.allocate_node(node_element, "caps");
-	root->append_node(capsNode);
+	// Implementation info and caps
+	xmlWriter.writeStartElement("caps");
 	for (auto& capgroup : capgroups) {
 		for (auto& cap : capgroup.capabilities) {
-			xml_node<> *capNode = doc.allocate_node(node_element, cap.first.c_str());
-			capNode->append_attribute(doc.allocate_attribute("id", cap.first.c_str()));
-			capNode->append_node(doc.allocate_node(node_element, "value", cap.second.c_str()));
-			capsNode->append_node(capNode);
+			xmlWriter.writeStartElement(QString::fromStdString(cap.first));
+			xmlWriter.writeAttribute("id", QString::fromStdString(cap.first));
+			xmlWriter.writeTextElement("value", QString::fromStdString(cap.second));
+			xmlWriter.writeEndElement();
 		}
 	}
+	xmlWriter.writeEndElement();
 
 	// compressed texture formats
-	xml_node<> *compFormatNode = doc.allocate_node(node_element, "compressedtextureformats");
-	root->append_node(compFormatNode);
+	xmlWriter.writeStartElement("compressedtextureformats");
 	for (auto& compressedFormat : compressedFormats) {
-		string formatStr = to_string(compressedFormat);
-		char * cstr = new char[formatStr.length() + 1];
-		strcpy(cstr, formatStr.c_str());
-		compFormatNode->append_node(doc.allocate_node(node_element, "compressedtextureformat", cstr));
+		xmlWriter.writeTextElement("compressedtextureformat", QString::fromStdString(to_string(compressedFormat)));
 	}
+	xmlWriter.writeEndElement();
 
 	// Internal formats
-	xml_node<> *internalFormatInfoNode = doc.allocate_node(node_element, "internalformatinformation");
-	root->append_node(internalFormatInfoNode);
+	// TODO : Not yet in database
+#ifdef INTERNALFORMATINFO
+	xmlWriter.writeStartElement("internalformatinformation");
 	for (auto& internalFormatTarget : internalFormatTargets) {
-		string str = getEnumName(internalFormatTarget.target);
-		char * cstr = new char[str.length() + 1];
-		strcpy(cstr, str.c_str());
-		xml_node<> *formatTargetNode = doc.allocate_node(node_element, "target");
-		formatTargetNode->append_attribute(doc.allocate_attribute("name", cstr));
-		internalFormatInfoNode->append_node(formatTargetNode);
-		
+		xmlWriter.writeStartElement("target");
+		string targetName = getEnumName(internalFormatTarget.target);
+		xmlWriter.writeAttribute("name", QString::fromStdString(targetName));
+
 		for (auto& internalTextureFormat : internalFormatTarget.textureFormats) {
-			string str = getEnumName(internalTextureFormat.textureFormat);
-			char * cstr = new char[str.length() + 1];
-			strcpy(cstr, str.c_str());
-			xml_node<> *internalFormatNode = doc.allocate_node(node_element, "format");
-			internalFormatNode->append_attribute(doc.allocate_attribute("name", cstr));
-			internalFormatNode->append_attribute(doc.allocate_attribute("supported", internalTextureFormat.supported ? "true" : "false"));
-			formatTargetNode->append_node(internalFormatNode);
+			string formatName = getEnumName(internalTextureFormat.textureFormat);
+			xmlWriter.writeStartElement("format");
+			xmlWriter.writeAttribute("name", QString::fromStdString(formatName));
+			xmlWriter.writeAttribute("supported", internalTextureFormat.supported ? "true" : "false");
 
 			for (auto& formatInfoValue : internalTextureFormat.formatInfoValues) {
-				string str = to_string(formatInfoValue.infoValue);
-				char * cstr = new char[str.length() + 1];
-				strcpy(cstr, str.c_str());
-				xml_node<> *formatInfoValueNode = doc.allocate_node(node_element, "value", cstr);
-				formatInfoValueNode->append_attribute(doc.allocate_attribute("name", formatInfoValue.infoString.c_str()));
-				internalFormatNode->append_node(formatInfoValueNode);
+				string infoVal = to_string(formatInfoValue.infoValue);
+				xmlWriter.writeStartElement("value");
+				xmlWriter.writeAttribute("name", QString::fromStdString(formatInfoValue.infoString));
+				xmlWriter.writeCharacters(QString::fromStdString(infoVal));
+				xmlWriter.writeEndElement(); // value
 			}
 
+			xmlWriter.writeEndElement(); // format
 		}
-
-
+		xmlWriter.writeEndElement(); // target
 	}
+	xmlWriter.writeEndElement(); // internalformatinformation
+#endif
 
+	xmlWriter.writeEndElement(); // root
 
-	stringstream ss;
-	ss << doc;
-	return ss.str();
+	return xmlStr.toStdString();
 }
 
 void glCapsViewerCore::exportXml(string fileName)
@@ -433,7 +417,6 @@ void glCapsViewerCore::readCapabilities()
 		xmlStream.readNext();
 
 		if (xmlStream.name() == "category") {
-			// TODO : Check requirement (gl version, extension)
 			// TODO : wgl and glx need to be checked different (wglewIsSupported, etc.)
 			nodeAttribs = xmlStream.attributes();
 			QString catName = nodeAttribs.value("name").toString();
