@@ -20,6 +20,8 @@
 *
 */
 
+#include <QXmlStreamReader>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
@@ -41,7 +43,6 @@
 #include <algorithm>
 #include <iomanip>
 #include <ctime>
-#include <QXmlStreamReader>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
