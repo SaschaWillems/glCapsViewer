@@ -110,7 +110,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(CLIBPATH)\glew\lib\Release\Win32;$(CLIBPATH)\glfw\lib-msvc120;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(CLIBPATH)\glew\lib\Release\Win32;$(CLIBPATH)\glfw\lib-vc2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;Qt5Xmld.lib;opengl32.lib;glu32.lib;glew32.lib;glfw3.lib;Qt5Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

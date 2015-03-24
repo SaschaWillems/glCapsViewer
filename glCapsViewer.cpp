@@ -666,12 +666,16 @@ void glCapsViewer::slotRefreshDatabase() {
 }
 
 void glCapsViewer::slotAbout() {
-	QString aboutText = "<p>OpenGL hardware capability viewer (glCapsViewer)<br/><br/>"
+	stringstream aboutText;
+	aboutText << "<p>OpenGL hardware capability viewer (glCapsViewer)<br/><br/>"
 		"Copyright (c) 2011-2015 by Sascha Willems<br/><br/>"
 		"This tool is <b>FREEWARE</b><br/><br/>"
 		"For usage and distribution details refer to the readme<br/><br/>"
-		"<a href='http://www.saschawillems.de'>http://www.saschawillems.de</a></p>";
-	QMessageBox::about(this, tr("About the OpenGL hardware capability viewer"), aboutText);
+		"<a href='http://www.saschawillems.de'>http://www.saschawillems.de</a><br><br>";
+	aboutText << "GLFW : " << glfwGetVersionString() << "<br>";
+	aboutText << "GLEW : " << glewGetString(GLEW_VERSION);
+	aboutText << "</p>";
+	QMessageBox::about(this, tr("About the OpenGL hardware capability viewer"), QString::fromStdString(aboutText.str()));
 }
 
 void glCapsViewer::slotSettings() {
