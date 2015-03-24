@@ -36,6 +36,27 @@
 #include <QMessageBox>
 #include <QFileInfo>
 
+void glfw_error_callback(int error, const char* description)
+{
+	stringstream errorStr;
+	errorStr << "GLFW has reported an error\n\nError:\n" << description;
+	switch (error)
+	{
+	case GLFW_VERSION_UNAVAILABLE :
+		errorStr << "\n\nDetails:\nThe requested OpenGL or OpenGL ES version is not available on this machine.";
+		break;
+	case GLFW_FORMAT_UNAVAILABLE:
+		errorStr << "\n\nDetails:\nThe requested pixel format is not supported.";
+		break;
+	case GLFW_API_UNAVAILABLE :
+		errorStr << "\n\nDetails:\nThe requested client API is not supported. Make sure you have OpenGL drivers installed.";
+		break;
+	default:
+		break;
+	}
+	errorStr << "\n\nGLFW version:\n" << glfwGetVersionString();
+	QMessageBox::critical(NULL, "glCapsViewer - Error", QString::fromStdString(errorStr.str()));
+}
 
 int main(int argc, char *argv[])
 {
@@ -65,18 +86,18 @@ int main(int argc, char *argv[])
 	}
 
 
-	if (!glfwInit())
-	{
+	if (!glfwInit()) {
+		QMessageBox::critical(&capsViewer, "Critical error", "Could not initialize glfw!");
 		exit(EXIT_FAILURE);
 	}
 
 	// Create basic window first to see what context types are supported
 
+	glfwSetErrorCallback(glfw_error_callback);
 	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 	capsViewer.window = glfwCreateWindow(640, 480, "glCapsViewer", NULL, NULL);
 	if (!capsViewer.window)
 	{
-		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window (1)!"));
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
@@ -101,7 +122,6 @@ int main(int argc, char *argv[])
 	//If the window couldn't be created
 	if (!capsViewer.window)
 	{
-		QMessageBox::critical(&capsViewer, QObject::tr("glCapsViewer - Error"), QObject::tr("Could not create GLFW window (2)!"));
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
