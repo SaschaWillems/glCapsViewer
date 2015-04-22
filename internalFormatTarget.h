@@ -24,7 +24,12 @@
 
 #include <string>
 #include <map>
+#ifdef USEEGL
+#include <EGL/egl.h>
+#include <EGL/eglplatform.h>
+#else
 #include <GL/glew.h>
+#endif
 #include <vector>
 #include "internalFormatInfo.h"
 

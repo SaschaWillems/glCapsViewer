@@ -56,6 +56,7 @@ namespace capsViewer {
 			delete[] intVal;
 		}
 
+#ifndef USEEGL
 		if (type == "glint64") {
 			GLint64* intVal;
 			intVal = new GLint64[dim];
@@ -129,6 +130,8 @@ namespace capsViewer {
 			}
 			delete[] intVal;
 		}
+#endif
+
 
 		if (type == "glfloat") {
 			GLfloat* floatVal;

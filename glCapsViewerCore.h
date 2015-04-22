@@ -22,7 +22,12 @@
 
 #pragma once
 
-#include <GL/glew.h>
+#ifdef USEEGL
+	#include <EGL/egl.h>
+	#include <EGL/eglplatform.h>
+#else
+	#include <GL/glew.h>
+#endif
 #include <GLFW/glfw3.h>
 #include <map>
 #include <capsGroup.h>

@@ -20,7 +20,13 @@
 *
 */
 
+#ifdef USEEGL
+#include <EGL/egl.h>
+#include <EGL/eglplatform.h>
+#include <GLES2\gl2.h>
+#else
 #include <GL/glew.h>
+#endif
 #include <string>
 #include <vector>
 

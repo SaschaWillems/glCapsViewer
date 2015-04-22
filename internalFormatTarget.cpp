@@ -21,7 +21,12 @@
 */
 
 #include "internalFormatTarget.h"
+#ifdef USEEGL
+#include <EGL/egl.h>
+#include <EGL/eglplatform.h>
+#else
 #include <GL/glew.h>
+#endif
 
 namespace capsViewer {
 
@@ -31,6 +36,7 @@ namespace capsViewer {
 	{
 		this->target = target;
 		// Base formats
+#ifndef USEEGL
 		GLint baseFormats[] = { GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL, GL_STENCIL_INDEX, GL_RED, GL_RG, GL_RGB, GL_RGBA, GL_DEPTH_COMPONENT32F };
 		for (auto& baseFormat : baseFormats) {
 			this->textureFormats.push_back(internalFormatInfo(baseFormat));
@@ -39,6 +45,7 @@ namespace capsViewer {
 		for (auto& compressedFormat : compressedFormats) {
 			this->textureFormats.push_back(internalFormatInfo(compressedFormat));
 		}
+#endif
 	}
 
 	void internalFormatTarget::getInternalFormatInfo(bool internalformatquery2)
@@ -48,6 +55,7 @@ namespace capsViewer {
 		//internalFormats[GL_RGBA8] = "GL_RGBA8";
 		//internalFormats[GL_RGBA16] = "GL_RGBA16";
 		//internalFormats[GL_DEPTH_COMPONENT16] = "GL_DEPTH_COMPONENT16";
+#ifndef USEEGL
 
 		for (auto& textureFormat : textureFormats) {
 
@@ -164,7 +172,7 @@ namespace capsViewer {
 
 		}
 		*/
-
+#endif
 	}
 }
 

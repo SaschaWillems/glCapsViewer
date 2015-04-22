@@ -24,8 +24,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
+#ifdef USEEGL
+	#include <EGL/egl.h>
+	#include <EGL/eglplatform.h>
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2platform.h>
+#else
+	#include <GL/glew.h>
+	#include <GLFW/glfw3.h>
+#endif
 
 #ifdef _WIN32
 	#include <Windows.h>
@@ -146,6 +154,7 @@ string glCapsViewerCore::readOperatingSystem()
 
 void glCapsViewerCore::readExtensions()
 {
+#ifndef USEEGL
 	// Use glGetStringi if available (GL 3.x)
 	if ((GL_VERSION_3_0) && (glGetStringi != NULL)) {
 		GLint numExtensions;
@@ -157,10 +166,13 @@ void glCapsViewerCore::readExtensions()
 		}
 	}
 	else {
+#endif
 		const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
 		string extensionString = reinterpret_cast<const char*>(glExtensions);
 		boost::algorithm::split(extensions, extensionString, boost::algorithm::is_any_of(" "));
+#ifndef USEEGL
 	}
+#endif
 }
 
 void glCapsViewerCore::printExtensions()
@@ -172,6 +184,7 @@ void glCapsViewerCore::printExtensions()
 
 void glCapsViewerCore::readOsExtensions() 
 {
+#ifndef USEEGL
 #ifdef _WIN32
 	typedef const char* (WINAPI * PFNWGLGETEXTENSIONSSTRINGARBPROC)(HDC hdc);
 	PFNWGLGETEXTENSIONSSTRINGARBPROC  pwglGetExtensionsStringARB = 0;
@@ -187,6 +200,7 @@ void glCapsViewerCore::readOsExtensions()
 			boost::algorithm::split(osextensions, wglExtensionString, boost::algorithm::is_any_of(" "));
 		}
 	}
+#endif
 #endif
 #ifdef __linux__
 	Display *dpy(XOpenDisplay(NULL));
@@ -207,7 +221,7 @@ void glCapsViewerCore::readImplementation()
 	implementation["Vendor"] = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
 	implementation["Renderer"] = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 	implementation["OpenGL version"] = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-	implementation["Shading language version"] = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION_ARB));
+	implementation["Shading language version"] = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	stringstream ss;
 	ss << implementation["Vendor"] << " " << implementation["Renderer"] << " " << implementation["OpenGL version"] << " (" << implementation["Operating system"] << ")";
@@ -257,6 +271,7 @@ void glCapsViewerCore::readCompressedFormats()
 
 void glCapsViewerCore::readInternalFormats()
 {
+#ifndef USEEGL
 	// TODO : Move to xml
 	GLenum targets[] = { GL_TEXTURE_1D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_3D, GL_TEXTURE_CUBE_MAP,
 		GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_BUFFER, GL_RENDERBUFFER, GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_2D_MULTISAMPLE_ARRAY };
@@ -268,7 +283,7 @@ void glCapsViewerCore::readInternalFormats()
 	for (auto& target : internalFormatTargets) {
 		target.getInternalFormatInfo(internalformatquery2);
 	}
-
+#endif
 }
 
 /// <summary>
@@ -443,7 +458,9 @@ void glCapsViewerCore::readCapabilities()
 						replace(reqVersion.begin(), reqVersion.end(), '.', '_');
 						stringstream glewVersion;
 						glewVersion << "GL_VERSION_" << reqVersion;
+#ifndef USEEGL
 						capsGroup.supported = glewIsSupported(glewVersion.str().c_str());
+#endif
 					}
 
 					if ((reqExt.empty()) && (reqVersion.empty())) {

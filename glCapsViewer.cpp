@@ -25,11 +25,16 @@
 #include "settingsDialog.h"
 #include "settings.h"
 #include "internalFormatTarget.h"
-#include <GL/glew.h>
-#ifdef _WIN32
-	#include <GL/wglew.h>
+#ifdef USEEGL
+	#include <EGL/egl.h>
+	#include <EGL/eglplatform.h>
+#else
+	#include <GL/glew.h>
+	#include <GLFW/glfw3.h>
+	#ifdef _WIN32
+		#include <GL/wglew.h>
+	#endif
 #endif
-#include <GLFW/glfw3.h>
 #include <QDesktopServices>
 #include <QtWidgets/QTextBrowser>
 #include <QMessageBox>
@@ -181,9 +186,11 @@ void glCapsViewer::generateInternalFormatInfo()
 					string enumString;
 					enumString = core.getEnumName(formatInfoValue.infoValue);
 					// Switch some values
+#ifndef USEEGL
 					if ((formatInfoValue.infoEnum == GL_INTERNALFORMAT_SUPPORTED) || (formatInfoValue.infoEnum == GL_TEXTURE_COMPRESSED))  {
 						enumString = (formatInfoValue.infoValue == 0) ? "GL_FALSE" : "GL_TRUE";
 					}
+#endif
 					paramItem->setText(1, QString::fromStdString(enumString));
 					paramItem->addChild(formatItem);
 					colorInternalFormatItem(paramItem, 1);
@@ -349,6 +356,7 @@ bool glCapsViewer::contextTypeSelection()
 	core.availableContextTypes.clear();
 	core.availableContextTypes.push_back("OpenGL default");
 
+#ifndef USEEGL
 #ifdef _WIN32	
 	// Core context
 	if (wglewIsSupported("WGL_ARB_create_context_profile")) {
@@ -367,6 +375,7 @@ bool glCapsViewer::contextTypeSelection()
 			core.availableContextTypes.push_back("OpenGL ES 3.0 context");
 		}
 	}
+#endif
 #endif
 #ifdef __linux__
 	// Core context
@@ -398,6 +407,7 @@ bool glCapsViewer::contextTypeSelection()
 		QString item = QInputDialog::getItem(NULL, QObject::tr("Select render context to create"), QObject::tr("Context type:"), items, 0, false, &ok);
 		if (ok && !item.isEmpty()) {
 
+#ifndef USEEGL
 			if (item == "OpenGL core context") {
 				glewExperimental = GL_TRUE;
 				GLenum err = glewInit();
@@ -424,7 +434,7 @@ bool glCapsViewer::contextTypeSelection()
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 				core.contextType = "es3";
 			}
-
+#endif
 			return true;
 
 		}
@@ -442,7 +452,9 @@ void glCapsViewer::slotRefreshReport()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	core.clear();
 	core.contextType = "regular";
+#ifndef USEEGL
 	glfwMakeContextCurrent(window);
+#endif
 	if (core.availableContextTypes.size() > 1) {
 		QStringList items;
 		for (auto& s : core.availableContextTypes) {
@@ -453,6 +465,7 @@ void glCapsViewer::slotRefreshReport()
 		QString item = QInputDialog::getItem(NULL, QObject::tr("Select render context to create"), QObject::tr("Context type:"), items, 0, false, &ok);
 		if (ok && !item.isEmpty()) {
 
+#ifndef USEEGL
 			if (item == "OpenGL core context") {
 				glewExperimental = GL_TRUE;
 				GLenum err = glewInit();
@@ -475,14 +488,17 @@ void glCapsViewer::slotRefreshReport()
 			}
 
 			glfwDestroyWindow(window);
+#endif
 		};
 	}
 
+#ifndef USEEGL
 	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 	window = glfwCreateWindow(320, 240, "glCapsViewer", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
+#endif
 	generateReport();
 
 	QApplication::restoreOverrideCursor();
@@ -672,8 +688,10 @@ void glCapsViewer::slotAbout() {
 		"This tool is <b>FREEWARE</b><br/><br/>"
 		"For usage and distribution details refer to the readme<br/><br/>"
 		"<a href='http://www.saschawillems.de'>http://www.saschawillems.de</a><br><br>";
+#ifndef USEEGL
 	aboutText << "GLFW : " << glfwGetVersionString() << "<br>";
 	aboutText << "GLEW : " << glewGetString(GLEW_VERSION);
+#endif
 	aboutText << "</p>";
 	QMessageBox::about(this, tr("About the OpenGL hardware capability viewer"), QString::fromStdString(aboutText.str()));
 }
