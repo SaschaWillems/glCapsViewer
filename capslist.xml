@@ -215,7 +215,7 @@
 		<cap name="GL_MAX_COMPUTE_WORK_GROUP_SIZE" enum="0x91BF" type="glintindex" components="3" />
 	</category>	
 	<category name="GL_ARB_compute_variable_group_size">
-		<requirements extension="GL_ARB_compute_variable_group_size	" version=""/>
+		<requirements extension="GL_ARB_compute_variable_group_size" version=""/>
 		<cap name="GL_MAX_COMPUTE_FIXED_GROUP_INVOCATIONS_ARB" enum="0x90EB" type="glint" components="1" />
 		<cap name="GL_MAX_COMPUTE_FIXED_GROUP_SIZE_ARB" enum="0x91BF" type="glint" components="1" />
 		<cap name="GL_MAX_COMPUTE_VARIABLE_GROUP_INVOCATIONS_ARB" enum="0x9344" type="glint" components="1" />
