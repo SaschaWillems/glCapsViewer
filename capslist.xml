@@ -2,7 +2,7 @@
 <!-- OpenGL Hardware Capability Viewer - (c) 2011-2015 by Sascha Willems -->
 <!-- This file is distributed under the GNU Lesser General Public License version 3 -->
 <categories version="0.1" date="2015-09-07">
-  <category name = "OpenGL Version">91B0
+  <category name = "OpenGL Version">
 		<requirements extension="" version="3.0"/>
 		<cap name="GL_MINOR_VERSION" enum="0x821C" type="glint" components="1" />
 		<cap name="GL_MAJOR_VERSION" enum="0x821B" type="glint" components="1" />
