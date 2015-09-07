@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- OpenGL Hardware Capability Viewer - (c) 2011-2015 by Sascha Willems -->
 <!-- This file is distributed under the GNU Lesser General Public License version 3 -->
-<categories version="0.1" date="2014-12-11">
-	<category name = "OpenGL Version">
+<categories version="0.1" date="2015-09-07">
+  <category name = "OpenGL Version">91B0
 		<requirements extension="" version="3.0"/>
 		<cap name="GL_MINOR_VERSION" enum="0x821C" type="glint" components="1" />
 		<cap name="GL_MAJOR_VERSION" enum="0x821B" type="glint" components="1" />
@@ -320,5 +320,9 @@
 	<category name="GL_ARB_blend_func_extended">
 		<requirements extension="GL_ARB_blend_func_extended" version=""/>
 		<cap name="GL_MAX_DUAL_SOURCE_DRAW_BUFFERS" enum="0x88FC" type="glint" components="1" />
-	</category>			
+	</category>
+  <category name="GL_ARB_parallel_shader_compile">
+    <requirements extension="GL_ARB_parallel_shader_compile" version=""/>
+    <cap name="GL_MAX_SHADER_COMPILER_THREADS_ARB" enum="0x91B0" type="glfloat" components="1" />
+  </category>
 </categories>
