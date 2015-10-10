@@ -178,7 +178,7 @@ string glCapsViewerHttp::fetchCapsList()
 {
 	string capsXml;
 	stringstream urlss;
-	capsXml = httpGet("http://www.delphigl.de/glcapsviewer/files/capslist.xml");
+	capsXml = httpGet(getBaseUrl() + "/files/capslist.xml");
 	return capsXml;
 }
 
@@ -296,7 +296,7 @@ string glCapsViewerHttp::getBaseUrl()
 #ifdef DEVDATABASE
 	return "http://www.delphigl.de/opengldatabase_dev/";
 #else
-	return "http://opengl.delphigl.de/";
+	return "http://opengl.gpuinfo.org/";
 #endif
 }
 
