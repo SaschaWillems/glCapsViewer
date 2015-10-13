@@ -151,7 +151,6 @@ public:
         tabWidget->setTabShape(QTabWidget::Rounded);
         tabWidget->setDocumentMode(false);
         tabWidget->setTabsClosable(false);
-        tabWidget->setTabBarAutoHide(false);
         tabDevice = new QWidget();
         tabDevice->setObjectName(QStringLiteral("tabDevice"));
         horizontalLayout_3 = new QHBoxLayout(tabDevice);
