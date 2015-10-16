@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="glcapsviewer">
+    <file>Resources/OpenGL48.png</file>
     <file>Resources/device48.png</file>
     <file>Resources/glCapsViewer.ico</file>
     <file>Resources/refresh16.png</file>

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>997</width>
-    <height>817</height>
+    <width>994</width>
+    <height>795</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>glcapsviewer 1.0 - © 2011-2015 by Sascha Willems (www.saschawillems.de)</string>
+   <string>OpenGL Hardware Capability Viewer 1.1 - © 2011-2015 by Sascha Willems (www.saschawillems.de)</string>
   </property>
   <property name="windowIcon">
    <iconset resource="glcapsviewer.qrc">
@@ -21,17 +21,11 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">#glcapsviewerClass {
-background: white;
-}
-
-#centralWidget {
-background: white;
-}
-
-#mainToolBar {
-background:white;
-color:black;
+   <string notr="true">QToolBar {
+	background-image: url(:/glcapsviewer/Resources/OpenGL48.png);
+	background-repeat:no;
+	background-position:right;
+	border:0px;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -377,7 +371,7 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>997</width>
+     <width>994</width>
      <height>21</height>
     </rect>
    </property>

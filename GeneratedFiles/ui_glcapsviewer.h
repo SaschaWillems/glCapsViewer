@@ -81,22 +81,16 @@ public:
     {
         if (glcapsviewerClass->objectName().isEmpty())
             glcapsviewerClass->setObjectName(QStringLiteral("glcapsviewerClass"));
-        glcapsviewerClass->resize(997, 817);
+        glcapsviewerClass->resize(994, 795);
         QIcon icon;
         icon.addFile(QStringLiteral(":/glcapsviewer/Resources/glCapsViewer.ico"), QSize(), QIcon::Normal, QIcon::Off);
         glcapsviewerClass->setWindowIcon(icon);
         glcapsviewerClass->setLayoutDirection(Qt::LeftToRight);
-        glcapsviewerClass->setStyleSheet(QLatin1String("#glcapsviewerClass {\n"
-"background: white;\n"
-"}\n"
-"\n"
-"#centralWidget {\n"
-"background: white;\n"
-"}\n"
-"\n"
-"#mainToolBar {\n"
-"background:white;\n"
-"color:black;\n"
+        glcapsviewerClass->setStyleSheet(QLatin1String("QToolBar {\n"
+"	background-image: url(:/glcapsviewer/Resources/OpenGL48.png);\n"
+"	background-repeat:no;\n"
+"	background-position:right;\n"
+"	border:0px;\n"
 "}"));
         actionRefresh = new QAction(glcapsviewerClass);
         actionRefresh->setObjectName(QStringLiteral("actionRefresh"));
@@ -363,7 +357,7 @@ public:
         glcapsviewerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(glcapsviewerClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 997, 21));
+        menuBar->setGeometry(QRect(0, 0, 994, 21));
         glcapsviewerClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(glcapsviewerClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -397,7 +391,7 @@ public:
 
     void retranslateUi(QMainWindow *glcapsviewerClass)
     {
-        glcapsviewerClass->setWindowTitle(QApplication::translate("glcapsviewerClass", "glcapsviewer 1.0 - \302\251 2011-2015 by Sascha Willems (www.saschawillems.de)", 0));
+        glcapsviewerClass->setWindowTitle(QApplication::translate("glcapsviewerClass", "OpenGL Hardware Capability Viewer 1.1 - \302\251 2011-2015 by Sascha Willems (www.saschawillems.de)", 0));
         actionRefresh->setText(QApplication::translate("glcapsviewerClass", "Refresh", 0));
 #ifndef QT_NO_TOOLTIP
         actionRefresh->setToolTip(QApplication::translate("glcapsviewerClass", "Refrehs OpenGL report", 0));
