@@ -337,10 +337,10 @@ void glCapsViewer::generateReport()
 	// Tab captions
 	stringstream tabText;
 	tabText << "Extensions (" << core.extensions.size() + core.osextensions.size() << ")";
-	ui.tabWidgetDevice->setTabText(0, QString::fromStdString(tabText.str()));
+	ui.tabWidgetDevice->setTabText(1, QString::fromStdString(tabText.str()));
 	tabText.str("");
 	tabText << "Compressed tex. formats (" << core.compressedFormats.size() << ")";
-	ui.tabWidgetDevice->setTabText(1, QString::fromStdString(tabText.str()));
+	ui.tabWidgetDevice->setTabText(2, QString::fromStdString(tabText.str()));
 }
 
 bool glCapsViewer::contextTypeSelection() 

@@ -52,8 +52,10 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
-    QTreeWidget *treeWidget;
     QTabWidget *tabWidgetDevice;
+    QWidget *tab_4;
+    QVBoxLayout *verticalLayout_9;
+    QTreeWidget *treeWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout_4;
     QTreeWidget *treeWidgetExtensions;
@@ -83,7 +85,7 @@ public:
     {
         if (glcapsviewerClass->objectName().isEmpty())
             glcapsviewerClass->setObjectName(QStringLiteral("glcapsviewerClass"));
-        glcapsviewerClass->resize(994, 795);
+        glcapsviewerClass->resize(994, 796);
         QIcon icon;
         icon.addFile(QStringLiteral(":/glcapsviewer/Resources/glCapsViewer.ico"), QSize(), QIcon::Normal, QIcon::Off);
         glcapsviewerClass->setWindowIcon(icon);
@@ -93,6 +95,32 @@ public:
 "	background-repeat:no;\n"
 "	background-position:right;\n"
 "	border:0px;\n"
+"}\n"
+"\n"
+"QTabWidget::pane {   \n"
+"	align:center;\n"
+"	border-top: 1px solid rgb(180, 180, 180);\n"
+"}\n"
+"\n"
+"QTabWidget::tab-bar { \n"
+"	alignment: center; \n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    min-width: 8ex;\n"
+"    padding: 8px 16px;\n"
+"   border:0px;\n"
+"}\n"
+"\n"
+"QTabBar::tab:hover {       \n"
+"	color: rgb(85, 170, 255);\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"color: rgb(0, 85, 255);\n"
+"	background-color: rgb(205, 205, 205);\n"
+"border-left: 1px solid rgb(180, 180, 180);\n"
+"border-right: 1px solid rgb(180, 180, 180);\n"
 "}"));
         actionRefresh = new QAction(glcapsviewerClass);
         actionRefresh->setObjectName(QStringLiteral("actionRefresh"));
@@ -138,7 +166,7 @@ public:
         centralWidget = new QWidget(glcapsviewerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_7 = new QVBoxLayout(centralWidget);
-        verticalLayout_7->setSpacing(5);
+        verticalLayout_7->setSpacing(0);
         verticalLayout_7->setContentsMargins(11, 11, 11, 11);
         verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
         verticalLayout_7->setContentsMargins(0, 0, 0, 0);
@@ -179,28 +207,45 @@ public:
         tabDevice = new QWidget();
         tabDevice->setObjectName(QStringLiteral("tabDevice"));
         horizontalLayout_3 = new QHBoxLayout(tabDevice);
-        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setSpacing(5);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(-1, -1, -1, 0);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        treeWidget = new QTreeWidget(tabDevice);
+        tabWidgetDevice = new QTabWidget(tabDevice);
+        tabWidgetDevice->setObjectName(QStringLiteral("tabWidgetDevice"));
+        tabWidgetDevice->setAutoFillBackground(true);
+        tabWidgetDevice->setTabPosition(QTabWidget::North);
+        tabWidgetDevice->setTabShape(QTabWidget::Rounded);
+        tabWidgetDevice->setElideMode(Qt::ElideNone);
+        tabWidgetDevice->setUsesScrollButtons(true);
+        tabWidgetDevice->setDocumentMode(false);
+        tabWidgetDevice->setTabBarAutoHide(false);
+        tab_4 = new QWidget();
+        tab_4->setObjectName(QStringLiteral("tab_4"));
+        verticalLayout_9 = new QVBoxLayout(tab_4);
+        verticalLayout_9->setSpacing(6);
+        verticalLayout_9->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
+        treeWidget = new QTreeWidget(tab_4);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
         treeWidget->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
         treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         treeWidget->setAlternatingRowColors(true);
-        treeWidget->setIndentation(10);
+        treeWidget->setSortingEnabled(false);
+        treeWidget->header()->setVisible(false);
         treeWidget->header()->setDefaultSectionSize(200);
         treeWidget->header()->setStretchLastSection(true);
 
-        horizontalLayout->addWidget(treeWidget);
+        verticalLayout_9->addWidget(treeWidget);
 
-        tabWidgetDevice = new QTabWidget(tabDevice);
-        tabWidgetDevice->setObjectName(QStringLiteral("tabWidgetDevice"));
+        tabWidgetDevice->addTab(tab_4, QString());
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
         verticalLayout_4 = new QVBoxLayout(tab);
@@ -215,6 +260,7 @@ public:
         treeWidgetExtensions->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
         treeWidgetExtensions->setEditTriggers(QAbstractItemView::NoEditTriggers);
         treeWidgetExtensions->setAlternatingRowColors(true);
+        treeWidgetExtensions->setSortingEnabled(false);
         treeWidgetExtensions->header()->setVisible(false);
 
         verticalLayout_4->addWidget(treeWidgetExtensions);
@@ -260,9 +306,7 @@ public:
 
         horizontalLayout_3->addLayout(verticalLayout);
 
-        QIcon icon9;
-        icon9.addFile(QStringLiteral(":/glcapsviewer/Resources/gpu32.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabDevice, icon9, QString());
+        tabWidget->addTab(tabDevice, QString());
         tabDatabase = new QWidget();
         tabDatabase->setObjectName(QStringLiteral("tabDatabase"));
         horizontalLayout_5 = new QHBoxLayout(tabDatabase);
@@ -274,9 +318,9 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         pushButtonRefreshDataBase = new QPushButton(tabDatabase);
         pushButtonRefreshDataBase->setObjectName(QStringLiteral("pushButtonRefreshDataBase"));
-        QIcon icon10;
-        icon10.addFile(QStringLiteral(":/glcapsviewer/Resources/refresh16.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonRefreshDataBase->setIcon(icon10);
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/glcapsviewer/Resources/refresh16.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButtonRefreshDataBase->setIcon(icon9);
         pushButtonRefreshDataBase->setFlat(false);
 
         verticalLayout_2->addWidget(pushButtonRefreshDataBase, 0, Qt::AlignLeft);
@@ -364,9 +408,7 @@ public:
 
         horizontalLayout_5->addLayout(verticalLayout_2);
 
-        QIcon icon11;
-        icon11.addFile(QStringLiteral(":/glcapsviewer/Resources/db24.png"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget->addTab(tabDatabase, icon11, QString());
+        tabWidget->addTab(tabDatabase, QString());
 
         verticalLayout_7->addWidget(tabWidget);
 
@@ -448,6 +490,7 @@ public:
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));
         ___qtreewidgetitem->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
+        tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_4), QApplication::translate("glcapsviewerClass", "Implementation", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab), QApplication::translate("glcapsviewerClass", "Extensions", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_2), QApplication::translate("glcapsviewerClass", "Compressed texture formats", 0));
         QTreeWidgetItem *___qtreewidgetitem1 = treeWidgetInternalFormats->headerItem();
