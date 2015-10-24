@@ -29,7 +29,62 @@
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <property name="spacing">
+     <number>5</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(68, 68, 68);</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QLabel" name="labelDescription">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);
+font: 75 11pt;</string>
+         </property>
+         <property name="text">
+          <string>Getting OpenGL implementation details...</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelReportPresent">
+         <property name="styleSheet">
+          <string notr="true">font: 10pt;
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="tabPosition">
@@ -61,35 +116,6 @@
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QLabel" name="labelDescription">
-            <property name="styleSheet">
-             <string notr="true">font: 75 11pt;</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="text">
-             <string>Getting OpenGL implementation details...</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="labelReportPresent">
-            <property name="styleSheet">
-             <string notr="true">font: 10pt;</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -377,13 +403,18 @@ color: rgb(0, 0, 255);</string>
    </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(40, 40, 40);
+color: rgb(255, 255, 255);
+</string>
+   </property>
    <property name="movable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="iconSize">
     <size>
      <width>64</width>
-     <height>24</height>
+     <height>32</height>
     </size>
    </property>
    <property name="toolButtonStyle">

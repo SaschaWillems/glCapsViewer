@@ -45,7 +45,7 @@ bool glCapsViewerHttp::checkServerConnection()
 {
 	manager = new QNetworkAccessManager(NULL);
 
-	QUrl qurl(QString::fromStdString("http://opengl.delphigl.de/services/gl_serverstate.php"));
+	QUrl qurl(QString::fromStdString(getBaseUrl() + "services/gl_serverstate.php"));
 	QNetworkReply* reply = manager->get(QNetworkRequest(qurl));
 
 	QEventLoop loop;

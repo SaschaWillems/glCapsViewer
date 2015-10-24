@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'glcapsviewer.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -42,13 +42,15 @@ public:
     QAction *actionSave_xml;
     QAction *actionDevice;
     QWidget *centralWidget;
-    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_7;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_8;
+    QLabel *labelDescription;
+    QLabel *labelReportPresent;
     QTabWidget *tabWidget;
     QWidget *tabDevice;
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *verticalLayout;
-    QLabel *labelDescription;
-    QLabel *labelReportPresent;
     QHBoxLayout *horizontalLayout;
     QTreeWidget *treeWidget;
     QTabWidget *tabWidgetDevice;
@@ -135,16 +137,45 @@ public:
         actionDevice->setIcon(icon8);
         centralWidget = new QWidget(glcapsviewerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        horizontalLayout_2 = new QHBoxLayout(centralWidget);
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        verticalLayout_7 = new QVBoxLayout(centralWidget);
+        verticalLayout_7->setSpacing(5);
+        verticalLayout_7->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
+        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setStyleSheet(QStringLiteral("background-color: rgb(68, 68, 68);"));
+        verticalLayout_8 = new QVBoxLayout(widget);
+        verticalLayout_8->setSpacing(6);
+        verticalLayout_8->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_8->setObjectName(QStringLiteral("verticalLayout_8"));
+        labelDescription = new QLabel(widget);
+        labelDescription->setObjectName(QStringLiteral("labelDescription"));
+        labelDescription->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
+"font: 75 11pt;"));
+        labelDescription->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(labelDescription);
+
+        labelReportPresent = new QLabel(widget);
+        labelReportPresent->setObjectName(QStringLiteral("labelReportPresent"));
+        labelReportPresent->setStyleSheet(QLatin1String("font: 10pt;\n"
+"color: rgb(255, 255, 255);"));
+        labelReportPresent->setFrameShape(QFrame::NoFrame);
+        labelReportPresent->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(labelReportPresent);
+
+
+        verticalLayout_7->addWidget(widget);
+
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setTabPosition(QTabWidget::North);
         tabWidget->setTabShape(QTabWidget::Rounded);
         tabWidget->setDocumentMode(false);
         tabWidget->setTabsClosable(false);
+        tabWidget->setTabBarAutoHide(false);
         tabDevice = new QWidget();
         tabDevice->setObjectName(QStringLiteral("tabDevice"));
         horizontalLayout_3 = new QHBoxLayout(tabDevice);
@@ -154,21 +185,6 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        labelDescription = new QLabel(tabDevice);
-        labelDescription->setObjectName(QStringLiteral("labelDescription"));
-        labelDescription->setStyleSheet(QStringLiteral("font: 75 11pt;"));
-        labelDescription->setFrameShape(QFrame::NoFrame);
-        labelDescription->setWordWrap(true);
-
-        verticalLayout->addWidget(labelDescription);
-
-        labelReportPresent = new QLabel(tabDevice);
-        labelReportPresent->setObjectName(QStringLiteral("labelReportPresent"));
-        labelReportPresent->setStyleSheet(QStringLiteral("font: 10pt;"));
-        labelReportPresent->setFrameShape(QFrame::NoFrame);
-
-        verticalLayout->addWidget(labelReportPresent);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
@@ -352,7 +368,7 @@ public:
         icon11.addFile(QStringLiteral(":/glcapsviewer/Resources/db24.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tabDatabase, icon11, QString());
 
-        horizontalLayout_2->addWidget(tabWidget);
+        verticalLayout_7->addWidget(tabWidget);
 
         glcapsviewerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(glcapsviewerClass);
@@ -361,8 +377,11 @@ public:
         glcapsviewerClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(glcapsviewerClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        mainToolBar->setMovable(true);
-        mainToolBar->setIconSize(QSize(64, 24));
+        mainToolBar->setStyleSheet(QLatin1String("background-color: rgb(40, 40, 40);\n"
+"color: rgb(255, 255, 255);\n"
+""));
+        mainToolBar->setMovable(false);
+        mainToolBar->setIconSize(QSize(64, 32));
         mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         mainToolBar->setFloatable(false);
         glcapsviewerClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
