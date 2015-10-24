@@ -71,6 +71,12 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
+
+	// Setup extension tree model and filter proxy
+	ui.treeViewExtensions->setModel(&extensionFilterProxy);
+	extensionFilterProxy.setSourceModel(&extensionTreeModel);
+	connect(ui.lineEditeExtensions, SIGNAL(textChanged(QString)), this, SLOT(slotFilterExtensions(QString)));
+
 	appSettings.restore();
 
 	if (!core.loadEnumList()) {
@@ -217,18 +223,17 @@ void glCapsViewer::generateInternalFormatInfo()
 void glCapsViewer::generateReport()
 {
 	ui.treeWidget->clear();
-	ui.treeWidgetExtensions->clear();
 	ui.listWidgetCompressedFormats->clear();
 
+	extensionTreeModel.clear();
 
 	core.readExtensions();
 	core.readOsExtensions();
 	core.readImplementation();
 	core.readCapabilities();
-	// TODO : Check if extension is present!
 	core.readCompressedFormats();
-	// TODO : Check if extension is present!
-	if (core.extensionSupported("GL_ARB_internalformat_query")) {
+	if (core.extensionSupported("GL_ARB_internalformat_query")) 
+	{
 		core.readInternalFormats();
 	}
 
@@ -290,43 +295,30 @@ void glCapsViewer::generateReport()
 	}
 
 	// Extensions
-	tree = ui.treeWidgetExtensions;
-	tree->header()->resizeSection(0, 250);
-
-	stringstream cap;
-	cap << "OpenGL extensions (" << core.extensions.size() << ")";
-	QTreeWidgetItem *extItem = new QTreeWidgetItem(tree);
-	extItem->setText(0, QString::fromStdString(cap.str()));
-
-	for (auto& s : core.extensions) {
+	QStandardItem *captionItem = new QStandardItem("OpenGL extensions (" + QString::number(core.extensions.size()) + ")");
+	QStandardItem *extRootItem = extensionTreeModel.invisibleRootItem();
+	extRootItem->appendRow(captionItem);
+	for (auto& s : core.extensions) 
+	{
 		if (s == "") continue;
-		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
-		capItem->setText(0, QString::fromStdString(s));
-		extItem->addChild(capItem);
+		QStandardItem *extRow = new QStandardItem(QString::fromStdString(s));
+		captionItem->appendRow(extRow);
 	}
-
-	extItem->sortChildren(0, Qt::AscendingOrder);
-	extItem->setExpanded(true);
 
 	// OS 
-	cap.str("");
-	cap << "OS specific extensions (" << core.osextensions.size() << ")";
-	extItem = new QTreeWidgetItem(tree);
-	extItem->setText(0, QString::fromStdString(cap.str()));
-
-	for (auto& s : core.osextensions) {
+	captionItem = new QStandardItem("OS specific extensions (" + QString::number(core.osextensions.size()) + ")");
+	extRootItem->appendRow(captionItem);
+	for (auto& s : core.osextensions) 
+	{
 		if (s == "") continue;
-		QTreeWidgetItem *capItem = new QTreeWidgetItem(extItem);
-		capItem->setText(0, QString::fromStdString(s));
-		extItem->addChild(capItem);
+		QStandardItem *extRow = new QStandardItem(QString::fromStdString(s));
+		captionItem->appendRow(extRow);
 	}
-
-	extItem->sortChildren(0, Qt::AscendingOrder);
-	extItem->setExpanded(true);
+	ui.treeViewExtensions->expandAll();
 
 	// Supported Compressed texture formats
-	// TODO : Display error if ext not supported or list empty
-	for (auto& compressedFormat : core.compressedFormats) {
+	for (auto& compressedFormat : core.compressedFormats) 
+	{
 		string formatString = core.getEnumName(compressedFormat);
 		QListWidgetItem *formatItem = new QListWidgetItem(QString::fromStdString(formatString), ui.listWidgetCompressedFormats);
 		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
@@ -671,7 +663,8 @@ void glCapsViewer::slotAbout() {
 		"Copyright (c) 2011-2015 by Sascha Willems<br/><br/>"
 		"This tool is <b>FREEWARE</b><br/><br/>"
 		"For usage and distribution details refer to the readme<br/><br/>"
-		"<a href='http://www.saschawillems.de'>http://www.saschawillems.de</a><br><br>";
+		"<a href='http://www.gpuinfo.org'>www.gpuinfo.org</a><br><br>"
+		"<a href='http://www.saschawillems.de'>www.saschawillems.de</a><br><br>";
 	aboutText << "GLFW : " << glfwGetVersionString() << "<br>";
 	aboutText << "GLEW : " << glewGetString(GLEW_VERSION);
 	aboutText << "</p>";
@@ -690,6 +683,12 @@ void glCapsViewer::slotTabChanged(int index)
 	if (index == 1) {
 		refreshDeviceList();
 	}
+}
+
+void glCapsViewer::slotFilterExtensions(QString text)
+{
+	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
+	extensionFilterProxy.setFilterRegExp(regExp);
 }
 
 /// <summary>

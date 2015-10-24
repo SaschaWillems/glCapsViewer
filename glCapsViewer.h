@@ -28,6 +28,9 @@
 #include "ui_glcapsviewer.h"
 #include "glCapsViewerCore.h"
 #include "settings.h"
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include <treeproxyfilter.h>
 
 class glCapsViewer : public QMainWindow
 {
@@ -45,6 +48,8 @@ public:
 private:
 	QNetworkAccessManager* nam;
 	capsViewer::settings appSettings;
+	TreeProxyFilter extensionFilterProxy;
+	QStandardItemModel extensionTreeModel;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
 	void generateInternalFormatInfo();
@@ -61,6 +66,7 @@ private slots:
 	void slotDatabaseDevicesItemChanged();
 	void slotDeviceVersionChanged(int index);
 	void slotTabChanged(int index);
+	void slotFilterExtensions(QString text);
 };
 
 #endif // GLCAPSVIEWER_H

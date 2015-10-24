@@ -14,9 +14,11 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -24,6 +26,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QTreeView>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -58,7 +61,11 @@ public:
     QTreeWidget *treeWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout_4;
-    QTreeWidget *treeWidgetExtensions;
+    QWidget *widget_2;
+    QFormLayout *formLayout;
+    QLabel *label_2;
+    QLineEdit *lineEditeExtensions;
+    QTreeView *treeViewExtensions;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_5;
     QListWidget *listWidgetCompressedFormats;
@@ -252,18 +259,47 @@ public:
         verticalLayout_4->setSpacing(6);
         verticalLayout_4->setContentsMargins(11, 11, 11, 11);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        treeWidgetExtensions = new QTreeWidget(tab);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QStringLiteral("1"));
-        treeWidgetExtensions->setHeaderItem(__qtreewidgetitem);
-        treeWidgetExtensions->setObjectName(QStringLiteral("treeWidgetExtensions"));
-        treeWidgetExtensions->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
-        treeWidgetExtensions->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        treeWidgetExtensions->setAlternatingRowColors(true);
-        treeWidgetExtensions->setSortingEnabled(false);
-        treeWidgetExtensions->header()->setVisible(false);
+        verticalLayout_4->setContentsMargins(-1, -1, 9, -1);
+        widget_2 = new QWidget(tab);
+        widget_2->setObjectName(QStringLiteral("widget_2"));
+        formLayout = new QFormLayout(widget_2);
+        formLayout->setSpacing(6);
+        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setContentsMargins(0, 2, 0, 2);
+        label_2 = new QLabel(widget_2);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy);
+        label_2->setScaledContents(false);
+        label_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        verticalLayout_4->addWidget(treeWidgetExtensions);
+        formLayout->setWidget(0, QFormLayout::LabelRole, label_2);
+
+        lineEditeExtensions = new QLineEdit(widget_2);
+        lineEditeExtensions->setObjectName(QStringLiteral("lineEditeExtensions"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lineEditeExtensions->sizePolicy().hasHeightForWidth());
+        lineEditeExtensions->setSizePolicy(sizePolicy1);
+
+        formLayout->setWidget(0, QFormLayout::FieldRole, lineEditeExtensions);
+
+
+        verticalLayout_4->addWidget(widget_2);
+
+        treeViewExtensions = new QTreeView(tab);
+        treeViewExtensions->setObjectName(QStringLiteral("treeViewExtensions"));
+        treeViewExtensions->setStyleSheet(QStringLiteral("QTreeView::item { height: 24px;}"));
+        treeViewExtensions->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        treeViewExtensions->setAlternatingRowColors(true);
+        treeViewExtensions->setHeaderHidden(true);
+
+        verticalLayout_4->addWidget(treeViewExtensions);
 
         tabWidgetDevice->addTab(tab, QString());
         tab_2 = new QWidget();
@@ -444,7 +480,7 @@ public:
         retranslateUi(glcapsviewerClass);
 
         tabWidget->setCurrentIndex(0);
-        tabWidgetDevice->setCurrentIndex(0);
+        tabWidgetDevice->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(glcapsviewerClass);
@@ -491,6 +527,7 @@ public:
         ___qtreewidgetitem->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));
         ___qtreewidgetitem->setText(0, QApplication::translate("glcapsviewerClass", "key", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_4), QApplication::translate("glcapsviewerClass", "Implementation", 0));
+        label_2->setText(QApplication::translate("glcapsviewerClass", "Filter : ", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab), QApplication::translate("glcapsviewerClass", "Extensions", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_2), QApplication::translate("glcapsviewerClass", "Compressed texture formats", 0));
         QTreeWidgetItem *___qtreewidgetitem1 = treeWidgetInternalFormats->headerItem();

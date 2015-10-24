@@ -80,6 +80,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_settingsDialog.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="treeproxyfilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="glcapsviewer.h">
@@ -115,6 +118,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="treeproxyfilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

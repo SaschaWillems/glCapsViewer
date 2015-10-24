@@ -173,7 +173,7 @@ color: rgb(255, 255, 255);</string>
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <property name="elideMode">
                <enum>Qt::ElideNone</enum>
@@ -234,8 +234,58 @@ color: rgb(255, 255, 255);</string>
                 <string>Extensions</string>
                </attribute>
                <layout class="QVBoxLayout" name="verticalLayout_4">
+                <property name="rightMargin">
+                 <number>9</number>
+                </property>
                 <item>
-                 <widget class="QTreeWidget" name="treeWidgetExtensions">
+                 <widget class="QWidget" name="widget_2" native="true">
+                  <layout class="QFormLayout" name="formLayout">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_2">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>Filter : </string>
+                     </property>
+                     <property name="scaledContents">
+                      <bool>false</bool>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="lineEditeExtensions">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTreeView" name="treeViewExtensions">
                   <property name="styleSheet">
                    <string notr="true">QTreeView::item { height: 24px;}</string>
                   </property>
@@ -245,17 +295,9 @@ color: rgb(255, 255, 255);</string>
                   <property name="alternatingRowColors">
                    <bool>true</bool>
                   </property>
-                  <property name="sortingEnabled">
-                   <bool>false</bool>
+                  <property name="headerHidden">
+                   <bool>true</bool>
                   </property>
-                  <attribute name="headerVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string notr="true">1</string>
-                   </property>
-                  </column>
                  </widget>
                 </item>
                </layout>
