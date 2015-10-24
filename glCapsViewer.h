@@ -48,11 +48,16 @@ public:
 private:
 	QNetworkAccessManager* nam;
 	capsViewer::settings appSettings;
+	struct
 	TreeProxyFilter extensionFilterProxy;
 	QStandardItemModel extensionTreeModel;
+	TreeProxyFilter implementationFilterProxy;
+	QStandardItemModel implementationTreeModel;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
-	void generateInternalFormatInfo();
+	void displayCapabilities();
+	void displayExtensions();
+	void displayInternalFormatInfo();
 private slots:
 	void slotRefreshReport();
 	void slotClose();
@@ -67,6 +72,7 @@ private slots:
 	void slotDeviceVersionChanged(int index);
 	void slotTabChanged(int index);
 	void slotFilterExtensions(QString text);
+	void slotFilterImplementation(QString text);
 };
 
 #endif // GLCAPSVIEWER_H

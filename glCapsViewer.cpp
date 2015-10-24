@@ -71,15 +71,20 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
 	ui.tableWidgetDatabaseDeviceReport->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-
-	// Setup extension tree model and filter proxy
+	// Extension tree model and filter proxy
 	ui.treeViewExtensions->setModel(&extensionFilterProxy);
 	extensionFilterProxy.setSourceModel(&extensionTreeModel);
 	connect(ui.lineEditeExtensions, SIGNAL(textChanged(QString)), this, SLOT(slotFilterExtensions(QString)));
 
+	// Implementation tree model and filter proxy
+	ui.treeViewImplementation->setModel(&implementationFilterProxy);
+	implementationFilterProxy.setSourceModel(&implementationTreeModel);
+	connect(ui.lineEditImplementation, SIGNAL(textChanged(QString)), this, SLOT(slotFilterImplementation(QString)));
+
 	appSettings.restore();
 
-	if (!core.loadEnumList()) {
+	if (!core.loadEnumList()) 
+	{
 		QMessageBox::warning(this, tr("Error"), tr("Could not load enum list!"));
 		// TODO : Instead of exiting, download from server and try to load again
 		exit(EXIT_FAILURE);
@@ -148,7 +153,95 @@ void colorInternalFormatItem(QTreeWidgetItem *item, int column) {
 		item->setTextColor(column, QColor::fromRgb(0, 128, 0));
 }
 
-void glCapsViewer::generateInternalFormatInfo()
+void glCapsViewer::displayCapabilities()
+{
+	QStandardItem *rootItem;
+	QStandardItem *parentItem;
+
+	// Implementation detail
+	rootItem = implementationTreeModel.invisibleRootItem();
+	QList<QStandardItem *> captionItems;
+	captionItems << new QStandardItem("Key");
+	captionItems << new QStandardItem("Value");
+	rootItem->appendRow(captionItems);
+
+	parentItem = new QStandardItem("Implementation details");
+	rootItem->appendRow(parentItem);
+
+	for (auto& s : core.implementation)
+	{
+		QList<QStandardItem *> rowItems;
+		rowItems << new QStandardItem(QString::fromStdString(s.first));
+		rowItems << new QStandardItem(QString::fromStdString(s.second));
+		parentItem->appendRow(rowItems);
+
+	}
+
+	// Capabilities
+	for (auto& group : core.capgroups)
+	{
+		if (!group.visible) 
+			continue;
+		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(group.name));
+		item->setTextColor(QColor::fromRgb(0, 0, 255));
+
+		QList<QStandardItem *> rowItems;
+		rowItems << new QStandardItem(QString::fromStdString(group.name));
+
+		if (group.supported) 
+		{
+			rowItems << new QStandardItem(QString::number(group.capabilities.size()));
+			for (auto& cap : group.capabilities)
+			{
+				QList<QStandardItem *> capsItems;
+				capsItems << new QStandardItem(QString::fromStdString(cap.first));
+				capsItems << new QStandardItem(QString::fromStdString(cap.second));
+				if (cap.second == "n/a")
+				{
+					capsItems[0]->setForeground(QColor::fromRgb(100, 100, 100));
+					capsItems[1]->setForeground(Qt::red);
+				}
+				rowItems[0]->appendRow(capsItems);
+			}
+		}
+		else 
+		{
+			rowItems << new QStandardItem("not available");
+			rowItems[1]->setForeground(Qt::red);
+		}
+
+		rootItem->appendRow(rowItems);
+	}
+
+	ui.treeViewImplementation->expandAll();
+	ui.treeViewImplementation->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+
+void glCapsViewer::displayExtensions()
+{
+	QStandardItem *rootItem = extensionTreeModel.invisibleRootItem();
+	QStandardItem *parentItem;
+
+	parentItem = new QStandardItem("OpenGL extensions (" + QString::number(core.extensions.size()) + ")");
+	rootItem->appendRow(parentItem);
+	for (auto& s : core.extensions)
+	{
+		if (s == "") continue;
+		parentItem->appendRow(new QStandardItem(QString::fromStdString(s)));
+	}
+
+	parentItem = new QStandardItem("OS specific extensions (" + QString::number(core.osextensions.size()) + ")");
+	rootItem->appendRow(parentItem);
+	for (auto& s : core.osextensions)
+	{
+		if (s == "") continue;
+		parentItem->appendRow(new QStandardItem(QString::fromStdString(s)));
+	}
+	ui.treeViewExtensions->expandAll();
+}
+
+void glCapsViewer::displayInternalFormatInfo()
 {
 
 	QTreeWidget *tree = ui.treeWidgetInternalFormats;
@@ -222,10 +315,10 @@ void glCapsViewer::generateInternalFormatInfo()
 /// </summary>
 void glCapsViewer::generateReport()
 {
-	ui.treeWidget->clear();
 	ui.listWidgetCompressedFormats->clear();
 
 	extensionTreeModel.clear();
+	implementationTreeModel.clear();
 
 	core.readExtensions();
 	core.readOsExtensions();
@@ -233,88 +326,16 @@ void glCapsViewer::generateReport()
 	core.readCapabilities();
 	core.readCompressedFormats();
 	if (core.extensionSupported("GL_ARB_internalformat_query")) 
-	{
 		core.readInternalFormats();
-	}
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 
 	updateReportState();
 
-	// Implementation detail
 	stringstream ss;
 
-	QTreeWidget *tree = ui.treeWidget;
-	tree->header()->resizeSection(0, 250);
-	QTreeWidgetItem *impItem = new QTreeWidgetItem(tree);
-	impItem->setText(0, "Implementation details");
-
-	for (auto& s : core.implementation) {
-		QTreeWidgetItem *treeItem = new QTreeWidgetItem(impItem);
-		treeItem->setText(0, QString::fromStdString(s.first));
-		treeItem->setText(1, QString::fromStdString(s.second));
-		impItem->addChild(treeItem);
-	}
-	impItem->setExpanded(true);
-
-	// Capabilities
-	for (auto& group : core.capgroups) {
-		if (!group.visible) {
-			continue;
-		}
-		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(group.name));
-		item->setTextColor(QColor::fromRgb(0, 0, 255));
-
-		QTreeWidgetItem *groupItem = new QTreeWidgetItem(tree);
-		groupItem->setText(0, QString::fromStdString(group.name));
-
-		if (group.supported) {
-			groupItem->setText(1, QString::fromStdString(to_string(group.capabilities.size())));
-		}
-		else {
-			groupItem->setText(1, "not available");
-			groupItem->setTextColor(1, QColor::fromRgb(255, 0, 0));
-		}
-
-		if (group.supported) {
-			for (auto& cap : group.capabilities)	{
-				QTreeWidgetItem *capItem = new QTreeWidgetItem(groupItem);
-				capItem->setText(0, QString::fromStdString(cap.first));
-				capItem->setText(1, QString::fromStdString(cap.second));
-				if (cap.second == "n/a") {
-					capItem->setTextColor(0, QColor::fromRgb(100, 100, 100));
-					capItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
-				}
-				groupItem->addChild(capItem);
-			}
-		}
-		else {
-			QTableWidgetItem *item = new QTableWidgetItem("  Not supported");
-			item->setTextColor(QColor::fromRgb(255, 0, 0));
-		}
-	}
-
-	// Extensions
-	QStandardItem *captionItem = new QStandardItem("OpenGL extensions (" + QString::number(core.extensions.size()) + ")");
-	QStandardItem *extRootItem = extensionTreeModel.invisibleRootItem();
-	extRootItem->appendRow(captionItem);
-	for (auto& s : core.extensions) 
-	{
-		if (s == "") continue;
-		QStandardItem *extRow = new QStandardItem(QString::fromStdString(s));
-		captionItem->appendRow(extRow);
-	}
-
-	// OS 
-	captionItem = new QStandardItem("OS specific extensions (" + QString::number(core.osextensions.size()) + ")");
-	extRootItem->appendRow(captionItem);
-	for (auto& s : core.osextensions) 
-	{
-		if (s == "") continue;
-		QStandardItem *extRow = new QStandardItem(QString::fromStdString(s));
-		captionItem->appendRow(extRow);
-	}
-	ui.treeViewExtensions->expandAll();
+	displayCapabilities();
+	displayExtensions();
 
 	// Supported Compressed texture formats
 	for (auto& compressedFormat : core.compressedFormats) 
@@ -324,7 +345,8 @@ void glCapsViewer::generateReport()
 		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
 	}
 
-	generateInternalFormatInfo();
+	// TODO : Disabled for testing
+//	displayInternalFormatInfo();
 
 	// Tab captions
 	stringstream tabText;
@@ -690,6 +712,13 @@ void glCapsViewer::slotFilterExtensions(QString text)
 	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
 	extensionFilterProxy.setFilterRegExp(regExp);
 }
+
+void glCapsViewer::slotFilterImplementation(QString text)
+{
+	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
+	implementationFilterProxy.setFilterRegExp(regExp);
+}
+
 
 /// <summary>
 ///	Fetches a list of available report version for currently selected device
