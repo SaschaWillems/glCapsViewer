@@ -81,6 +81,11 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	implementationFilterProxy.setSourceModel(&implementationTreeModel);
 	connect(ui.lineEditImplementation, SIGNAL(textChanged(QString)), this, SLOT(slotFilterImplementation(QString)));
 
+	// Texture formats tree model and filter proxy
+	ui.listViewCompressedFormats->setModel(&texFormatFilterProxy);
+	texFormatFilterProxy.setSourceModel(&texFormatListModel);
+	connect(ui.lineEditTexFormats, SIGNAL(textChanged(QString)), this, SLOT(slotFilterTextureFormats(QString)));
+
 	appSettings.restore();
 
 	if (!core.loadEnumList()) 
@@ -241,6 +246,16 @@ void glCapsViewer::displayExtensions()
 	ui.treeViewExtensions->expandAll();
 }
 
+void glCapsViewer::displayCompressedFormats()
+{
+	QStandardItem *rootItem = texFormatListModel.invisibleRootItem();
+	for (auto& compressedFormat : core.compressedFormats)
+	{
+		string formatString = core.getEnumName(compressedFormat);
+		rootItem->appendRow(new QStandardItem(QString::fromStdString(core.getEnumName(compressedFormat))));
+	}
+}
+
 void glCapsViewer::displayInternalFormatInfo()
 {
 
@@ -315,10 +330,9 @@ void glCapsViewer::displayInternalFormatInfo()
 /// </summary>
 void glCapsViewer::generateReport()
 {
-	ui.listWidgetCompressedFormats->clear();
-
 	extensionTreeModel.clear();
 	implementationTreeModel.clear();
+	texFormatListModel.clear();
 
 	core.readExtensions();
 	core.readOsExtensions();
@@ -336,24 +350,15 @@ void glCapsViewer::generateReport()
 
 	displayCapabilities();
 	displayExtensions();
-
-	// Supported Compressed texture formats
-	for (auto& compressedFormat : core.compressedFormats) 
-	{
-		string formatString = core.getEnumName(compressedFormat);
-		QListWidgetItem *formatItem = new QListWidgetItem(QString::fromStdString(formatString), ui.listWidgetCompressedFormats);
-		formatItem->setSizeHint(QSize(formatItem->sizeHint().height(), 24));
-	}
-
-	// TODO : Disabled for testing
-//	displayInternalFormatInfo();
+	displayCompressedFormats();
+	displayInternalFormatInfo();
 
 	// Tab captions
 	stringstream tabText;
 	tabText << "Extensions (" << core.extensions.size() + core.osextensions.size() << ")";
 	ui.tabWidgetDevice->setTabText(1, QString::fromStdString(tabText.str()));
 	tabText.str("");
-	tabText << "Compressed tex. formats (" << core.compressedFormats.size() << ")";
+	tabText << "Compressed formats (" << core.compressedFormats.size() << ")";
 	ui.tabWidgetDevice->setTabText(2, QString::fromStdString(tabText.str()));
 }
 
@@ -719,6 +724,11 @@ void glCapsViewer::slotFilterImplementation(QString text)
 	implementationFilterProxy.setFilterRegExp(regExp);
 }
 
+void glCapsViewer::slotFilterTextureFormats(QString text)
+{
+	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
+	texFormatFilterProxy.setFilterRegExp(regExp);
+}
 
 /// <summary>
 ///	Fetches a list of available report version for currently selected device

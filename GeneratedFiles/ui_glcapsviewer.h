@@ -19,6 +19,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListView>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -72,7 +73,11 @@ public:
     QTreeView *treeViewExtensions;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_5;
-    QListWidget *listWidgetCompressedFormats;
+    QWidget *widget_4;
+    QFormLayout *formLayout_3;
+    QLabel *label_4;
+    QLineEdit *lineEditTexFormats;
+    QListView *listViewCompressedFormats;
     QWidget *tab_3;
     QVBoxLayout *verticalLayout_6;
     QTreeWidget *treeWidgetInternalFormats;
@@ -335,11 +340,39 @@ public:
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        listWidgetCompressedFormats = new QListWidget(tab_2);
-        listWidgetCompressedFormats->setObjectName(QStringLiteral("listWidgetCompressedFormats"));
-        listWidgetCompressedFormats->setAlternatingRowColors(true);
+        widget_4 = new QWidget(tab_2);
+        widget_4->setObjectName(QStringLiteral("widget_4"));
+        formLayout_3 = new QFormLayout(widget_4);
+        formLayout_3->setSpacing(6);
+        formLayout_3->setContentsMargins(11, 11, 11, 11);
+        formLayout_3->setObjectName(QStringLiteral("formLayout_3"));
+        formLayout_3->setContentsMargins(0, 2, 0, 2);
+        label_4 = new QLabel(widget_4);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
+        label_4->setSizePolicy(sizePolicy);
+        label_4->setScaledContents(false);
+        label_4->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        verticalLayout_5->addWidget(listWidgetCompressedFormats);
+        formLayout_3->setWidget(0, QFormLayout::LabelRole, label_4);
+
+        lineEditTexFormats = new QLineEdit(widget_4);
+        lineEditTexFormats->setObjectName(QStringLiteral("lineEditTexFormats"));
+        sizePolicy1.setHeightForWidth(lineEditTexFormats->sizePolicy().hasHeightForWidth());
+        lineEditTexFormats->setSizePolicy(sizePolicy1);
+
+        formLayout_3->setWidget(0, QFormLayout::FieldRole, lineEditTexFormats);
+
+
+        verticalLayout_5->addWidget(widget_4);
+
+        listViewCompressedFormats = new QListView(tab_2);
+        listViewCompressedFormats->setObjectName(QStringLiteral("listViewCompressedFormats"));
+        listViewCompressedFormats->setStyleSheet(QStringLiteral("QListView::item { height: 24px;}"));
+        listViewCompressedFormats->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        listViewCompressedFormats->setAlternatingRowColors(true);
+
+        verticalLayout_5->addWidget(listViewCompressedFormats);
 
         tabWidgetDevice->addTab(tab_2, QString());
         tab_3 = new QWidget();
@@ -554,6 +587,7 @@ public:
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_4), QApplication::translate("glcapsviewerClass", "Implementation", 0));
         label_2->setText(QApplication::translate("glcapsviewerClass", "Filter : ", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab), QApplication::translate("glcapsviewerClass", "Extensions", 0));
+        label_4->setText(QApplication::translate("glcapsviewerClass", "Filter : ", 0));
         tabWidgetDevice->setTabText(tabWidgetDevice->indexOf(tab_2), QApplication::translate("glcapsviewerClass", "Compressed texture formats", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidgetInternalFormats->headerItem();
         ___qtreewidgetitem->setText(1, QApplication::translate("glcapsviewerClass", "value", 0));

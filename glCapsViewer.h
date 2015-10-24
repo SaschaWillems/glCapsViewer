@@ -53,10 +53,13 @@ private:
 	QStandardItemModel extensionTreeModel;
 	TreeProxyFilter implementationFilterProxy;
 	QStandardItemModel implementationTreeModel;
+	TreeProxyFilter texFormatFilterProxy;
+	QStandardItemModel texFormatListModel;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
 	void displayCapabilities();
 	void displayExtensions();
+	void displayCompressedFormats();
 	void displayInternalFormatInfo();
 private slots:
 	void slotRefreshReport();
@@ -73,6 +76,7 @@ private slots:
 	void slotTabChanged(int index);
 	void slotFilterExtensions(QString text);
 	void slotFilterImplementation(QString text);
+	void slotFilterTextureFormats(QString text);
 };
 
 #endif // GLCAPSVIEWER_H
