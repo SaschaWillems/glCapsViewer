@@ -1,98 +1,94 @@
+/*
+*
+* OpenGL hardware capability viewer and database
+*
+* Settings dialog
+*
+* Copyright (C) 2011-2015 by Sascha Willems (www.saschawillems.de)
+*
+* This code is free software, you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License version 3 as published by the Free Software Foundation.
+*
+* Please review the following information to ensure the GNU Lesser
+* General Public License version 3 requirements will be met:
+* http://opensource.org/licenses/lgpl-3.0.html
+*
+* The code is distributed WITHOUT ANY WARRANTY; without even the
+* implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+* PURPOSE.  See the GNU LGPL 3.0 for more details.
+*
+*/
+
 #include "settingsDialog.h"
 #include "settings.h"
 
-#include <QHBoxLayout>
-#include <QPushButton>
+#include <QFormLayout>
 #include <QMessageBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QSettings>
+#include <QDialogButtonBox>
 
 namespace capsViewer {
 
-	QHBoxLayout* createLabeledEdit(QString caption, QString name) {
-		QHBoxLayout* hLayout = new QHBoxLayout();
-
-		QLabel* lbl = new QLabel();
-		lbl->setText(caption);
-		hLayout->addWidget(lbl);
-
+	QLineEdit *createLineEdit(QString name)
+	{
 		QLineEdit* edit = new QLineEdit();
 		edit->setObjectName(name);
-		hLayout->addWidget(edit);
-
-		return hLayout;
+		return edit;
 	}
 
-	QHBoxLayout* createCheckBox(QString caption, QString name) {
-		QHBoxLayout* hLayout = new QHBoxLayout();
-
-		QCheckBox* chkbox = new QCheckBox();
-		chkbox->setText(caption);
-		chkbox->setObjectName(name);
-		hLayout->addWidget(chkbox);
-
-		return hLayout;
+	QCheckBox *createCheckBox(QString name)
+	{
+		QCheckBox* checkbox = new QCheckBox();
+		checkbox->setObjectName(name);
+		return checkbox;
 	}
 
 	settingsDialog::settingsDialog(settings appSet, QWidget * parent, Qt::WindowFlags f)
 	{
 		appSettings = appSet;
 
-		QGridLayout* mainGrid = new QGridLayout;
-		QVBoxLayout* topLayout = new QVBoxLayout;
-		//topLayout->addWidget(new QTextEdit);
+		QFormLayout *formLayout = new QFormLayout;
 
-		QLabel* lbl = new QLabel();
-		lbl->setText("Global options");
-		lbl->setStyleSheet("font: 75 11pt;");
-		topLayout->addWidget(lbl);
-		mainGrid->addLayout(topLayout, 0, 0);
+		QLabel* labelCaption = new QLabel();
+		labelCaption->setText("General settings");
+		labelCaption->setStyleSheet("font: 75 11pt;");
 
-		// Submitter name
-		mainGrid->addLayout(createLabeledEdit("Submitter name:", "editSubmitterName"), 1, 0);
+		formLayout->addRow(labelCaption);
+		formLayout->addRow(tr("Submitter:"), createLineEdit("editSubmitterName"));
 
-		topLayout = new QVBoxLayout;
-		lbl = new QLabel();
-		lbl->setText("Proxy Settings");
-		lbl->setStyleSheet("font: 75 11pt;");
-		topLayout->addWidget(lbl);
-		mainGrid->addLayout(topLayout, 2, 0);
+		labelCaption = new QLabel();
+		labelCaption->setText("Proxy Settings");
+		labelCaption->setStyleSheet("font: 75 11pt;");
+		formLayout->addRow(labelCaption);
 
-		mainGrid->addLayout(createLabeledEdit("DNS Name / IP:", "editProxyDns"), 3, 0);
-		mainGrid->addLayout(createLabeledEdit("Port:", "editProxyPort"), 4, 0);
-		mainGrid->addLayout(createLabeledEdit("User name (if required):", "editProxyUser"), 5, 0);
-		mainGrid->addLayout(createLabeledEdit("Password (if required):", "editProxyPassword"), 6, 0);
-		mainGrid->addLayout(createCheckBox("Use proxy settings for upload", "checkBoxUseProxy"), 7, 0);
-		
-		QHBoxLayout* hLayout = new QHBoxLayout;
-		QPushButton* btn;
-		for (int i = 0; i<2; i++) {
-			if (i == 0) {
-				btn = new QPushButton("OK");
-				connect(btn, SIGNAL(clicked()), this, SLOT(slotAccept()));
-			}
-			else if (i == 1) {
-				btn = new QPushButton("Cancel");
-				connect(btn, SIGNAL(clicked()), this, SLOT(slotCancel()));
-			}
-			hLayout->addWidget(btn);
-		}
-		mainGrid->addLayout(hLayout, 8, 0);
-		setLayout(mainGrid);
+		formLayout->addRow(tr("DNS Name / IP:"), createLineEdit("editProxyDns"));
+		formLayout->addRow(tr("Port:"), createLineEdit("editProxyPort"));
+		formLayout->addRow(tr("User name (if required):"), createLineEdit("editProxyUser"));
+		formLayout->addRow(tr("Password (if required):"), createLineEdit("editProxyPassword"));
+		formLayout->addRow(tr("Use proxy settings for upload"), createCheckBox("checkBoxUseProxy"));
 
-		this->setWindowTitle("Settings");
+		QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+		connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccept()));
+		connect(buttonBox, SIGNAL(rejected()), this, SLOT(slotCancel()));
+
+		formLayout->addWidget(buttonBox);
+
+		setLayout(formLayout);
+		setWindowTitle("Settings");
 
 		// Restore settings
 		QSettings settings("saschawillems", "glcapsviewer");
 		QLineEdit* edit;
-		this->findChild<QLineEdit*>("editSubmitterName", Qt::FindChildrenRecursively)->setText(settings.value("global/submitterName", "").toString());
-		this->findChild<QLineEdit*>("editProxyDns", Qt::FindChildrenRecursively)->setText(settings.value("proxy/dns", "").toString());
-		this->findChild<QLineEdit*>("editProxyPort", Qt::FindChildrenRecursively)->setText(settings.value("proxy/port", "").toString());
-		this->findChild<QLineEdit*>("editProxyUser", Qt::FindChildrenRecursively)->setText(settings.value("proxy/user", "").toString());
-		this->findChild<QLineEdit*>("editProxyPassword", Qt::FindChildrenRecursively)->setText(settings.value("proxy/password", "").toString());
-		this->findChild<QCheckBox*>("checkBoxUseProxy", Qt::FindChildrenRecursively)->setChecked(settings.value("proxy/enabled", "false").toBool());
+		findChild<QLineEdit*>("editSubmitterName", Qt::FindChildrenRecursively)->setText(settings.value("global/submitterName", "").toString());
+		findChild<QLineEdit*>("editProxyDns", Qt::FindChildrenRecursively)->setText(settings.value("proxy/dns", "").toString());
+		findChild<QLineEdit*>("editProxyPort", Qt::FindChildrenRecursively)->setText(settings.value("proxy/port", "").toString());
+		findChild<QLineEdit*>("editProxyUser", Qt::FindChildrenRecursively)->setText(settings.value("proxy/user", "").toString());
+		findChild<QLineEdit*>("editProxyPassword", Qt::FindChildrenRecursively)->setText(settings.value("proxy/password", "").toString());
+		findChild<QCheckBox*>("checkBoxUseProxy", Qt::FindChildrenRecursively)->setChecked(settings.value("proxy/enabled", "false").toBool());
 	}
 
 
