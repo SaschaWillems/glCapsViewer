@@ -343,9 +343,11 @@ string glCapsViewerCore::reportToXml()
 
 	// Implementation info and caps
 	xmlWriter.writeStartElement("caps");
-	for (auto& capgroup : capgroups) {
-		for (auto& cap : capgroup.capabilities) {
-			xmlWriter.writeStartElement(QString::fromStdString(cap.first));
+	for (auto& capgroup : capgroups) 
+	{
+		for (auto& cap : capgroup.capabilities) 
+		{
+			xmlWriter.writeStartElement("cap");
 			xmlWriter.writeAttribute("id", QString::fromStdString(cap.first));
 			xmlWriter.writeTextElement("value", QString::fromStdString(cap.second));
 			xmlWriter.writeEndElement();
@@ -451,8 +453,10 @@ void glCapsViewerCore::readCapabilities()
 					}
 				}
 
-				if (capsGroup.supported) {
-					if ((xmlStream.name() == "cap") && (xmlStream.isStartElement())) {
+				if (capsGroup.supported) 
+				{
+					if ((xmlStream.name() == "cap") && (xmlStream.isStartElement())) 
+					{
 						QXmlStreamAttributes nodeAttribs = xmlStream.attributes();
 						string capName = nodeAttribs.value("name").toString().toStdString();
 						string capType = nodeAttribs.value("type").toString().toStdString();
@@ -463,7 +467,8 @@ void glCapsViewerCore::readCapabilities()
 					}
 				}
 
-				if (xmlStream.name() == "category") {
+				if (xmlStream.name() == "category") 
+				{
 					break;
 				}
 

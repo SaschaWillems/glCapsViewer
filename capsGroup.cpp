@@ -34,29 +34,31 @@ namespace capsViewer {
 	void capsGroup::addCapability(string idstr, GLenum id, string type, int dim)
 	{
 		string errorValue = "n/a";
-		// Clear last OpenGL error
-		GLint dummyError = glGetError();
+		// Flush OpenGL error state
+		glGetError();
 
-		if (type == "glint") {
+		if (type == "glint") 
+		{
 			GLint* intVal;
 			intVal = new GLint[dim];
 			glGetIntegerv(id, intVal);
-			string valString = "";
-			for (int i = 0; i < dim; i++) {
-				if (i > 0) {
-					valString += " ,";
-				}
-				valString += to_string(intVal[i]);
-			}
 			GLint glerr = glGetError();
-			capabilities[idstr] = valString;
-			if (glerr != GL_NO_ERROR) {
-				capabilities[idstr] = errorValue;
+			if (dim == 1)
+			{
+				capabilities[idstr] = to_string(intVal[0]);
 			}
+			else
+			{
+				for (int i = 0; i < dim; i++)
+					capabilities[idstr + "[" + to_string(i) + "]"] = to_string(intVal[i]);
+			}
+			if (glerr != GL_NO_ERROR)
+				capabilities[idstr] = errorValue;
 			delete[] intVal;
 		}
 
-		if (type == "glint64") {
+		if (type == "glint64") 
+		{
 			GLint64* intVal;
 			intVal = new GLint64[dim];
 			glGetInteger64v(id, intVal);
@@ -75,24 +77,30 @@ namespace capsViewer {
 			delete[] intVal;
 		}
 
-		if (type == "glintindex") {
-			GLint intVal;
-			string valString = "";
-			for (int i = 0; i < dim; i++) {
-				if (i > 0) {
-					valString += " ,";
-				}
-				glGetIntegeri_v(id, i, &intVal);
-				valString += to_string(intVal);
-			}
+		if (type == "glintindex") 
+		{
+			GLint *intVal;
+			intVal = new GLint[dim];
+			for (int i = 0; i < dim; i++) 
+				glGetIntegeri_v(id, i, &intVal[i]);
 			GLint glerr = glGetError();
-			capabilities[idstr] = valString;
-			if (glerr != GL_NO_ERROR) {
-				capabilities[idstr] = errorValue;
+			if (dim == 1)
+			{
+				capabilities[idstr] = to_string(intVal[0]);
 			}
+			else
+			{
+				for (int i = 0; i < dim; i++)
+					capabilities[idstr+"["+to_string(i)+"]"] = to_string(intVal[i]);
+			}
+
+			if (glerr != GL_NO_ERROR) 
+				capabilities[idstr] = errorValue;
+			delete[] intVal;
 		}
 
-		if (type == "glintfragmentprogram") {
+		if (type == "glintfragmentprogram") 
+		{
 			GLint* intVal;
 			intVal = new GLint[dim];
 			glGetProgramivARB(GL_FRAGMENT_PROGRAM_ARB, id, intVal);
@@ -111,7 +119,8 @@ namespace capsViewer {
 			delete[] intVal;
 		}
 
-		if (type == "glintvertexprogram") {
+		if (type == "glintvertexprogram") 
+		{
 			GLint* intVal;
 			intVal = new GLint[dim];
 			glGetProgramivARB(GL_VERTEX_PROGRAM_ARB, id, intVal);
@@ -130,7 +139,8 @@ namespace capsViewer {
 			delete[] intVal;
 		}
 
-		if (type == "glfloat") {
+		if (type == "glfloat") 
+		{
 			GLfloat* floatVal;
 			floatVal = new GLfloat[dim];
 			glGetFloatv(id, floatVal);
@@ -149,7 +159,8 @@ namespace capsViewer {
 			delete[] floatVal;
 		}
 
-		if (type == "glstring") {
+		if (type == "glstring") 
+		{
 			string valString = reinterpret_cast<const char*>(glGetString(id));
 			GLint glerr = glGetError();
 			capabilities[idstr] = valString;

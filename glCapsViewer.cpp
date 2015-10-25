@@ -560,9 +560,11 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 				if (xmlReader.name() == "implementation") {
 					break;
 				}
-				QString nodeName = xmlReader.name().toString();
+				QXmlStreamAttributes attrib = xmlReader.attributes();
+				QString nodeName = attrib.value("id").toString();
 				QString nodeValue = xmlReader.readElementText();
-				if (nodeValue == "") {
+				if (nodeValue == "") 
+				{
 					capsMissingDatabase.push_back(nodeName.toStdString());
 				}
 
@@ -642,10 +644,11 @@ void glCapsViewer::slotUpload(){
 				QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, appSettings.submitterName, &ok);
 				core.submitter = text.toStdString();
 				// TODO : Error handling
-				if (ok) {
+				if (ok) 
+				{
 					string xml = core.reportToXml();
 					string httpReply = glchttp.postReportForUpdate(xml);
-					QMessageBox::information(this, tr("httpReply"), QString::fromStdString(httpReply));
+					QMessageBox::information(this, tr("Report updated"), QString::fromStdString(httpReply));
 					updateReportState();
 				}
 			}
