@@ -617,12 +617,14 @@ void glCapsViewer::slotUpload(){
 			string xml = core.reportToXml();
 			string reply = glchttp.postReport(xml);
 			QApplication::restoreOverrideCursor();
-			if (reply == "res_uploaded") {
+			if (reply == "res_uploaded") 
+			{
 				QMessageBox::information(this, tr("Report submitted"), tr("Your report has been uploaded to the database!\n\nThanks for your contribution!"));
 				updateReportState();
 			}
-			else {
-				QMessageBox::warning(this, tr("Error"), tr("The report could not be uploaded!"));
+			else 
+			{
+				QMessageBox::warning(this, tr("Error"), "The report could not be uploaded : \n" + QString::fromStdString(reply));
 			}
 		}
 	}
