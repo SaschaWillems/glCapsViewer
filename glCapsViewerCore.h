@@ -44,6 +44,7 @@ public:
 	vector<capsViewer::internalFormatTarget> internalFormatTargets;
 	string description = "";
 	string submitter = "";
+	string comment = "";
 	string contextType = "";
 	string readOperatingSystem();
 	bool extensionSupported(string ext);

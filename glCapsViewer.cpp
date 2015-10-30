@@ -24,6 +24,7 @@
 #include "glCapsViewerHttp.h"
 #include "settingsDialog.h"
 #include "settings.h"
+#include "submitDialog.h"
 #include "internalFormatTarget.h"
 #include <GL/glew.h>
 #ifdef _WIN32
@@ -46,6 +47,10 @@
 #include <QInputDialog>
 #include <sstream>  
 #include <QXmlStreamReader>
+#include <QFormLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QDialogButtonBox>
 #ifdef __linux__
 	#include <GL/glxew.h>
 #endif
@@ -597,24 +602,30 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 	return (capsMissing || compressedFormatsMissing || internalFormatsMissing);
 }
 
-void glCapsViewer::slotClose(){
+void glCapsViewer::slotClose()
+{
 	close();
 }
 
-void glCapsViewer::slotUpload(){
+void glCapsViewer::slotUpload()
+{
 	glCapsViewerHttp glchttp;
 
-	if (!glchttp.checkServerConnection()) {
+	if (!glchttp.checkServerConnection()) 
+	{
 		QMessageBox::warning(this, tr("Error"), tr("Could not connect to the OpenGL hardware database!\n\nPlease check your internet connection and proxy settings!"));
 		return;
 	}
 
-	if (!glchttp.checkReportPresent(core.description)) {
-		// TODO : Depending on context type? (ES / GL)
-		bool ok;
-		QString text = QInputDialog::getText(this, tr("Submitter name"), tr("Submitter <i>(your name/nick, can be left empty)</i>:"), QLineEdit::Normal, appSettings.submitterName, &ok);
-		core.submitter = text.toStdString();
-		if (ok) {
+	if (!glchttp.checkReportPresent(core.description)) 
+	{
+		capsViewer::submitDialog dialog(appSettings.submitterName);
+		bool ok = (dialog.exec() == QDialog::Accepted);
+
+		if (ok) 
+		{
+			core.submitter = dialog.getSubmitter();
+			core.comment = dialog.getComment();
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			string xml = core.reportToXml();
 			string reply = glchttp.postReport(xml);
@@ -703,7 +714,8 @@ void glCapsViewer::slotAbout() {
 	QMessageBox::about(this, tr("About the OpenGL hardware capability viewer"), QString::fromStdString(aboutText.str()));
 }
 
-void glCapsViewer::slotSettings() {
+void glCapsViewer::slotSettings() 
+{
 	capsViewer::settingsDialog dialog(appSettings);
 	dialog.setModal(true);
 	dialog.exec();
