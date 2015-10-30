@@ -40,14 +40,14 @@ namespace capsViewer
 		editSubmitter->setObjectName("submitter");
 		editSubmitter->setPlaceholderText("Can be left empty");
 		editSubmitter->setText(submitter);
-		editSubmitter->setMinimumWidth(256);
+		editSubmitter->setMinimumWidth(200);
 		formLayout->addRow("Submitter:", editSubmitter);
 
 		editComment = new QLineEdit();
 		editComment->setObjectName("comment");
 		editComment->setPlaceholderText("Can be left empty");
-		editComment->setMinimumWidth(256);
-		editComment->setMaxLength(64);
+		editComment->setMinimumWidth(200);
+		editComment->setMaxLength(32);
 		formLayout->addRow("Comment:", editComment);
 
 		QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
