@@ -330,6 +330,7 @@ string glCapsViewerCore::reportToXml()
 	xmlWriter.writeTextElement("date", QString::fromStdString(datetimestr));
 	xmlWriter.writeTextElement("submitter", QString::fromStdString(submitter));
 	xmlWriter.writeTextElement("os", QString::fromStdString(implementation["Operating system"]));
+	xmlWriter.writeTextElement("comment", QString::fromStdString(comment));
 
 	// Extensions
 	xmlWriter.writeStartElement("extensions");
