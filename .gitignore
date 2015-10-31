@@ -181,3 +181,9 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Qt
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+*.moc
