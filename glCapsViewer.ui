@@ -44,14 +44,12 @@ QTabBar::tab {
 }
 
 QTabBar::tab:hover {       
-	color: rgb(85, 170, 255);
+	color: #6ea9cd;
 }
 
 QTabBar::tab:selected {
-color: rgb(0, 85, 255);
-	background-color: rgb(205, 205, 205);
-border-left: 1px solid rgb(180, 180, 180);
-border-right: 1px solid rgb(180, 180, 180);
+color: #5586a4;
+border-top: 2px solid #5586a4;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
