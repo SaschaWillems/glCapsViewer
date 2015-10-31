@@ -1,12 +1,12 @@
-glCapsViewer
-============
+# OpenGL hardware capability viewer
 
-C++ port of the OpenGL hardware capability viewer
+Client application for the OpenGL hardware capabilitiy database.
 
-This tool uploads OpenGL hardware reports to the OpenGL hardware database at http://openglcaps.delphigl.de
+This tool uploads OpenGL hardware reports to the OpenGL hardware database at http://opengl.gpuinfo.org
 
-Depedencies
-============
+Works with windows, linux and Mac OS.
+
+# Depedencies
 glCapsViewer depends on the following libraries and frameworks :
 
 - Boost - http://www.boost.org/
@@ -15,3 +15,6 @@ glCapsViewer depends on the following libraries and frameworks :
 - Qt - https://qt-project.org/
 
 Thanks to their creators for making my coding life easier :)
+
+# Building
+The repository includes a CMakeLists.txt for use with https://cmake.org/
