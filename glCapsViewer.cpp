@@ -335,6 +335,11 @@ void glCapsViewer::displayInternalFormatInfo()
 /// </summary>
 void glCapsViewer::generateReport()
 {
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	ui.labelReportPresent->setText("Generating device report...");
+	ui.labelReportPresent->repaint();
+	qApp->processEvents();
+
 	extensionTreeModel.clear();
 	implementationTreeModel.clear();
 	texFormatListModel.clear();
@@ -349,14 +354,12 @@ void glCapsViewer::generateReport()
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 
-	updateReportState();
-
-	stringstream ss;
-
 	displayCapabilities();
 	displayExtensions();
 	displayCompressedFormats();
 	displayInternalFormatInfo();
+
+	updateReportState();
 
 	// Tab captions
 	stringstream tabText;
@@ -365,6 +368,8 @@ void glCapsViewer::generateReport()
 	tabText.str("");
 	tabText << "Compressed formats (" << core.compressedFormats.size() << ")";
 	ui.tabWidgetDevice->setTabText(2, QString::fromStdString(tabText.str()));
+
+	QApplication::restoreOverrideCursor();
 }
 
 bool glCapsViewer::contextTypeSelection() 

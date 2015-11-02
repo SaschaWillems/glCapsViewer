@@ -49,7 +49,7 @@ QTabBar::tab:hover {
 
 QTabBar::tab:selected {
 color: #5586a4;
-border-top: 2px solid #5586a4;
+border-bottom: 2px solid #5586a4;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -260,9 +260,6 @@ color: rgb(255, 255, 255);</string>
                 <string>Extensions</string>
                </attribute>
                <layout class="QVBoxLayout" name="verticalLayout_4">
-                <property name="rightMargin">
-                 <number>9</number>
-                </property>
                 <item>
                  <widget class="QWidget" name="widget_2" native="true">
                   <layout class="QFormLayout" name="formLayout">
@@ -401,6 +398,34 @@ color: rgb(255, 255, 255);</string>
                </attribute>
                <layout class="QVBoxLayout" name="verticalLayout_6">
                 <item>
+                 <widget class="QWidget" name="widget_5" native="true">
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note : Internal format info is&lt;span style=&quot; color:#ff0000;&quot;&gt; not stored&lt;/span&gt; in the online database!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QTreeWidget" name="treeWidgetInternalFormats">
                   <property name="styleSheet">
                    <string notr="true">QTreeView::item { height: 24px;}</string>
@@ -413,6 +438,9 @@ color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="indentation">
                    <number>10</number>
+                  </property>
+                  <property name="headerHidden">
+                   <bool>true</bool>
                   </property>
                   <attribute name="headerDefaultSectionSize">
                    <number>250</number>
