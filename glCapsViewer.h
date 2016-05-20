@@ -25,7 +25,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <QNetworkReply>
-#include "ui_glcapsviewer.h"
+#include "ui_glCapsViewer.h"
 #include "glCapsViewerCore.h"
 #include "settings.h"
 #include <QStandardItemModel>
