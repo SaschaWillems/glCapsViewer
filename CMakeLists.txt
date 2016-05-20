@@ -6,6 +6,7 @@ set(NAME glcapsviewer)
 
 set(CMAKE_INCLUDE_CURRENT_DIR OFF)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-std=c++11)
