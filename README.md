@@ -1,13 +1,13 @@
 # OpenGL hardware capability viewer
 
-Client application for the OpenGL hardware capabilitiy database.
+Client application for the OpenGL hardware capability database.
 
 This tool uploads OpenGL hardware reports to the OpenGL hardware database at http://opengl.gpuinfo.org
 
-Works with windows, linux and Mac OS.
+Works with Windows, Linux and macOS.
 
 # Depedencies
-glCapsViewer depends on the following libraries and frameworks :
+glCapsViewer depends on the following libraries and frameworks:
 
 - Boost - http://www.boost.org/
 - GLEW - http://glew.sourceforge.net/
