@@ -316,6 +316,7 @@
 	<category name="GL_ARB_viewport_array">
 		<requirements extension="GL_ARB_viewport_array" version=""/>
 		<cap name="GL_MAX_VIEWPORTS" enum="0x825B" type="glint" components="1" />
+		<cap name="GL_VIEWPORT_SUBPIXEL_BITS" enum="0x825C" type="glint" components="1" />
 	</category>			
 	<category name="GL_ARB_blend_func_extended">
 		<requirements extension="GL_ARB_blend_func_extended" version=""/>
