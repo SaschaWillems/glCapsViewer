@@ -308,7 +308,7 @@ bool glCapsViewerCore::loadEnumList()
 
 string glCapsViewerCore::reportToXml() 
 {
-	const string appVersion = "glCapsViewer 1.1 - Copyright 2011-2015 by Sascha Willems (www.saschawillems.de)";
+	const string appVersion = "glCapsViewer 1.1 - Copyright 2011-2016 by Sascha Willems (www.saschawillems.de)";
 	const string appAbout = "glCapsViewer 1.1";
 	const string fileVersion = "4.0";
 

@@ -580,8 +580,14 @@ bool glCapsViewer::canUpdateReport(int reportId) {
 
 			}
 		}
-		if ((xmlReader.isStartElement()) && (xmlReader.name() == "format")) {
-			compressedFormatsDatabase.push_back(atoi(xmlReader.readElementText().toStdString().c_str()));
+		if ((xmlReader.isStartElement()) && (xmlReader.name() == "compressedtextureformats")) {
+			while (!xmlReader.atEnd()) {
+				xmlReader.readNext();
+				if (xmlReader.name() == "compressedtextureformats") {
+					break;
+				}
+				compressedFormatsDatabase.push_back(atoi(xmlReader.readElementText().toStdString().c_str()));
+			}
 		}
 		xmlReader.readNext();
 	}
@@ -808,8 +814,10 @@ void glCapsViewer::slotDeviceVersionChanged(int index) {
 					break;
 				}
 				table->insertRow(table->rowCount());
-				table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(xmlReader.name().toString()));
+				QXmlStreamAttributes attrib = xmlReader.attributes();
+				QString nodeName = attrib.value("id").toString();
 				QString nodeValue = xmlReader.readElementText();
+				table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(nodeName));
 				if (nodeValue == "") {
 					table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("n/a"));
 					table->item(table->rowCount() - 1, 0)->setTextColor(QColor::fromRgb(100, 100, 100));
