@@ -37,6 +37,11 @@ link_directories(${GLEW_LIBRARIES})
 find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h)
 find_library(GLFW_LIBRARY NAMES glfw3 glfw)
 
+IF(UNIX)
+find_package(X11 REQUIRED)
+link_libraries(${X11_LIBRARIES})
+ENDIF(LINUX)
+
 set(GLFW_INCLUDE_DIRS ${GLFW_INCLUDE_DIR})
 set(GLFW_LIBRARIES ${GLFW_LIBRARY})
 
