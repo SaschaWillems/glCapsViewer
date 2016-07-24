@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OpenGL Hardware Capability Viewer 1.1 - © 2011-2015 by Sascha Willems (www.saschawillems.de)</string>
+   <string>OpenGL Hardware Capability Viewer 1.1 - © 2011-2016 by Sascha Willems (www.saschawillems.de)</string>
   </property>
   <property name="windowIcon">
    <iconset resource="glcapsviewer.qrc">

@@ -4,7 +4,7 @@
 *
 * Main window class
 *
-* Copyright (C) 2011-2015 by Sascha Willems (www.saschawillems.de)
+* Copyright (C) 2011-2016 by Sascha Willems (www.saschawillems.de)
 *
 * This code is free software, you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -708,7 +708,7 @@ void glCapsViewer::slotRefreshDatabase() {
 void glCapsViewer::slotAbout() {
 	stringstream aboutText;
 	aboutText << "<p>OpenGL hardware capability viewer (glCapsViewer)<br/><br/>"
-		"Copyright (c) 2011-2015 by Sascha Willems<br/><br/>"
+		"Copyright (c) 2011-2016 by Sascha Willems<br/><br/>"
 		"This tool is <b>FREEWARE</b><br/><br/>"
 		"For usage and distribution details refer to the readme<br/><br/>"
 		"<a href='http://www.gpuinfo.org'>www.gpuinfo.org</a><br><br>"
