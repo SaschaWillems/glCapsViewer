@@ -322,8 +322,4 @@
 		<requirements extension="GL_ARB_blend_func_extended" version=""/>
 		<cap name="GL_MAX_DUAL_SOURCE_DRAW_BUFFERS" enum="0x88FC" type="glint" components="1" />
 	</category>
-  <category name="GL_ARB_parallel_shader_compile">
-    <requirements extension="GL_ARB_parallel_shader_compile" version=""/>
-    <cap name="GL_MAX_SHADER_COMPILER_THREADS_ARB" enum="0x91B0" type="glfloat" components="1" />
-  </category>
 </categories>
