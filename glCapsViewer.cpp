@@ -434,6 +434,10 @@ bool glCapsViewer::contextTypeSelection()
 				GLint glVersionMajor, glVersionMinor;
 				glGetIntegerv(GL_MAJOR_VERSION, &glVersionMajor);
 				glGetIntegerv(GL_MINOR_VERSION, &glVersionMinor);
+				// Core profiles are only defined for OpenGL 3.2 and above, but Mesa will report 3.0 if no core context is requested.
+				if(glVersionMajor == 3 && glVersionMinor < 2) {
+					glVersionMinor = 2;
+				}
 				// Create core context
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glVersionMajor);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glVersionMinor);
