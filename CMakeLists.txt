@@ -4,7 +4,7 @@ cmake_policy(VERSION 2.8.11)
 project(glcapsviewer)
 set(NAME glcapsviewer)
 
-set(CMAKE_INCLUDE_CURRENT_DIR OFF)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
@@ -24,6 +24,9 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 file (GLOB Resources *.qrc)
 QT5_ADD_RESOURCES(ResourceSources ${Resources})
+
+#X11
+find_package(X11 REQUIRED)
 
 #Gl
 find_package(OpenGL REQUIRED)
@@ -79,9 +82,10 @@ ${SOURCE}
 ${HEADER}
 ${ResourceSources})
 
-target_link_libraries(${NAME} Qt5::Core)	
-target_link_libraries(${NAME} Qt5::Gui)	
-target_link_libraries(${NAME} Qt5::Network)	
+target_link_libraries(${NAME} X11)
+target_link_libraries(${NAME} Qt5::Core)
+target_link_libraries(${NAME} Qt5::Gui)
+target_link_libraries(${NAME} Qt5::Network)
 target_link_libraries(${NAME} Qt5::Widgets)
 target_link_libraries(${NAME} ${GLEW_LIBRARIES})
 target_link_libraries(${NAME} ${OPENGL_LIBRARIES})
