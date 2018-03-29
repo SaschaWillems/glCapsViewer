@@ -9,7 +9,6 @@ Works with windows, linux and Mac OS.
 # Depedencies
 glCapsViewer depends on the following libraries and frameworks :
 
-- Boost - http://www.boost.org/
 - GLEW - http://glew.sourceforge.net/
 - GLFW - http://www.glfw.org/
 - Qt - https://qt-project.org/

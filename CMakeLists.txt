@@ -40,7 +40,7 @@ find_library(GLFW_LIBRARY NAMES glfw3 glfw)
 IF(UNIX)
 find_package(X11 REQUIRED)
 link_libraries(${X11_LIBRARIES})
-ENDIF(LINUX)
+ENDIF(UNIX)
 
 set(GLFW_INCLUDE_DIRS ${GLFW_INCLUDE_DIR})
 set(GLFW_LIBRARIES ${GLFW_LIBRARY})
@@ -58,12 +58,6 @@ if(GLFW_FOUND AND NOT TARGET GLFW::GLFW)
 endif()
 
 mark_as_advanced(GLFW_INCLUDE_DIR GLFW_LIBRARY)
-
-#Boost
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
-add_definitions( -DBOOST_ALL_DYN_LINK )
 
 # Compiler specific stuff
 IF(MSVC)
@@ -85,6 +79,5 @@ target_link_libraries(${NAME} Qt5::Network)
 target_link_libraries(${NAME} Qt5::Widgets)
 target_link_libraries(${NAME} ${GLEW_LIBRARIES})
 target_link_libraries(${NAME} ${OPENGL_LIBRARIES})
-target_link_libraries(${NAME} ${Boost_LIBRARIES})
 target_link_libraries(${NAME} glfw ${GLFW_LIBRARY})
 

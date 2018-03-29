@@ -43,27 +43,42 @@
 #include <algorithm>
 #include <iomanip>
 #include <ctime>
-
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/foreach.hpp>
+#include <cstdlib>
+#include <sstream>
+#include <iterator>
 
 #include <capsGroup.h>
 #include "glCapsViewerCore.h"
 
 using namespace std;
 
-template <typename ElemT>
-struct HexTo {
-	ElemT value;
-	operator ElemT() const { return value; }
-	friend std::istream& operator>>(std::istream& in, HexTo& out) {
-		in >> std::hex >> out.value;
-		return in;
-	}
+uint32_t toHex(std::string str)
+{
+	return std::strtoul(str.c_str(), 0, 16);
+}
+
+struct iequal
+{
+    bool operator()(int c1, int c2) const
+    {
+        return std::toupper(c1) == std::toupper(c2);
+    }
 };
+
+bool iequals(const std::string& str1, const std::string& str2)
+{
+    return std::equal(str1.begin(), str1.end(), str2.begin(), iequal());
+}
+
+template <class Container>
+void split(const std::string& str, Container& cont, char delim = ' ')
+{
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, delim)) {
+        cont.push_back(token);
+    }
+}
 
 /// <summary>
 /// Checks if an extension is supported (GL or os specific)
@@ -73,13 +88,13 @@ struct HexTo {
 bool glCapsViewerCore::extensionSupported(string ext) 
 {
 	for (auto& currExt : extensions) {
-		if (boost::iequals(currExt, ext)) {
+		if (iequals(currExt, ext)) {
 			return true;
 		}
 	}
 
 	for (auto& currExt : osextensions) {
-		if (boost::iequals(currExt, ext)) {
+		if (iequals(currExt, ext)) {
 			return true;
 		}
 	}
@@ -159,7 +174,7 @@ void glCapsViewerCore::readExtensions()
 	else {
 		const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
 		string extensionString = reinterpret_cast<const char*>(glExtensions);
-		boost::algorithm::split(extensions, extensionString, boost::algorithm::is_any_of(" "));
+		split(extensionString, extensions, ' ');
 	}
 }
 
@@ -184,7 +199,7 @@ void glCapsViewerCore::readOsExtensions()
 		if (wglExtensions)
 		{
 			std::string wglExtensionString = reinterpret_cast<const char*>(wglExtensions);
-			boost::algorithm::split(osextensions, wglExtensionString, boost::algorithm::is_any_of(" "));
+			split(wglExtensionString, osextensions, ' ');
 		}
 	}
 #endif
@@ -195,7 +210,7 @@ void glCapsViewerCore::readOsExtensions()
 	if (glXExtensions)
 	{
 		std::string glXExtensionString = reinterpret_cast<const char*>(glXExtensions);
-		boost::algorithm::split(osextensions, glXExtensionString, boost::algorithm::is_any_of(" "));
+		split(glXExtensionString, osextensions, ' ');
 	}
 #endif
 	// TODO : MacOSX
@@ -293,7 +308,7 @@ bool glCapsViewerCore::loadEnumList()
 				QString enumVal = attrib.value("value").toString();
 				QString enumName = xmlStream.readElementText();
 				// Convert from hex value
-				uint32_t enumValue = boost::lexical_cast<HexTo<uint32_t>>(enumVal.toStdString());
+				uint32_t enumValue = toHex(enumVal.toStdString());
 				enumList[enumValue] = enumName.toStdString();
 			}
 		}
@@ -464,7 +479,7 @@ void glCapsViewerCore::readCapabilities()
 						string capType = nodeAttribs.value("type").toString().toStdString();
 						string capEnumStr = nodeAttribs.value("enum").toString().toStdString();
 						int capComponents = nodeAttribs.value("components").toInt();
-						uint32_t capEnum = boost::lexical_cast<HexTo<uint32_t>>(nodeAttribs.value("enum").toString().toStdString());
+						uint32_t capEnum = toHex(nodeAttribs.value("enum").toString().toStdString());
 						capsGroup.addCapability(capName, capEnum, capType, capComponents);
 					}
 				}
