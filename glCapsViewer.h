@@ -61,6 +61,7 @@ private:
 	void displayExtensions();
 	void displayCompressedFormats();
 	void displayInternalFormatInfo();
+	void getCoreContextVersion(GLint &glVersionMajor, GLint &glVersionMinor);
 private slots:
 	void slotRefreshReport();
 	void slotClose();
