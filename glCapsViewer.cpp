@@ -372,6 +372,20 @@ void glCapsViewer::generateReport()
 	QApplication::restoreOverrideCursor();
 }
 
+void glCapsViewer::getCoreContextVersion(GLint &glVersionMajor, GLint &glVersionMinor)
+{
+	// Get max. supported OpenGL version for versioned core context
+	glGetIntegerv(GL_MAJOR_VERSION, &glVersionMajor);
+	glGetIntegerv(GL_MINOR_VERSION, &glVersionMinor);
+
+	// Core profiles cannot be below 3.2, clamp.
+	// Occurs on MESA RADV and OSX where compatibility level is less than 3.2
+	if(4 <= glVersionMajor) return;
+	glVersionMajor = 3;
+	if(2 <= glVersionMinor) return;
+	glVersionMinor = 2;
+}
+
 bool glCapsViewer::contextTypeSelection() 
 {
 	// Get available context types
@@ -430,10 +444,10 @@ bool glCapsViewer::contextTypeSelection()
 			if (item == "OpenGL core context") {
 				glewExperimental = GL_TRUE;
 				GLenum err = glewInit();
-				// Get max. supported OpenGL version for versioned core context
+
 				GLint glVersionMajor, glVersionMinor;
-				glGetIntegerv(GL_MAJOR_VERSION, &glVersionMajor);
-				glGetIntegerv(GL_MINOR_VERSION, &glVersionMinor);
+				getCoreContextVersion(glVersionMajor, glVersionMinor);
+
 				// Create core context
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glVersionMajor);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glVersionMinor);
@@ -485,10 +499,10 @@ void glCapsViewer::slotRefreshReport()
 			if (item == "OpenGL core context") {
 				glewExperimental = GL_TRUE;
 				GLenum err = glewInit();
-				// Get max. supported OpenGL version for versioned core context
+
 				GLint glVersionMajor, glVersionMinor;
-				glGetIntegerv(GL_MAJOR_VERSION, &glVersionMajor);
-				glGetIntegerv(GL_MINOR_VERSION, &glVersionMinor);
+				getCoreContextVersion(glVersionMajor, glVersionMinor);
+
 				// Create core context
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glVersionMajor);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glVersionMinor);
