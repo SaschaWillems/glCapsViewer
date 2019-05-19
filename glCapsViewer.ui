@@ -14,7 +14,7 @@
    <string>OpenGL Hardware Capability Viewer 1.1 - © 2011-2016 by Sascha Willems (www.saschawillems.de)</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="glcapsviewer.qrc">
+   <iconset resource="glCapsViewer.qrc">
     <normaloff>:/glcapsviewer/Resources/glCapsViewer.ico</normaloff>:/glcapsviewer/Resources/glCapsViewer.ico</iconset>
   </property>
   <property name="layoutDirection">
@@ -50,7 +50,8 @@ QTabBar::tab:hover {
 QTabBar::tab:selected {
 color: #5586a4;
 border-bottom: 2px solid #5586a4;
-}</string>
+}
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -161,8 +162,14 @@ color: rgb(255, 255, 255);</string>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QTabWidget" name="tabWidgetDevice">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="autoFillBackground">
                <bool>true</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
               </property>
               <property name="tabPosition">
                <enum>QTabWidget::North</enum>
@@ -392,6 +399,76 @@ color: rgb(255, 255, 255);</string>
                 </item>
                </layout>
               </widget>
+              <widget class="QWidget" name="tab_5">
+               <attribute name="title">
+                <string>SPIR-V Extensions</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <item>
+                 <widget class="QWidget" name="widget_6" native="true">
+                  <layout class="QFormLayout" name="formLayout_4">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_6">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>Filter : </string>
+                     </property>
+                     <property name="scaledContents">
+                      <bool>false</bool>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="lineEditSPIRVExtensions">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTreeView" name="treeViewSPIRVExtensions">
+                  <property name="styleSheet">
+                   <string notr="true">QTreeView::item { height: 24px;}</string>
+                  </property>
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::NoEditTriggers</set>
+                  </property>
+                  <property name="alternatingRowColors">
+                   <bool>true</bool>
+                  </property>
+                  <property name="headerHidden">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
               <widget class="QWidget" name="tab_3">
                <attribute name="title">
                 <string>Internal formats</string>
@@ -483,7 +560,7 @@ color: rgb(255, 255, 255);</string>
              <string>Refresh</string>
             </property>
             <property name="icon">
-             <iconset resource="glcapsviewer.qrc">
+             <iconset resource="glCapsViewer.qrc">
               <normaloff>:/glcapsviewer/Resources/refresh16.png</normaloff>:/glcapsviewer/Resources/refresh16.png</iconset>
             </property>
             <property name="flat">
@@ -620,7 +697,7 @@ color: rgb(0, 0, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>994</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -666,7 +743,7 @@ color: rgb(255, 255, 255);
   </widget>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/refresh48.png</normaloff>:/glcapsviewer/Resources/refresh48.png</iconset>
    </property>
    <property name="text">
@@ -678,7 +755,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionUpload">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/upload48.png</normaloff>:/glcapsviewer/Resources/upload48.png</iconset>
    </property>
    <property name="text">
@@ -690,7 +767,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionDatabase">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/browse48.png</normaloff>:/glcapsviewer/Resources/browse48.png</iconset>
    </property>
    <property name="text">
@@ -702,7 +779,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/settings48.png</normaloff>:/glcapsviewer/Resources/settings48.png</iconset>
    </property>
    <property name="text">
@@ -714,7 +791,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/about48.png</normaloff>:/glcapsviewer/Resources/about48.png</iconset>
    </property>
    <property name="text">
@@ -726,7 +803,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/close48.png</normaloff>:/glcapsviewer/Resources/close48.png</iconset>
    </property>
    <property name="text">
@@ -738,7 +815,7 @@ color: rgb(255, 255, 255);
   </action>
   <action name="actionSave_xml">
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/save48.png</normaloff>:/glcapsviewer/Resources/save48.png</iconset>
    </property>
    <property name="text">
@@ -753,7 +830,7 @@ color: rgb(255, 255, 255);
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="glcapsviewer.qrc">
+    <iconset resource="glCapsViewer.qrc">
      <normaloff>:/glcapsviewer/Resources/device48.png</normaloff>:/glcapsviewer/Resources/device48.png</iconset>
    </property>
    <property name="text">
@@ -766,7 +843,7 @@ color: rgb(255, 255, 255);
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="glcapsviewer.qrc"/>
+  <include location="glCapsViewer.qrc"/>
  </resources>
  <connections/>
 </ui>

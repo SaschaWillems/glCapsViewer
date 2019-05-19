@@ -55,12 +55,15 @@ private:
 	QStandardItemModel implementationTreeModel;
 	TreeProxyFilter texFormatFilterProxy;
 	QStandardItemModel texFormatListModel;
+    TreeProxyFilter SPIRVextensionFilterProxy;
+    QStandardItemModel SPIRVextensionTreeModel;
 	bool canUpdateReport(int reportId);
 	void refreshDeviceList();
 	void displayCapabilities();
 	void displayExtensions();
 	void displayCompressedFormats();
 	void displayInternalFormatInfo();
+    void displaySPIRVextensions();
 private slots:
 	void slotRefreshReport();
 	void slotClose();
@@ -75,6 +78,7 @@ private slots:
 	void slotDeviceVersionChanged(int index);
 	void slotTabChanged(int index);
 	void slotFilterExtensions(QString text);
+    void slotFilterSPIRVExtensions(QString text);
 	void slotFilterImplementation(QString text);
 	void slotFilterTextureFormats(QString text);
 };

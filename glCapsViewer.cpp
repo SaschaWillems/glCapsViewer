@@ -92,6 +92,11 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	texFormatFilterProxy.setSourceModel(&texFormatListModel);
 	connect(ui.lineEditTexFormats, SIGNAL(textChanged(QString)), this, SLOT(slotFilterTextureFormats(QString)));
 
+    // SPIRV extensions
+    ui.treeViewSPIRVExtensions->setModel(&SPIRVextensionFilterProxy);
+    SPIRVextensionFilterProxy.setSourceModel(&SPIRVextensionTreeModel);
+    connect(ui.lineEditSPIRVExtensions, SIGNAL(textChanged(QString)), this, SLOT(slotFilterSPIRVExtensions(QString)));
+
 	appSettings.restore();
 
 	if (!core.loadEnumList()) 
@@ -330,6 +335,15 @@ void glCapsViewer::displayInternalFormatInfo()
 	}
 }
 
+void glCapsViewer::displaySPIRVextensions()
+{
+    QStandardItem *rootItem = SPIRVextensionTreeModel.invisibleRootItem();
+    for (auto& ext : core.SPIRVExtensions) {
+        rootItem->appendRow(new QStandardItem(QString::fromStdString(ext)));
+    }
+    ui.treeViewSPIRVExtensions->expandAll();
+}
+
 /// <summary>
 ///	Reads implementation details, extensions and capabilities
 ///	and displays the report
@@ -363,6 +377,7 @@ void glCapsViewer::generateReport()
 	displayExtensions();
 	displayCompressedFormats();
 	displayInternalFormatInfo();
+    displaySPIRVextensions();
 
 	updateReportState();
 
@@ -762,6 +777,13 @@ void glCapsViewer::slotFilterTextureFormats(QString text)
 	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
 	texFormatFilterProxy.setFilterRegExp(regExp);
 }
+
+void glCapsViewer::slotFilterSPIRVExtensions(QString text)
+{
+    QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
+    SPIRVextensionFilterProxy.setFilterRegExp(regExp);
+}
+
 
 /// <summary>
 ///	Fetches a list of available report version for currently selected device
