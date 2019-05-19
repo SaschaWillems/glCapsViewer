@@ -390,7 +390,7 @@ string glCapsViewerCore::reportToXml()
     // SPIR-V Extensions
     xmlWriter.writeStartElement("spirvextensions");
     for (auto& ext : SPIRVExtensions) {
-        xmlWriter.writeTextElement("spirvextensions", QString::fromStdString(ext));
+        xmlWriter.writeTextElement("extension", QString::fromStdString(ext));
     }
     xmlWriter.writeEndElement();
 
