@@ -287,6 +287,18 @@ void glCapsViewerCore::readInternalFormats()
 
 }
 
+void glCapsViewerCore::readSPIRVExtensions()
+{
+    SPIRVExtensions.clear();
+    GLint numExtensions;
+    glGetIntegerv(GL_NUM_SPIR_V_EXTENSIONS, &numExtensions);
+    for (int i = 0; i < numExtensions; i++) {
+        const GLubyte* glExt = glGetStringi(GL_SPIR_V_EXTENSIONS, i);
+        string ext = reinterpret_cast<const char*>(glExt);
+        SPIRVExtensions.push_back(ext);
+    }
+}
+
 /// <summary>
 /// Loads mapping list of OpenGL enum values and strings from xml file
 /// </summary>

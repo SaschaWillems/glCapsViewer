@@ -59,6 +59,7 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	: QMainWindow(parent)
 {
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
+    qDebug() << "setup ui";
 	ui.setupUi(this);
 	connect(ui.actionRefresh, SIGNAL(triggered()), this, SLOT(slotRefreshReport()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(slotClose()));
@@ -349,8 +350,12 @@ void glCapsViewer::generateReport()
 	core.readImplementation();
 	core.readCapabilities();
 	core.readCompressedFormats();
-	if (core.extensionSupported("GL_ARB_internalformat_query")) 
+    if (core.extensionSupported("GL_ARB_internalformat_query")) {
 		core.readInternalFormats();
+    }
+    if (core.extensionSupported("GL_ARB_spirv_extensions")) {
+        core.readSPIRVExtensions();
+    }
 
 	ui.labelDescription->setText(QString::fromStdString(core.description));
 

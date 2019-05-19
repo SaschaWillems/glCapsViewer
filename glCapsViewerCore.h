@@ -42,6 +42,7 @@ public:
 	vector<string> osextensions;
 	vector<GLint> compressedFormats;
 	vector<capsViewer::internalFormatTarget> internalFormatTargets;
+    vector<string> SPIRVExtensions;
 	string description = "";
 	string submitter = "";
 	string comment = "";
@@ -54,6 +55,7 @@ public:
 	void readExtensions();
 	void readCompressedFormats();
 	void readInternalFormats();
+    void readSPIRVExtensions();
 	void printExtensions();
 	void readOsExtensions();
 	bool loadEnumList();
