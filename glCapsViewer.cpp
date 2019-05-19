@@ -61,6 +61,9 @@ glCapsViewer::glCapsViewer(QWidget *parent)
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
     qDebug() << "setup ui";
 	ui.setupUi(this);
+
+    setWindowTitle(QString::fromStdString(core.appVersion));
+
 	connect(ui.actionRefresh, SIGNAL(triggered()), this, SLOT(slotRefreshReport()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(slotClose()));
 	connect(ui.actionSave_xml, SIGNAL(triggered()), this, SLOT(slotExportXml()));
@@ -644,7 +647,7 @@ void glCapsViewer::slotUpload()
 
 	if (!glchttp.checkServerConnection()) 
 	{
-		QMessageBox::warning(this, tr("Error"), tr("Could not connect to the OpenGL hardware database!\n\nPlease check your internet connection and proxy settings!"));
+        QMessageBox::warning(this, tr("Error"), tr("Could not connect to the OpenGL hardware database!\n\nPlease check your internet connection and proxy settings!"));
 		return;
 	}
 
@@ -734,7 +737,7 @@ void glCapsViewer::slotRefreshDatabase() {
 void glCapsViewer::slotAbout() {
 	stringstream aboutText;
 	aboutText << "<p>OpenGL hardware capability viewer (glCapsViewer)<br/><br/>"
-		"Copyright (c) 2011-2016 by Sascha Willems<br/><br/>"
+        "Copyright (c) 2011-2019 by Sascha Willems<br/><br/>"
 		"This tool is <b>FREEWARE</b><br/><br/>"
 		"For usage and distribution details refer to the readme<br/><br/>"
 		"<a href='http://www.gpuinfo.org'>www.gpuinfo.org</a><br><br>"
