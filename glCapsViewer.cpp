@@ -389,8 +389,11 @@ void glCapsViewer::generateReport()
 	tabText << "Extensions (" << core.extensions.size() + core.osextensions.size() << ")";
 	ui.tabWidgetDevice->setTabText(1, QString::fromStdString(tabText.str()));
 	tabText.str("");
-	tabText << "Compressed formats (" << core.compressedFormats.size() << ")";
-	ui.tabWidgetDevice->setTabText(2, QString::fromStdString(tabText.str()));
+    tabText << "Compressed formats (" << core.compressedFormats.size() << ")";
+    ui.tabWidgetDevice->setTabText(2, QString::fromStdString(tabText.str()));
+    tabText.str("");
+    tabText << "SPIR-V extensions (" << core.SPIRVExtensions.size() << ")";
+    ui.tabWidgetDevice->setTabText(3, QString::fromStdString(tabText.str()));
 
 	QApplication::restoreOverrideCursor();
 }

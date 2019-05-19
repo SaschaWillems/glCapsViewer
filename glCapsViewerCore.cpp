@@ -387,6 +387,13 @@ string glCapsViewerCore::reportToXml()
 	}
 	xmlWriter.writeEndElement();
 
+    // SPIR-V Extensions
+    xmlWriter.writeStartElement("spirvextensions");
+    for (auto& ext : SPIRVExtensions) {
+        xmlWriter.writeTextElement("spirvextensions", QString::fromStdString(ext));
+    }
+    xmlWriter.writeEndElement();
+
 	// Internal formats
 	// TODO : Not yet in database
 #ifdef INTERNALFORMATINFO
