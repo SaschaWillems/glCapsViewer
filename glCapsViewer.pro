@@ -3,16 +3,29 @@
 
 TEMPLATE = app
 TARGET = glCapsViewer
-DESTDIR = ./Win32/Release
 QT += core network widgets gui
 CONFIG += c++11
 DEFINES += QT_DLL QT_NETWORK_LIB QT_WIDGETS_LIB
 
 win32 {
-    DEFINES += WIN64
-    LIBS += "$$PWD/external/libs/glew32.lib"
-    LIBS += "$$PWD/external/libs/glfw3.lib"
     LIBS += Advapi32.lib User32.lib gdi32.lib shell32.lib opengl32.lib
+}
+
+win32:contains(QMAKE_HOST.arch, x86_64) {
+    DEFINES += WIN64
+    LIBS += "$$PWD/external/libs/x64/glew32.lib"
+    LIBS += "$$PWD/external/libs/x64/glfw3.lib"
+    DESTDIR = ./x86_64
+} else {
+    LIBS += "$$PWD/external/libs/Win32/glew32.lib"
+    LIBS += "$$PWD/external/libs/Win32/glfw3.lib"
+    DESTDIR = ./WIN32
+}
+
+debug {
+    DESTDIR = $$DESTDIR/debug/
+} else {
+    DESTDIR = $$DESTDIR/release/
 }
 
 HEADERS = \
@@ -31,12 +44,6 @@ HEADERS = \
    $$PWD/treeproxyfilter.h
 
 SOURCES = \
-#   $$PWD/GeneratedFiles/qrc_glcapsviewer.cpp \
-#   $$PWD/glcapsviewer_autogen/EWIEGA46WW/moc_glCapsViewer.cpp \
-#   $$PWD/glcapsviewer_autogen/EWIEGA46WW/moc_glCapsViewerHttp.cpp \
-#   $$PWD/glcapsviewer_autogen/EWIEGA46WW/moc_settingsDialog.cpp \
-#   $$PWD/glcapsviewer_autogen/EWIEGA46WW/moc_submitDialog.cpp \
-#   $$PWD/glcapsviewer_autogen/mocs_compilation.cpp \
    $$PWD/capsGroup.cpp \
    $$PWD/glcapsviewer.cpp \
    $$PWD/glcapsviewerCore.cpp \
