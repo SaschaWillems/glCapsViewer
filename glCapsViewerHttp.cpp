@@ -294,9 +294,9 @@ vector<reportInfo> glCapsViewerHttp::fetchDeviceReports(string device)
 string glCapsViewerHttp::getBaseUrl()
 {
 #ifdef DEVDATABASE
-	return "http://www.delphigl.de/opengldatabase_dev/";
+	return "https://www.delphigl.de/opengldatabase_dev/";
 #else
-	return "http://opengl.gpuinfo.org/";
+	return "https://opengl.gpuinfo.org/";
 #endif
 }
 
