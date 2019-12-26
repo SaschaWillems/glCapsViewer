@@ -14,5 +14,6 @@
     <file>Resources/settings48.png</file>
     <file>Resources/upload48.png</file>
     <file>Resources/refresh48.png</file>
+    <file>Resources/enumList.xml</file>
   </qresource>
 </RCC>
