@@ -49,8 +49,8 @@ HEADERS = \
 
 SOURCES = \
    $$PWD/capsGroup.cpp \
-   $$PWD/glcapsviewer.cpp \
-   $$PWD/glcapsviewerCore.cpp \
+   $$PWD/glCapsViewer.cpp \
+   $$PWD/glCapsViewerCore.cpp \
    $$PWD/glCapsViewerHttp.cpp \
    $$PWD/internalFormatInfo.cpp \
    $$PWD/internalFormatTarget.cpp \
@@ -60,7 +60,7 @@ SOURCES = \
    $$PWD/submitDialog.cpp \
    $$PWD/treeproxyfilter.cpp
 
-FORMS += ./glcapsviewer.ui
+FORMS += ./glCapsViewer.ui
 RESOURCES += glCapsViewer.qrc
 
 INCLUDEPATH = \
