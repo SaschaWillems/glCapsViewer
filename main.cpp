@@ -66,23 +66,10 @@ int main(int argc, char *argv[])
 	capsViewer.show();
 
 	// Check for capability list xml
-	QFileInfo capsXmlFile("./capslist.xml");
-	if (!capsXmlFile.exists()) {
-		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(&capsViewer, "File missing", "glCapsViewer could not locate the xml file containing the OpenGL capability list!\n\nDo you want to download it?", QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::Yes) {
-			glCapsViewerHttp glchttp;
-			string capsXml = glchttp.fetchCapsList();
-			std::ofstream destfile;
-			destfile.open("./capslist.xml");
-			destfile << capsXml;
-			destfile.close();
-			// TODO : Error checking
-			QMessageBox::information(&capsViewer, "Download complete", "The xml file containing the OpenGL capability list has been downloaded!");
-		}
-		else {
-			exit(-1);
-		}
+    QFileInfo capsXmlFile(":/glcapsviewer/Resources/capslist.xml");
+    if (!capsXmlFile.exists()) {
+        QMessageBox::critical(&capsViewer, "File missing", "glCapsViewer could not locate the xml file containing the OpenGL capability list!", QMessageBox::Ok);
+        exit(-1);
 	}
 
 

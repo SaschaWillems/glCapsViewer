@@ -21,6 +21,7 @@
 */
 
 #include <QXmlStreamReader>
+#include <QFile>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -304,10 +305,12 @@ void glCapsViewerCore::readSPIRVExtensions()
 /// </summary>
 bool glCapsViewerCore::loadEnumList()
 {
-	ifstream enumListxml("enumList.xml");
-	vector<char> buffer((istreambuf_iterator<char>(enumListxml)), istreambuf_iterator<char>());
+    Q_INIT_RESOURCE(glCapsViewer);
+    QFile enumListxml(":/glcapsviewer/Resources/enumList.xml");
+    enumListxml.open(QFile::ReadOnly);
+    auto buffer = enumListxml.readAll();
 	buffer.push_back('\0');
-	QXmlStreamReader xmlStream(&buffer[0]);
+    QXmlStreamReader xmlStream(buffer.data());
 	
 	while (!xmlStream.atEnd())  {
 
