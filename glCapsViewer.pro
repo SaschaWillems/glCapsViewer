@@ -35,8 +35,6 @@ linux {
 }
 
 HEADERS = \
-   $$PWD/GeneratedFiles/ui_glcapsviewer.h \
-   $$PWD/glcapsviewer_autogen/include/ui_glCapsViewer.h \
    $$PWD/capsGroup.h \
    $$PWD/glCapsViewer.h \
    $$PWD/glCapsViewerCore.h \
@@ -57,7 +55,6 @@ SOURCES = \
    $$PWD/internalFormatInfo.cpp \
    $$PWD/internalFormatTarget.cpp \
    $$PWD/main.cpp \
-   $$PWD/qrc_glCapsViewer.cpp \
    $$PWD/settings.cpp \
    $$PWD/settingsDialog.cpp \
    $$PWD/submitDialog.cpp \
