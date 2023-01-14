@@ -31,7 +31,6 @@ find_package(OpenGL REQUIRED)
 #Glew
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
-link_directories(${GLEW_LIBRARIES})
 
 #Glfw
 find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h)
@@ -77,7 +76,7 @@ target_link_libraries(${NAME} Qt5::Core)
 target_link_libraries(${NAME} Qt5::Gui)	
 target_link_libraries(${NAME} Qt5::Network)	
 target_link_libraries(${NAME} Qt5::Widgets)
-target_link_libraries(${NAME} ${GLEW_LIBRARIES})
+target_link_libraries(${NAME} GLEW::GLEW)
 target_link_libraries(${NAME} ${OPENGL_LIBRARIES})
 target_link_libraries(${NAME} glfw ${GLFW_LIBRARY})
 
