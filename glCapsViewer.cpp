@@ -442,6 +442,9 @@ bool glCapsViewer::contextTypeSelection()
 		}
 	}
 #endif
+#ifdef __APPLE__
+	core.availableContextTypes.push_back("OpenGL core context");
+#endif
 	core.contextType = "default";
 	if (core.availableContextTypes.size() > 1) {
 		QStringList items;
@@ -460,6 +463,10 @@ bool glCapsViewer::contextTypeSelection()
 				GLint glVersionMajor, glVersionMinor;
 				glGetIntegerv(GL_MAJOR_VERSION, &glVersionMajor);
 				glGetIntegerv(GL_MINOR_VERSION, &glVersionMinor);
+#if __APPLE__
+				glVersionMajor = 4;
+				glVersionMinor = 1;
+#endif
 				// Create core context
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glVersionMajor);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glVersionMinor);
