@@ -78,5 +78,5 @@ target_link_libraries(${NAME} Qt5::Network)
 target_link_libraries(${NAME} Qt5::Widgets)
 target_link_libraries(${NAME} GLEW::GLEW)
 target_link_libraries(${NAME} ${OPENGL_LIBRARIES})
-target_link_libraries(${NAME} glfw ${GLFW_LIBRARY})
+target_link_libraries(${NAME} ${GLFW_LIBRARY})
 
