@@ -156,23 +156,27 @@ string glCapsViewerCore::readOperatingSystem()
 		osinfo << osname.sysname << " " << osname.release << " (" << osname.machine << ")";
 		return osinfo.str();
 	#endif
-	// TODO : MacOSX
+	#ifdef __APPLE__
+	return "MacOS";
+	#endif
 }
 
 void glCapsViewerCore::readExtensions()
 {
 	// Use glGetStringi if available (GL 3.x)
-	if ((GL_VERSION_3_0) && (glGetStringi != NULL)) {
+	if ((GL_VERSION_3_0) && (glGetStringi != NULL) && contextType == "core") {
 		GLint numExtensions;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
 		for (int i = 0; i < numExtensions; i++) {
 			const GLubyte* glExt = glGetStringi(GL_EXTENSIONS, i);
+			assert(glExt);
 			string ext = reinterpret_cast<const char*>(glExt);
 			extensions.push_back(ext);
 		}
 	}
 	else {
 		const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
+		assert(glExtensions);
 		string extensionString = reinterpret_cast<const char*>(glExtensions);
 		split(extensionString, extensions, ' ');
 	}
