@@ -9,28 +9,32 @@ DEFINES += QT_DLL QT_NETWORK_LIB QT_WIDGETS_LIB
 
 win32 {
     LIBS += Advapi32.lib User32.lib gdi32.lib shell32.lib opengl32.lib
+
+    contains(QMAKE_HOST.arch, x86_64) {
+        DEFINES += WIN64
+        LIBS += "$$PWD/external/libs/x64/glew32.lib"
+        LIBS += "$$PWD/external/libs/x64/glfw3.lib"
+        DESTDIR = ./x86_64
+    } else {
+        LIBS += "$$PWD/external/libs/Win32/glew32.lib"
+        LIBS += "$$PWD/external/libs/Win32/glfw3.lib"
+        DESTDIR = ./WIN32
+    }
+
+    debug {
+        DESTDIR = $$DESTDIR/debug/
+    } else {
+        DESTDIR = $$DESTDIR/release/
+    }
 }
 
-win32:contains(QMAKE_HOST.arch, x86_64) {
-    DEFINES += WIN64
-    LIBS += "$$PWD/external/libs/x64/glew32.lib"
-    LIBS += "$$PWD/external/libs/x64/glfw3.lib"
-    DESTDIR = ./x86_64
-} else {
-    LIBS += "$$PWD/external/libs/Win32/glew32.lib"
-    LIBS += "$$PWD/external/libs/Win32/glfw3.lib"
-    DESTDIR = ./WIN32
-}
-
-debug {
-    DESTDIR = $$DESTDIR/debug/
-} else {
-    DESTDIR = $$DESTDIR/release/
+linux {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += glew glfw3
+    LIBS += -lX11
 }
 
 HEADERS = \
-   $$PWD/GeneratedFiles/ui_glcapsviewer.h \
-   $$PWD/glcapsviewer_autogen/include/ui_glCapsViewer.h \
    $$PWD/capsGroup.h \
    $$PWD/glCapsViewer.h \
    $$PWD/glCapsViewerCore.h \
@@ -45,19 +49,18 @@ HEADERS = \
 
 SOURCES = \
    $$PWD/capsGroup.cpp \
-   $$PWD/glcapsviewer.cpp \
-   $$PWD/glcapsviewerCore.cpp \
+   $$PWD/glCapsViewer.cpp \
+   $$PWD/glCapsViewerCore.cpp \
    $$PWD/glCapsViewerHttp.cpp \
    $$PWD/internalFormatInfo.cpp \
    $$PWD/internalFormatTarget.cpp \
    $$PWD/main.cpp \
-   $$PWD/qrc_glCapsViewer.cpp \
    $$PWD/settings.cpp \
    $$PWD/settingsDialog.cpp \
    $$PWD/submitDialog.cpp \
    $$PWD/treeproxyfilter.cpp
 
-FORMS += ./glcapsviewer.ui
+FORMS += ./glCapsViewer.ui
 RESOURCES += glCapsViewer.qrc
 
 INCLUDEPATH = \
