@@ -447,11 +447,11 @@ void glCapsViewerCore::exportXml(string fileName)
 
 void glCapsViewerCore::readCapabilities()
 {
-
-	ifstream enumListxml("capslist.xml");
-	vector<char> buffer((istreambuf_iterator<char>(enumListxml)), istreambuf_iterator<char>());
+	QFile enumListxml(":/glcapsviewer/Resources/capslist.xml");
+	enumListxml.open(QFile::ReadOnly);
+	QByteArray buffer = enumListxml.readAll();
 	buffer.push_back('\0');
-	QXmlStreamReader xmlStream(&buffer[0]);
+	QXmlStreamReader xmlStream(buffer);
 	QXmlStreamAttributes nodeAttribs;
 
 	while (!xmlStream.atEnd())  {
