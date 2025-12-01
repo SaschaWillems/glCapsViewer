@@ -32,7 +32,7 @@ namespace capsViewer {
 	private:
 		settings appSettings;
 	public:
-		settingsDialog(settings appSet, QWidget * parent = 0, Qt::WindowFlags f = 0);
+		settingsDialog(settings appSet, QWidget * parent = 0);
 		~settingsDialog();
 	private slots:
 		void slotAccept();

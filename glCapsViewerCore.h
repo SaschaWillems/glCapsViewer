@@ -4,7 +4,7 @@
 *
 * OpenGL capability viewer core
 *
-* Copyright (C) 2011-2015 by Sascha Willems (www.saschawillems.de)
+* Copyright (C) 2011-2025 by Sascha Willems (www.saschawillems.de)
 *
 * This code is free software, you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -35,8 +35,8 @@ class glCapsViewerCore
 private:
 	map<GLint, string> enumList;
 public:
-    const string appVersion = "OpenGL Hardware Capability Viewer 1.2 - Copyright 2011-2019 by Sascha Willems (www.saschawillems.de)";
-    const string appAbout = "glCapsViewer 1.2";
+    const string appVersion = "OpenGL Hardware Capability Viewer 1.3 - Copyright 2011-2025 by Sascha Willems (www.saschawillems.de)";
+    const string appAbout = "glCapsViewer 1.3";
     const string fileVersion = "4.0";
 	vector<string> availableContextTypes;
 	map<string, string> implementation;

@@ -60,6 +60,11 @@ void glfw_error_callback(int error, const char* description)
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_WIN
+	// Disable dark mode on Winodows
+	qputenv("QT_QPA_PLATFORM", "windows::darkmode=0");
+#endif
+
 	QApplication a(argc, argv);
 	glCapsViewer capsViewer;
 	capsViewer.ui.labelReportPresent->setText("...");

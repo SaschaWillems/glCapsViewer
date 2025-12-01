@@ -68,6 +68,7 @@ INCLUDEPATH = \
     $$PWD/GeneratedFiles \
     $$PWD/glcapsviewer_autogen/include
 INCLUDEPATH += "./external"
+INCLUDEPATH += "./external/glew/include"
 
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/release
