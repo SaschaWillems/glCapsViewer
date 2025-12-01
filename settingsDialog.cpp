@@ -47,7 +47,7 @@ namespace capsViewer {
 		return checkbox;
 	}
 
-	settingsDialog::settingsDialog(settings appSet, QWidget * parent, Qt::WindowFlags f)
+	settingsDialog::settingsDialog(settings appSet, QWidget * parent)
 	{
 		appSettings = appSet;
 

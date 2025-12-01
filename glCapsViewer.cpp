@@ -4,7 +4,7 @@
 *
 * Main window class
 *
-* Copyright (C) 2011-2016 by Sascha Willems (www.saschawillems.de)
+* Copyright (C) 2011-2025 by Sascha Willems (www.saschawillems.de)
 *
 * This code is free software, you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -165,11 +165,11 @@ void glCapsViewer::updateReportState()
 
 void colorInternalFormatItem(QTreeWidgetItem *item, int column) {
 	if (item->text(column) == "GL_NONE") 
-		item->setTextColor(column, QColor::fromRgb(255, 0, 0));
+		item->setForeground(column, QColor::fromRgb(255, 0, 0));
 	if (item->text(column) == "GL_CAVEAT_SUPPORT") 
-		item->setTextColor(column, QColor::fromRgb(255, 150, 0));
+		item->setForeground(column, QColor::fromRgb(255, 150, 0));
 	if (item->text(column) == "GL_FULL_SUPPORT") 
-		item->setTextColor(column, QColor::fromRgb(0, 128, 0));
+		item->setForeground(column, QColor::fromRgb(0, 128, 0));
 }
 
 void glCapsViewer::displayCapabilities()
@@ -202,7 +202,7 @@ void glCapsViewer::displayCapabilities()
 		if (!group.visible) 
 			continue;
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(group.name));
-		item->setTextColor(QColor::fromRgb(0, 0, 255));
+		item->setForeground(QColor::fromRgb(0, 0, 255));
 
 		QList<QStandardItem *> rowItems;
 		rowItems << new QStandardItem(QString::fromStdString(group.name));
@@ -281,7 +281,7 @@ void glCapsViewer::displayInternalFormatInfo()
 	if (!core.extensionSupported("GL_ARB_internalformat_query")) {
 		QTreeWidgetItem *infoItem = new QTreeWidgetItem(tree);
 		infoItem->setText(0, "Extension not supported");
-		infoItem->setTextColor(0, QColor::fromRgb(255, 0, 0));
+		infoItem->setForeground(0, QColor::fromRgb(255, 0, 0));
 		return;
 	}
 
@@ -297,8 +297,8 @@ void glCapsViewer::displayInternalFormatInfo()
 
 			if (!textureFormat.supported) {
 				formatItem->setText(1, "not supported");
-				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
-				formatItem->setTextColor(1, QColor::fromRgb(100, 100, 100));
+				formatItem->setForeground(1, QColor::fromRgb(100, 100, 100));
+				formatItem->setForeground(1, QColor::fromRgb(100, 100, 100));
 				continue;
 			}
 
@@ -566,7 +566,7 @@ void glCapsViewer::refreshDeviceList()
 			stringstream ss;
 			ss << device << " (Your device)";
 			deviceItem->setText(QString::fromStdString(ss.str()));
-			deviceItem->setTextColor(QColor::fromRgb(50, 180, 50));
+			deviceItem->setForeground(QColor::fromRgb(50, 180, 50));
 		}
 	}
 	QApplication::restoreOverrideCursor();
@@ -775,26 +775,26 @@ void glCapsViewer::slotTabChanged(int index)
 
 void glCapsViewer::slotFilterExtensions(QString text)
 {
-	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
-	extensionFilterProxy.setFilterRegExp(regExp);
+	QRegularExpression regExp(text, QRegularExpression::CaseInsensitiveOption);
+	extensionFilterProxy.setFilterRegularExpression(regExp);
 }
 
 void glCapsViewer::slotFilterImplementation(QString text)
 {
-	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
-	implementationFilterProxy.setFilterRegExp(regExp);
+	QRegularExpression regExp(text, QRegularExpression::CaseInsensitiveOption);
+	implementationFilterProxy.setFilterRegularExpression(regExp);
 }
 
 void glCapsViewer::slotFilterTextureFormats(QString text)
 {
-	QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
-	texFormatFilterProxy.setFilterRegExp(regExp);
+	QRegularExpression regExp(text, QRegularExpression::CaseInsensitiveOption);
+	texFormatFilterProxy.setFilterRegularExpression(regExp);
 }
 
 void glCapsViewer::slotFilterSPIRVExtensions(QString text)
 {
-    QRegExp regExp(text, Qt::CaseInsensitive, QRegExp::RegExp);
-    SPIRVextensionFilterProxy.setFilterRegExp(regExp);
+	QRegularExpression regExp(text, QRegularExpression::CaseInsensitiveOption);
+    SPIRVextensionFilterProxy.setFilterRegularExpression(regExp);
 }
 
 
@@ -860,8 +860,8 @@ void glCapsViewer::slotDeviceVersionChanged(int index) {
 				table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(nodeName));
 				if (nodeValue == "") {
 					table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("n/a"));
-					table->item(table->rowCount() - 1, 0)->setTextColor(QColor::fromRgb(100, 100, 100));
-					table->item(table->rowCount() - 1, 1)->setTextColor(QColor::fromRgb(100, 100, 100));
+					table->item(table->rowCount() - 1, 0)->setForeground(QColor::fromRgb(100, 100, 100));
+					table->item(table->rowCount() - 1, 1)->setForeground(QColor::fromRgb(100, 100, 100));
 				}
 				else {
 					table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(nodeValue));

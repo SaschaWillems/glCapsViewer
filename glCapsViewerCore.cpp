@@ -89,13 +89,13 @@ void split(const std::string& str, Container& cont, char delim = ' ')
 bool glCapsViewerCore::extensionSupported(string ext) 
 {
 	for (auto& currExt : extensions) {
-		if (iequals(currExt, ext)) {
+		if (currExt == ext) {
 			return true;
 		}
 	}
 
 	for (auto& currExt : osextensions) {
-		if (iequals(currExt, ext)) {
+		if (currExt == ext) {
 			return true;
 		}
 	}

@@ -4,7 +4,7 @@
 *
 * Custom sort filter proxy model
 *
-* Copyright (C) 2011-2015 by Sascha Willems (www.saschawillems.de)
+* Copyright (C) 2011-2025 by Sascha Willems (www.saschawillems.de)
 *
 * This code is free software, you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ TreeProxyFilter::TreeProxyFilter(QObject *parent) : QSortFilterProxyModel(parent
 
 bool TreeProxyFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	if (!filterRegExp().isEmpty())
+    if (filterRegularExpression().isValid())
 	{
 		QModelIndex index = sourceModel()->index(sourceRow, this->filterKeyColumn(), sourceParent);
 		if (index.isValid())
@@ -41,7 +41,7 @@ bool TreeProxyFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
 				}
 			}
 			QString key = sourceModel()->data(index, filterRole()).toString();
-			return key.contains(filterRegExp());
+            return key.contains(filterRegularExpression());
 		}
 	}
 	return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
@@ -59,5 +59,5 @@ bool TreeProxyFilter::hasAcceptedChildren(int sourceRow, const QModelIndex &sour
 	{
 		return false;
 	}
-
+    return true;
 }
